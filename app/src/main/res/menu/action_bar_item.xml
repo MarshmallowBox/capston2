@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.actionview.ActionView">
+
+    <item
+        android:id="@+id/search_button"
+        android:icon="@drawable/baseline_search_black_18dp"
+        android:queryHint="가맹점 상호명을 입력해주세요."
+        android:title="search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always|collapseActionView" />
+
+</menu>
+
+
+

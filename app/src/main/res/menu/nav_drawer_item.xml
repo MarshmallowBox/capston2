@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Application">
+        <menu>
+            <item
+                android:id="@+id/login"
+                android:icon="@android:drawable/ic_menu_add"
+            android:title="로그인" />
+            <item
+                android:id="@+id/logout"
+                android:icon="@android:drawable/ic_menu_close_clear_cancel"
+                android:title="회원정보" />
+
+        </menu>
+    </item>
+
+    <item android:title="Preference">
+        <menu>
+            <item
+                android:id="@+id/information"
+                android:icon="@android:drawable/ic_menu_info_details"
+                android:title="도움말" />
+            <item
+                android:id="@+id/preferences"
+                android:icon="@android:drawable/ic_menu_preferences"
+                android:title="설정" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    android:background="#3FFFEB3B">
+
+
+    <ImageView
+        android:id="@+id/recyclerview_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/appicon64"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/recyclerview_item_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/recyclerview_image"
+        android:gravity="center"
+        android:text="name"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerview_item_address"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerview_item_category"
+        app:layout_constraintStart_toEndOf="@+id/recyclerview_image"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/recyclerview_item_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/recyclerview_item_name"
+        android:gravity="center"
+        android:text="add"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerview_item_tel"
+        app:layout_constraintStart_toEndOf="@+id/recyclerview_image" />
+
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/recyclerview_item_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/recyclerview_item_address"
+        android:gravity="center"
+        android:text="category"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recyclerview_item_name"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/recyclerview_item_tel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/recyclerview_item_category"
+        android:gravity="center"
+        android:text="TEL"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recyclerview_item_address" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

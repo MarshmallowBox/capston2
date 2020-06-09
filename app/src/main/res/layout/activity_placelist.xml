@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.example.capstone.PlaceList"
+    android:layout_marginTop="45dp">
+
+
+    <Button
+        android:id="@+id/button_near"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="내 주변 찾기"
+        app:layout_constraintBottom_toTopOf="@+id/placelist_recyclerview"
+        app:layout_constraintEnd_toStartOf="@+id/button_camera"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_camera"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="화면에서찾기"
+        app:layout_constraintBottom_toTopOf="@+id/placelist_recyclerview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_near"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/placelist_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        android:scrollbars="vertical"
+        android:scrollbarSize="12dp"
+        android:scrollbarThumbVertical="@android:color/holo_blue_bright"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
