@@ -41,6 +41,7 @@ import static android.location.LocationManager.NETWORK_PROVIDER;
 
 public class Maps extends Fragment implements OnMapReadyCallback, LocationListener// Fragment 클래스를 상속받아야한다
 {
+    //asdasdasd
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     public static NaverMap naverMap;
     public static InfoWindow infoWindow;
