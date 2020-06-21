@@ -5,26 +5,25 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/appicon64"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/appicon64"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <!-- android:usesCleartextTraffic="true" 이거 없으면 카카오맵 표줄안될수있음 -->
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="l00axig17l" />
-        <!--  name으로 com.naver.maps.map.CLIENT_ID를, value로 발급받은 클라이언트 ID를 지정합니다. -->
+            android:value="l00axig17l" /> <!-- name으로 com.naver.maps.map.CLIENT_ID를, value로 발급받은 클라이언트 ID를 지정합니다. -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="3da5404d13fa6d57c44f4e125acb245e" />
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,21 +31,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
-        <activity android:name=".LoginInfo"/>
+        <activity
+            android:name=".PopupActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize|layoutDirection"/>
+        <activity android:name=".LoginInfo" />
 
 
-<!--        <activity android:name=".LoginActivity"></activity>-->
-<!--        <activity android:name=".MainActivity"-->
-<!--            android:configChanges = "keyboardHidden|orientation|screenSize|layoutDirection">-->
-<!--&lt;!&ndash;            화면회전시 강제종료 막하주는 코드&ndash;&gt;-->
-<!--&lt;!&ndash;            https://m.blog.naver.com/PostView.nhn?blogId=lor_3534&logNo=220005257180&proxyReferer=https:%2F%2Fwww.google.com%2F&ndash;&gt;-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+        <!--        <activity android:name=".LoginActivity"></activity>-->
+        <!--        <activity android:name=".MainActivity"-->
+        <!--            android:configChanges = "keyboardHidden|orientation|screenSize|layoutDirection">-->
+        <!--&lt;!&ndash;            화면회전시 강제종료 막하주는 코드&ndash;&gt;-->
+        <!--&lt;!&ndash;            https://m.blog.naver.com/PostView.nhn?blogId=lor_3534&logNo=220005257180&proxyReferer=https:%2F%2Fwww.google.com%2F&ndash;&gt;-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
     </application>
 
 </manifest>

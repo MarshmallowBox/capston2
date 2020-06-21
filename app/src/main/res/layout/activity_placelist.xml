@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="45dp"
     android:background="@android:color/white"
-    tools:context="com.example.capstone.PlaceList"
-    android:layout_marginTop="45dp">
+    tools:context="com.example.capstone.PlaceList">
 
 
     <Button
@@ -35,9 +35,9 @@
         android:layout_height="match_parent"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="60dp"
-        android:scrollbars="vertical"
         android:scrollbarSize="12dp"
         android:scrollbarThumbVertical="@android:color/holo_blue_bright"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

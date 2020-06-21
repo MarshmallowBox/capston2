@@ -20,11 +20,13 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
     {
         View view = inflater.inflate(R.layout.activity_myplace,container,false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.myplace_recyclerview);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext()); //리스트뷰를 띄워준다
-        RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(DbClass.nearFranchises);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(myRecyclerViewAdapter);
+//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.myplace_recyclerview);
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext()); //리스트뷰를 띄워준다
+//        RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(DataBaseAdapter.nearFranchises);
+//        recyclerView.setLayoutManager(layoutManager);
+//        recyclerView.setAdapter(myRecyclerViewAdapter);
+
+
         return view;
     }
 }

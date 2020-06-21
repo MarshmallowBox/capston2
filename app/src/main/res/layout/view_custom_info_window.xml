@@ -11,13 +11,14 @@
     <!--        android:layout_height="wrap_content"-->
     <!--        android:orientation="horizontal" >-->
 
-    <ImageView
-        android:id="@+id/view_custom_info_window_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="5dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/appicon64"></ImageView>
+
+    <!--    <ImageView-->
+    <!--        android:id="@+id/view_custom_info_window_image"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginRight="5dp"-->
+    <!--        android:adjustViewBounds="true"-->
+    <!--        android:src="@drawable/appicon64"></ImageView>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,4 +48,12 @@
             android:textSize="14sp" />
 
     </LinearLayout>
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/view_custom_info_window_recyclerview"-->
+    <!--        android:layout_width="154dp"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:scrollbarSize="12dp"-->
+    <!--        android:scrollbarThumbVertical="@android:color/holo_blue_bright"-->
+    <!--        android:scrollbars="vertical" />-->
 </LinearLayout><!--</LinearLayout>-->

@@ -1,17 +1,22 @@
 package com.example.capstone;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.util.MarkerIcons;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -20,20 +25,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     private ArrayList<FranchiseDTO> memberDTOs = new ArrayList<>();
 
-
-    public RecyclerViewAdapter(FranchiseDTO Franchise) {
-        memberDTOs.add(Franchise);
+    RecyclerViewAdapter(ArrayList<FranchiseDTO> Franchises) {
+        memberDTOs.addAll(Franchises);
     }
 
-    public RecyclerViewAdapter(ArrayList<FranchiseDTO> Franchises) {
-        for (FranchiseDTO Franchise:Franchises) {
-            if(  (((RadioButton) UI.radioGroup.getChildAt(UI.radioGroup.getCheckedRadioButtonId())).getText().equals(Franchise.category)
-                    || ((RadioButton) UI.radioGroup.getChildAt(UI.radioGroup.getCheckedRadioButtonId())).getText().equals("전체"))  ){
-                memberDTOs.add(Franchise);
-            }
-
-        }
-    }
 
     @NonNull
     @Override
@@ -43,26 +38,58 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                FranchiseDTO franchiseDTO = null;
 
-
-
-                Marker searchMarker=null;
-                for(Marker marker:DbClass.Markers){
-                    if(((FranchiseDTO) marker.getTag()).name.equals( ((TextView)v.findViewById(R.id.recyclerview_item_name)).getText())){
-                        searchMarker = marker;
+                for (FranchiseDTO franchise : memberDTOs) {
+                    if (((TextView) v.findViewById(R.id.recyclerview_item_name)).getText().equals(franchise.name)) {
+                        franchiseDTO = franchise;
                         break;
                     }
                 }
-                if(searchMarker!=null){
-                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(searchMarker.getPosition()));
-                    //인포뷰 활성화
-                    DbClass.Markers.get(DbClass.Markers.indexOf(searchMarker)).setMap(Maps.naverMap);
-                    DbClass.Markers.get(DbClass.Markers.indexOf(searchMarker)).performClick();
 
-                    Maps.infoWindow.performClick();
+                if (franchiseDTO != null) {
+                    Maps.singleMarkers.setMap(null);
+                    Maps.singleMarkers = new Marker();
+                    Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
+                    Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
+                    //마커 크기지정 아마 3:4비율인듯
+//                        marker.setWidth(90);
+//                        marker.setHeight(120);
+                    Maps.singleMarkers.setCaptionText(franchiseDTO.name); //메인캡션
+                    Maps.singleMarkers.setTag(franchiseDTO);//인포뷰에 전달할 태그값
+                    Maps.singleMarkers.setSubCaptionText(franchiseDTO.category); //서브캡션
+                    Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                    Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
+                    Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+
+                    final FranchiseDTO finalFranchiseDTO1 = franchiseDTO;
+                    Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
+                        @Override
+                        public boolean onClick(@NonNull Overlay overlay) {
+
+                            //클릭시 카메라 이동
+                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
+                            //infoWindow에 franchises값 태그로 전달
+                            Maps.infoWindow.setTag(finalFranchiseDTO1);
+                            //인포뷰 활성화
+                            Maps.infoWindow.open(Maps.singleMarkers);
+                            Maps.infoWindow.performClick();
+                            return true;
+                        }
+                    });
+
+                    Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
+                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
+                    Maps.singleMarkers.performClick();
+//하단 정보창 닫기
+                    if (Maps.mLayout != null &&
+                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    }
                 }
             }
+
         });
         return new RowCell(view);
     }
@@ -76,6 +103,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ((RowCell) holder).address.setText(memberDTOs.get(position).address);
         ((RowCell) holder).category.setText(memberDTOs.get(position).category);
         ((RowCell) holder).tel.setText(memberDTOs.get(position).tel);
+//        if (isNear) {
+//            System.out.println("aa");
+//            ((RowCell) holder).imageView.setImageResource(R.drawable.appicon64);
+//            ((RowCell) holder).name.setText(DbClass.nearFranchises.get(position).name);
+//            ((RowCell) holder).address.setText(DbClass.nearFranchises.get(position).address);
+//            ((RowCell) holder).category.setText(DbClass.nearFranchises.get(position).category);
+//            ((RowCell) holder).tel.setText(DbClass.nearFranchises.get(position).tel);
+//        } else {
+//            System.out.println("bb");
+//
+//            ((RowCell) holder).imageView.setImageResource(R.drawable.appicon64);
+//            ((RowCell) holder).name.setText(DbClass.Franchises.get(position).name);
+//            ((RowCell) holder).address.setText(DbClass.Franchises.get(position).address);
+//            ((RowCell) holder).category.setText(DbClass.Franchises.get(position).category);
+//            ((RowCell) holder).tel.setText(DbClass.Franchises.get(position).tel);
+//        }
 
 
     }
@@ -96,13 +139,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         TextView category;
         TextView tel;
 
-        public RowCell(View view) {
+        RowCell(View view) {
             super(view);
             imageView = view.findViewById(R.id.recyclerview_image);
-            name = (TextView) view.findViewById(R.id.recyclerview_item_name);
-            address = (TextView) view.findViewById(R.id.recyclerview_item_address);
-            category = (TextView) view.findViewById(R.id.recyclerview_item_category);
-            tel = (TextView) view.findViewById(R.id.recyclerview_item_tel);
+            name = view.findViewById(R.id.recyclerview_item_name);
+            address = view.findViewById(R.id.recyclerview_item_address);
+            category = view.findViewById(R.id.recyclerview_item_category);
+            tel = view.findViewById(R.id.recyclerview_item_tel);
         }
     }
 
@@ -119,3 +162,4 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //    }
 
 }
+
