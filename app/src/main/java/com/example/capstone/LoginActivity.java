@@ -67,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //네이버
         init();
         init_View();
+        //자동로그인 추가
+        btnGetApi.performClick();
 
     }
 

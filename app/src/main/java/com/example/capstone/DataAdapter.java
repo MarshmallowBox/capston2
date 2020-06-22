@@ -212,16 +212,19 @@ class DataAdapter extends AsyncTask<String, Void, String> {
                 setMarkersOnMap();
 
             }
+
         }
     }
 
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
+        Log.i("DataAdapter", "onPreExecute");
+        //super.onPreExecute();
     }
 
     @Override
     protected void onPostExecute(String result) {
+        Log.i("DataAdapter", "onPostExecute");
         super.onPostExecute(result);
         Log.d(TAG, "response ------ " + result);
 
@@ -232,7 +235,7 @@ class DataAdapter extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         String searchKeyword1 = params[0];
         String searchKeyword2 = params[1];
-
+        Log.i("DataAdapter", "doInBackground");
         System.out.println(searchKeyword1);
         System.out.println(searchKeyword2);
         String serverURL = "http://rtemd.suwon.ac.kr/capstone/query.php";

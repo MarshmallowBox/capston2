@@ -161,5 +161,8 @@ public class LoginInfo extends AppCompatActivity {
                         }).show();
             }
         });
+
+        //자동로그인 추가
+        btnNext.performClick();
     }
 }
