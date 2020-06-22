@@ -136,6 +136,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                 data.add(tags.tel);
                 data.add(String.valueOf(tags.latitude));
                 data.add(String.valueOf(tags.longitude));
+                data.add(String.valueOf(0)); //리뷰갯수
                 data.add(String.valueOf(MainActivity.ui.bottomNavigationView.getSelectedItemId()));
                 Intent intent = new Intent(getActivity(), PopupActivity.class);
                 intent.putStringArrayListExtra("data", data);
@@ -221,7 +222,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                             && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > 5)
                             && (LocationTrackingMode.Follow == naverMap.getLocationTrackingMode())) {
                         beforeCamera = naverMap.getCameraPosition().target;
-                        singleMarkers.setMap(null);
+//                        singleMarkers.setMap(null);
 
 
                         if(dataAdapter != null) {
@@ -233,8 +234,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                         if (dataAdapter != null) {
                             dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
                         }
-                        Log.i("DataAdapter", "현위치 execute");
-
                     }
 
                     if (((reason == -1) && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > 250))//드래그
@@ -242,8 +241,9 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                             || ((reason == 0) )) { //마커클릭
                         beforeCamera = naverMap.getCameraPosition().target;
                         beforezoom = naverMap.getCameraPosition().zoom;
-
-                        singleMarkers.setMap(null);
+if(reason != 0){
+    singleMarkers.setMap(null);
+}
 
 
                         if(dataAdapter != null) {
@@ -254,7 +254,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                         Log.i("DataAdapter", "드래그");
                         if (dataAdapter != null) {
                             dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
-                            Log.i("DataAdapter", "드래그 execute");
                         }
                     }
                 }

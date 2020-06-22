@@ -167,11 +167,7 @@ class DataAdapter extends AsyncTask<String, Void, String> {
                     Markers.add(clusterMarker);
 
                 }
-                if (PlaceList.isCheckedButtonNear) {
-                    PlaceList.button_near.performClick();
-                } else {
-                    PlaceList.button_camera.performClick();
-                }
+
             }
         }
     }
@@ -205,7 +201,7 @@ class DataAdapter extends AsyncTask<String, Void, String> {
         } finally {
             if( activity == null&&naverMap == null&&Markers==null&&context!=null&&recyclerView!=null){
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context); //리스트뷰를 띄워준다
-                RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(Franchises);
+                RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(getFilteredData());
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(myRecyclerViewAdapter);
             }
@@ -218,7 +214,7 @@ class DataAdapter extends AsyncTask<String, Void, String> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        Log.d("DataAdapter" , "WaitAndDrawAsyncTask on Cancelled");
+        Log.d("DataAdapter" , "onCancelled");
         if (mJsonString != null ) {
             executeResult();
         }

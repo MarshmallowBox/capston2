@@ -136,6 +136,11 @@ class UI {
                         break;
                     case R.id.list:
                         horizontalScrollView.setVisibility(View.VISIBLE);
+                        if (PlaceList.isCheckedButtonNear) {
+                            PlaceList.button_near.performClick();
+                        } else {
+                            PlaceList.button_camera.performClick();
+                        }
                         if (placeListFrag == null) {
                             placeListFrag = new PlaceList();
                             MainActivity.fragmentManager.beginTransaction().add(R.id.Main_Frame, placeListFrag).commit();

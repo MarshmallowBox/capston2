@@ -33,6 +33,8 @@ public class PopupActivity extends Activity {
     Button map;
     Button call;
     Button load;
+    Button seeReview;
+    Button addReview;
 
 
     @SuppressLint("SetTextI18n")
@@ -52,25 +54,26 @@ public class PopupActivity extends Activity {
         ((TextView)findViewById(R.id.popup_name)).setText(data.get(1));
         ((TextView)findViewById(R.id.popup_address)).setText(data.get(2));
         ((TextView)findViewById(R.id.popup_category)).setText(data.get(3));
-        ((TextView)findViewById(R.id.popup_tell)).setText(data.get(4));
+        ((TextView)findViewById(R.id.popup_tell)).setText(data.get(4).equals("")?"전화번호 없음":data.get(4));
         final FranchiseDTO franchiseDTO = new FranchiseDTO(Integer.parseInt(data.get(0)), data.get(1), data.get(2), data.get(3), data.get(4), Double.parseDouble(data.get(5)), Double.parseDouble(data.get(6)));
+        ((TextView)findViewById(R.id.popup_review)).setText("리뷰: "+data.get(7)+"개");
 
     star = findViewById(R.id.popup_star);
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (star.isChecked()) {
-                    star.setButtonDrawable(R.drawable.baseline_sentiment_satisfied_black_18dp);
+                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
 
                 } else {
-                    star.setButtonDrawable(R.drawable.baseline_sentiment_very_satisfied_black_18dp);
+                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
                 }
 
             }
         });
         map = findViewById(R.id.popup_map);
 
-        if (Integer.parseInt(data.get(7)) != R.id.mapmode){
+        if (Integer.parseInt(data.get(8)) != R.id.mapmode){
         map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,6 +185,8 @@ public class PopupActivity extends Activity {
 
             }
         });
+         seeReview = findViewById(R.id.popup_see_review);
+         addReview = findViewById(R.id.popup_add_review);
     }
 
     /*//확인 버튼 클릭
