@@ -56,6 +56,8 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
     static ArrayList<Marker> Markers;
     private MapView mapView;
     private FusedLocationSource locationSource;
+    public static DataAdapter dataAdapter;
+
 
     //    public MarkerAdapter markerAdapter;
     ///
@@ -220,9 +222,17 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                             && (LocationTrackingMode.Follow == naverMap.getLocationTrackingMode())) {
                         beforeCamera = naverMap.getCameraPosition().target;
                         singleMarkers.setMap(null);
-                        DataAdapter dataAdapter = new DataAdapter(getActivity(), naverMap, Markers);
+
+
+                        if(dataAdapter != null) {
+                            dataAdapter.cancel(true);
+                            dataAdapter = null;
+                        }
+                        dataAdapter = new DataAdapter(getActivity(), naverMap, Markers);
                         Log.i("DataAdapter", "현위치");
-                        dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
+                        if (dataAdapter != null) {
+                            dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
+                        }
                         Log.i("DataAdapter", "현위치 execute");
 
                     }
@@ -235,11 +245,17 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
 
                         singleMarkers.setMap(null);
 
-                        DataAdapter dataAdapter = new DataAdapter(getActivity(), naverMap, Markers);
-                        Log.i("DataAdapter", "드래그");
-                        dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
-                        Log.i("DataAdapter", "드래그 execute");
 
+                        if(dataAdapter != null) {
+                            dataAdapter.cancel(true);
+                            dataAdapter = null;
+                        }
+                        dataAdapter = new DataAdapter(getActivity(), naverMap, Markers);
+                        Log.i("DataAdapter", "드래그");
+                        if (dataAdapter != null) {
+                            dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
+                            Log.i("DataAdapter", "드래그 execute");
+                        }
                     }
                 }
 //                System.out.println(reason+"::"+naverMap.getCameraPosition().zoom);

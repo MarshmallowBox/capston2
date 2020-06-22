@@ -51,6 +51,7 @@ class DataAdapter extends AsyncTask<String, Void, String> {
     final NaverMap naverMap;
     Context context;
     RecyclerView recyclerView;
+    String mJsonString=null;
 
     DataAdapter(Activity activity, NaverMap naverMap, ArrayList<Marker> Markers) {
         this.activity = activity;
@@ -174,7 +175,7 @@ class DataAdapter extends AsyncTask<String, Void, String> {
             }
         }
     }
-    public void executeResult(String mJsonString) {
+    public void executeResult() {
         try {
             System.out.println("\n****************************");
             System.out.println("getData");
@@ -212,14 +213,22 @@ class DataAdapter extends AsyncTask<String, Void, String> {
                 setMarkersOnMap();
 
             }
-
         }
+    }
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        Log.d("DataAdapter" , "WaitAndDrawAsyncTask on Cancelled");
+        if (mJsonString != null ) {
+            executeResult();
+        }
+
     }
 
     @Override
     protected void onPreExecute() {
         Log.i("DataAdapter", "onPreExecute");
-        //super.onPreExecute();
+        super.onPreExecute();
     }
 
     @Override
@@ -227,8 +236,8 @@ class DataAdapter extends AsyncTask<String, Void, String> {
         Log.i("DataAdapter", "onPostExecute");
         super.onPostExecute(result);
         Log.d(TAG, "response ------ " + result);
-
-        executeResult(result);
+        mJsonString=result;
+        executeResult();
     }
 
     @Override
