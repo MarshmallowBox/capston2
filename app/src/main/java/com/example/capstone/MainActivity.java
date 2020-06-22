@@ -27,21 +27,21 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public static FragmentManager fragmentManager;
     public static FragmentTransaction fragmentTransaction;
+    public static boolean firsttime = true;
+    public static String strNickname, strEmail;
+    static TextView tv_userId, tv_userEmail;
     private SearchView searchView;
     private MenuItem mSearch;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    public static boolean firsttime =true;
-    public static String strNickname,strEmail;
-    static TextView tv_userId, tv_userEmail;
+    public static UI ui;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        firsttime =true;
-
+        firsttime = true;
 
 
         //앱바(툴바) 생성부분인데 밑에 이벤트와같이 UI클래스에 같이 합칠수있는지 시도해보기
@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI
-        UI ui = new UI(this);
+        ui = new UI(this);
         ui.createCategory();
         ui.createNav_Bottom();
-        ui.createNav_Drawer(strNickname,strEmail);
-        Toast.makeText(this, "이름 : "+ strNickname + "이메일 : " + strEmail, Toast.LENGTH_SHORT).show();
+        ui.createNav_Drawer(strNickname, strEmail);
+        Toast.makeText(this, "이름 : " + strNickname + "이메일 : " + strEmail, Toast.LENGTH_SHORT).show();
 
 
         //로그인값
@@ -109,28 +109,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                Marker searchMarker=null;
                 searchView.clearFocus();
-//                for(Marker marker:DbClass.Markers){
-//                    if(((FranchiseDTO) marker.getTag()).name.equals(s)){
-//                        searchMarker = marker;
-//                        break;
-//                    }
-//                }
-                if(searchMarker!=null){
-                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(searchMarker.getPosition()));
-                    //인포뷰 활성화
-//                    DbClass.Markers.get(DbClass.Markers.indexOf(searchMarker)).setMap(Maps.naverMap);
-//                    DbClass.Markers.get(DbClass.Markers.indexOf(searchMarker)).performClick();
-
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PlaceList.container.getContext()); //리스트뷰를 띄워준다
-                    RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter((FranchiseDTO) searchMarker.getTag());
-                    PlaceList.recyclerView.setLayoutManager(layoutManager);
-                    PlaceList.recyclerView.setAdapter(myRecyclerViewAdapter);
-                } else{
-                    Toast.makeText(MainActivity.this, "못찾음" , Toast.LENGTH_SHORT).show();
-
-                }
 
 
                 return true;
@@ -140,38 +119,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 //입력할때마다 이벤트
                 //여기다 자동완성 넣으면 갸꿀
-
-
-                ArrayList<Marker> searchMarker=new ArrayList<>();
-//                for(Marker marker:DbClass.Markers){
-//                    if(((FranchiseDTO) marker.getTag()).name.contains(s)){
-//                        searchMarker.add(marker);
-//
-//                    }
-//                }
-                Toast.makeText(MainActivity.this, searchMarker.size()+"", Toast.LENGTH_SHORT).show();
-
-
-                if(searchMarker.size() >= 1){
-                    //인포뷰 활성화
-                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(searchMarker.get(0).getPosition()));
-//                    DbClass.Markers.get(DbClass.Markers.indexOf(searchMarker.get(0))).setMap(Maps.naverMap);
-//                    DbClass.Markers.get(DbClass.Markers.indexOf(searchMarker.get(0))).performClick();
-
-                    ArrayList <FranchiseDTO> result = new ArrayList<>();
-                    for(Marker maker: searchMarker){
-                        result.add((FranchiseDTO) maker.getTag());
-                    }
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PlaceList.container.getContext()); //리스트뷰를 띄워준다
-                    RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(result);
-                    PlaceList.recyclerView.setLayoutManager(layoutManager);
-                    PlaceList.recyclerView.setAdapter(myRecyclerViewAdapter);
-                } else {
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PlaceList.container.getContext()); //리스트뷰를 띄워준다
-                    RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(DbClass.nearFranchises);
-                    PlaceList.recyclerView.setLayoutManager(layoutManager);
-                    PlaceList.recyclerView.setAdapter(myRecyclerViewAdapter);
-                }
 
 
                 return false;
@@ -191,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 //축소시
                 Toast.makeText(MainActivity.this, "축소", Toast.LENGTH_SHORT).show();
-
 
 
                 searchView.setIconified(true);

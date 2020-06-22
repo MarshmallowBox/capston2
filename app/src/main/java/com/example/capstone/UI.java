@@ -24,18 +24,20 @@ import com.naver.maps.map.CameraUpdate;
 
 class UI {
 
-    Fragment mapsFrag;
-    Fragment placelistFrag;
-    Fragment myplaceFrag;
-    Fragment moneyFrag;
     private Activity context;
+    public BottomNavigationView bottomNavigationView;
     public static RadioGroup radioGroup;
+    public static Fragment mapsFrag;
+    Fragment placeListFrag;
+    Fragment myPlaceFrag;
+    Fragment moneyFrag;
+
     UI(Activity context) {
         this.context = context;
     }
 
     void createCategory() {
-        String[] categoryTitle = {"전체", "편의점,마트","음식","의료","약국","보건","숙박"};
+        String[] categoryTitle = {"전체", "일반휴게음식-일반한식","음식","의료","약국","보건","숙박"};
 
         radioGroup = context.findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);
@@ -82,22 +84,15 @@ class UI {
                         //일치하면 체크활성화
                         btn.setButtonDrawable(R.drawable.baseline_sentiment_very_satisfied_black_18dp);
                         Toast.makeText(context, btn.getText() + " 선택", Toast.LENGTH_SHORT).show();
+
+
                     } else {
                         //일치하지않으면 해제상태로 변경
                         btn.setButtonDrawable(R.drawable.baseline_sentiment_satisfied_black_18dp);
                     }
                 }
+
                 Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
-
-                //이부분 수정하기
-
-                if(PlaceList.button_near_check){
-                    PlaceList.button_near.performClick();
-                } else {
-                    PlaceList.button_camera.performClick();
-
-                }
-
 
             }
         });
@@ -110,12 +105,11 @@ class UI {
 
         mapsFrag = new Maps();
         MainActivity.fragmentManager.beginTransaction().replace(R.id.Main_Frame, mapsFrag).commit();
-        placelistFrag = new PlaceList();
-        MainActivity.fragmentManager.beginTransaction().add(R.id.Main_Frame, placelistFrag).commit();
-        MainActivity.fragmentManager.beginTransaction().hide(placelistFrag).commit();
+        placeListFrag = new PlaceList();
+        MainActivity.fragmentManager.beginTransaction().add(R.id.Main_Frame, placeListFrag).commit();
+        MainActivity.fragmentManager.beginTransaction().hide(placeListFrag).commit();
 
 //
-        BottomNavigationView bottomNavigationView;
         bottomNavigationView = context.findViewById(R.id.nav_bottom);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -133,40 +127,40 @@ class UI {
                         }
                         if (mapsFrag != null)
                             MainActivity.fragmentManager.beginTransaction().show(mapsFrag).commit();
-                        if (placelistFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().hide(placelistFrag).commit();
-                        if (myplaceFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().hide(myplaceFrag).commit();
+                        if (placeListFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().hide(placeListFrag).commit();
+                        if (myPlaceFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().hide(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             MainActivity.fragmentManager.beginTransaction().hide(moneyFrag).commit();
                         break;
                     case R.id.list:
                         horizontalScrollView.setVisibility(View.VISIBLE);
-                        if (placelistFrag == null) {
-                            placelistFrag = new PlaceList();
-                            MainActivity.fragmentManager.beginTransaction().add(R.id.Main_Frame, placelistFrag).commit();
+                        if (placeListFrag == null) {
+                            placeListFrag = new PlaceList();
+                            MainActivity.fragmentManager.beginTransaction().add(R.id.Main_Frame, placeListFrag).commit();
                         }
                         if (mapsFrag != null)
                             MainActivity.fragmentManager.beginTransaction().hide(mapsFrag).commit();
-                        if (placelistFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().show(placelistFrag).commit();
-                        if (myplaceFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().hide(myplaceFrag).commit();
+                        if (placeListFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().show(placeListFrag).commit();
+                        if (myPlaceFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().hide(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             MainActivity.fragmentManager.beginTransaction().hide(moneyFrag).commit();
                         break;
                     case R.id.myplaces:
                         horizontalScrollView.setVisibility(View.VISIBLE);
-                        if (myplaceFrag == null) {
-                            myplaceFrag = new MyPlace();
-                            MainActivity.fragmentManager.beginTransaction().add(R.id.Main_Frame, myplaceFrag).commit();
+                        if (myPlaceFrag == null) {
+                            myPlaceFrag = new MyPlace();
+                            MainActivity.fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
                         }
                         if (mapsFrag != null)
                             MainActivity.fragmentManager.beginTransaction().hide(mapsFrag).commit();
-                        if (placelistFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().hide(placelistFrag).commit();
-                        if (myplaceFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().show(myplaceFrag).commit();
+                        if (placeListFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().hide(placeListFrag).commit();
+                        if (myPlaceFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().show(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             MainActivity.fragmentManager.beginTransaction().hide(moneyFrag).commit();
                         break;
@@ -178,10 +172,10 @@ class UI {
                         }
                         if (mapsFrag != null)
                             MainActivity.fragmentManager.beginTransaction().hide(mapsFrag).commit();
-                        if (placelistFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().hide(placelistFrag).commit();
-                        if (myplaceFrag != null)
-                            MainActivity.fragmentManager.beginTransaction().hide(myplaceFrag).commit();
+                        if (placeListFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().hide(placeListFrag).commit();
+                        if (myPlaceFrag != null)
+                            MainActivity.fragmentManager.beginTransaction().hide(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             MainActivity.fragmentManager.beginTransaction().show(moneyFrag).commit();
                         break;
@@ -189,6 +183,7 @@ class UI {
                 return true;
             }
         });
+
     }
 
 
@@ -222,7 +217,7 @@ class UI {
                                     public void onClick(DialogInterface dialog, int which) {
                                         Intent intent = new Intent();
                                         intent.putExtra("logout_user", textView.getText().toString() + "님이 로그아웃 하셨습니다.");
-                                        context.setResult(LoginActivity.LOG_OUT_FLAG=1, intent);
+                                        context.setResult(LoginActivity.LOG_OUT_FLAG = 1, intent);
                                         context.finish();
                                     }
                                 });
@@ -256,11 +251,8 @@ class UI {
         });
 
 
-
-
-
-
     }
+
     void show() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         LayoutInflater inflater = context.getLayoutInflater();

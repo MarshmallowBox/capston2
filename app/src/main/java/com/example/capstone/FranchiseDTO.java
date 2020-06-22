@@ -1,6 +1,8 @@
 package com.example.capstone;
 
-class FranchiseDTO {
+import com.naver.maps.geometry.LatLng;
+
+public class FranchiseDTO {
 
     public int id;
     public String name;
@@ -18,5 +20,8 @@ class FranchiseDTO {
         this.tel = tel;
         this.latitude = latitude;
         this.longitude = longitude;
+    }
+    public LatLng getLatLng(){
+        return new LatLng(latitude,longitude);
     }
 }

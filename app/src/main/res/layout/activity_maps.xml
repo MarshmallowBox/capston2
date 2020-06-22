@@ -5,36 +5,80 @@
     android:layout_height="match_parent"
     tools:context="com.example.capstone.Maps">
 
-    <com.naver.maps.map.MapView
-        android:id="@+id/map_view"
+
+    <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        android:id="@+id/sliding_layout"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.naver.maps.map.MapView>
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        android:gravity="bottom"
+        app:umanoDragView="@id/dragView"
+        app:umanoScrollableView="@id/maps_recyclerview"
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="70dp"
-        android:orientation="vertical">
+        app:umanoPanelHeight="0dp"
 
-        <com.naver.maps.map.widget.ZoomControlView
-            android:id="@+id/map_zoom"
-            android:layout_width="wrap_content"
+        app:umanoOverlay="false"
+        app:umanoParallaxOffset="0dp"
+        app:umanoShadowHeight="0dp">
+        <com.naver.maps.map.MapView
+            android:id="@+id/map_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="70dp"
+                android:orientation="vertical">
+
+                <com.naver.maps.map.widget.ZoomControlView
+                    android:id="@+id/map_zoom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp" />
+
+                <com.naver.maps.map.widget.LocationButtonView
+                    android:id="@+id/map_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+
+                    />
+            </LinearLayout>
+        </com.naver.maps.map.MapView>
+        <LinearLayout
+            android:id="@+id/dragView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp" />
-
-        <com.naver.maps.map.widget.LocationButtonView
-            android:id="@+id/map_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-
-            />
+            android:clickable="true"
+            android:focusable="false"
+            android:orientation="vertical">
 
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="가맹점 상세정보"
+                android:textSize="24sp" />
+            <!-- 스크롤 해서 보여줄 부분은 listview 또는 custom listview 또는 recyclerview를 사용 -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/maps_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_marginBottom="60dp"
+                android:gravity="center|top"
+                android:scrollbarSize="12dp"
+                android:scrollbarThumbVertical="@android:color/holo_blue_bright"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+
+    </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
 
 </FrameLayout>
