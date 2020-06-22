@@ -24,23 +24,19 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="3da5404d13fa6d57c44f4e125acb245e" />
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ReviewPopupActivity"
-            >
-        </activity>
-        <activity
-            android:name=".InfoPopupActivity"
-            android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|layoutDirection"/>
         <activity android:name=".LoginInfo" />
+
+        <activity android:name=".InfoPopupActivity" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".ReviewPopupActivity"/>
 
 
         <!--        <activity android:name=".LoginActivity"></activity>-->

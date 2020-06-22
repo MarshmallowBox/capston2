@@ -24,16 +24,13 @@ import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
-import java.util.Objects;
-
 public class InfoPopupActivity extends Activity {
 
     CheckBox star;
     Button map;
     Button call;
     Button load;
-    Button seeReview;
+    Button review;
     Button addReview;
 
     Intent intent;
@@ -45,7 +42,6 @@ public class InfoPopupActivity extends Activity {
     double latitude;
     double longitude;
     int reviewCount;
-    int mode;
 
 
     @SuppressLint("SetTextI18n")
@@ -58,16 +54,15 @@ public class InfoPopupActivity extends Activity {
 
 
         //데이터 가져오기
-       intent = getIntent();
-       id = intent.getExtras().getInt("id");
-       name = intent.getExtras().getString("name");
-       address = intent.getExtras().getString("address");
-       category = intent.getExtras().getString("category");
-       tel = intent.getExtras().getString("tel");
-       latitude = intent.getExtras().getDouble("latitude");
-       longitude = intent.getExtras().getDouble("longitude");
-       reviewCount = intent.getExtras().getInt("reviewCount");
-       mode = intent.getExtras().getInt("mode");
+        intent = getIntent();
+        id = intent.getExtras().getInt("id");
+        name = intent.getExtras().getString("name");
+        address = intent.getExtras().getString("address");
+        category = intent.getExtras().getString("category");
+        tel = intent.getExtras().getString("tel");
+        latitude = intent.getExtras().getDouble("latitude");
+        longitude = intent.getExtras().getDouble("longitude");
+        reviewCount = intent.getExtras().getInt("reviewCount");
 
         ((TextView) findViewById(R.id.info_popup_title)).setText(name + "의 상세정보");
         ((TextView) findViewById(R.id.info_popup_name)).setText(name);
@@ -78,21 +73,21 @@ public class InfoPopupActivity extends Activity {
         final FranchiseDTO franchiseDTO = new FranchiseDTO(id, name, address, category, tel, latitude, longitude);
 
         star = findViewById(R.id.info_popup_star);
+        star.setChecked(false);
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (star.isChecked()) {
-                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
-
-                } else {
                     star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
+                } else {
+                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
                 }
 
             }
         });
         map = findViewById(R.id.info_popup_map);
 
-        if (mode != R.id.mapmode) {
+        if (MainActivity.ui.bottomNavigationView.getSelectedItemId() != R.id.mapmode) {
             map.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -204,16 +199,40 @@ public class InfoPopupActivity extends Activity {
 
             }
         });
-        seeReview = findViewById(R.id.info_popup_see_review);
+        review = findViewById(R.id.info_popup_see_review);
+        review.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addReviewIntent = new Intent(InfoPopupActivity.this, ReviewPopupActivity.class);
+                addReviewIntent.putExtra("id",id);
+                addReviewIntent.putExtra("name",name);
+                addReviewIntent.putExtra("address",address);
+                addReviewIntent.putExtra("category",category);
+                addReviewIntent.putExtra("tel",tel);
+                addReviewIntent.putExtra("latitude",latitude);
+                addReviewIntent.putExtra("longitude",longitude);
+                addReviewIntent.putExtra("reviewCount",0);
+                addReviewIntent.putExtra("mode","Review_popup_open");
+                startActivity(addReviewIntent);
+
+                //액티비티(팝업) 닫기
+                finish();
+            }
+        });
         addReview = findViewById(R.id.info_popup_add_review);
         addReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent addReviewIntent = new Intent(InfoPopupActivity.this, ReviewPopupActivity.class);
-
-               addReviewIntent.putExtra("id",id);
-               addReviewIntent.putExtra("name",name);
-               addReviewIntent.putExtra("mode","addReview_popup_open");
+                addReviewIntent.putExtra("id",id);
+                addReviewIntent.putExtra("name",name);
+                addReviewIntent.putExtra("address",address);
+                addReviewIntent.putExtra("category",category);
+                addReviewIntent.putExtra("tel",tel);
+                addReviewIntent.putExtra("latitude",latitude);
+                addReviewIntent.putExtra("longitude",longitude);
+                addReviewIntent.putExtra("reviewCount",0);
+                addReviewIntent.putExtra("mode","addReview_popup_open");
                 startActivity(addReviewIntent);
 
                 //액티비티(팝업) 닫기

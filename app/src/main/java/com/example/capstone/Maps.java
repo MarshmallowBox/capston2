@@ -112,29 +112,29 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
         singleMarkers = new Marker();
         return view;
     }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
-                System.out.println("RESULT_OK");
-                //데이터 받기
-                ArrayList<String> result = new ArrayList<>(Objects.requireNonNull(data.getStringArrayListExtra("result")));
-//                if (result.get(0).equals("addReview_popup_close")) {
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == 1) {
+//            if (resultCode == RESULT_OK) {
+//                System.out.println("RESULT_OK");
+//                //데이터 받기
+//                ArrayList<String> result = new ArrayList<>(Objects.requireNonNull(data.getStringArrayListExtra("result")));
+////                if (result.get(0).equals("addReview_popup_close")) {
+////                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
+////                    intent.putStringArrayListExtra("data", result);
+////                    startActivityForResult(intent, 1);
+////                }
+//                if (result.get(0).equals("addReview_popup_open")) {
+//                    System.out.println("equals addReview_popup_open");
 //                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
 //                    intent.putStringArrayListExtra("data", result);
 //                    startActivityForResult(intent, 1);
 //                }
-                if (result.get(0).equals("addReview_popup_open")) {
-                    System.out.println("equals addReview_popup_open");
-                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
-                    intent.putStringArrayListExtra("data", result);
-                    startActivityForResult(intent, 1);
-                }
-
-            }
-        }
-    }
+//
+//            }
+//        }
+//    }
 
     @Override
     public void onMapReady(@NonNull final NaverMap naverMap) {
@@ -160,7 +160,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                 intent.putExtra("latitude",tags.latitude);
                 intent.putExtra("longitude",tags.longitude);
                 intent.putExtra("reviewCount",0);
-                intent.putExtra("mode",MainActivity.ui.bottomNavigationView.getSelectedItemId());
                 startActivity(intent);
 
                 return true;

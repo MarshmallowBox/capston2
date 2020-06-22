@@ -22,7 +22,7 @@
             android:padding="16dp"
             android:background="#00C0FF"
             android:gravity="center"
-            android:text="리뷰쓰기"
+            android:text="리뷰보기"
             android:textColor="#FFFFFFFF"
             android:textSize="25dp" />
     </LinearLayout>
@@ -38,56 +38,38 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <RatingBar
-            android:id="@+id/review_add_popup_star"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:isIndicator="false"
-            android:stepSize="0.5"
-            android:max="5"
-
-            android:numStars="5"
-
-
-            android:rating="4"
-            android:textColor="#00C0FF"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/review_add_popup_submit"
+            android:id="@+id/review_add_popup_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="#00000000"
-            android:gravity="bottom"
+            android:gravity="center"
 
             android:padding="16dp"
-            android:text="리뷰 등록"
+            android:text="닫기"
             android:textColor="#00C0FF"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <EditText
-            android:id="@+id/review_add_popup_text"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/review_popup_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:background="#4000C0FF"
-            android:lines="1"
-            android:maxLines="20"
-            android:minLines="1"
             android:padding="16dp"
+            android:scrollbarSize="12dp"
+            android:scrollbarThumbVertical="@android:color/holo_blue_bright"
             android:scrollbars="vertical"
             android:textColor="#000000"
-            app:layout_constraintBottom_toTopOf="@+id/review_add_popup_submit"
+            app:layout_constraintBottom_toTopOf="@+id/review_add_popup_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/review_add_popup_star" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--// 닫기 버튼 -->

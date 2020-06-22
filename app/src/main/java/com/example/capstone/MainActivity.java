@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 searchView.clearFocus();
-
+                Toast.makeText(MainActivity.this, s+"", Toast.LENGTH_SHORT).show();
 
                 return true;
             }
