@@ -27,7 +27,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class PopupActivity extends Activity {
+public class InfoPopupActivity extends Activity {
 
     CheckBox star;
     Button map;
@@ -36,6 +36,17 @@ public class PopupActivity extends Activity {
     Button seeReview;
     Button addReview;
 
+    Intent intent;
+    int id;
+    String name;
+    String address;
+    String category;
+    String tel;
+    double latitude;
+    double longitude;
+    int reviewCount;
+    int mode;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -43,22 +54,30 @@ public class PopupActivity extends Activity {
         super.onCreate(savedInstanceState);
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_popup);
-
+        setContentView(R.layout.activity_info_popup);
 
 
         //데이터 가져오기
-        Intent intent = getIntent();
-        final ArrayList<String> data = new ArrayList<>(Objects.requireNonNull(intent.getStringArrayListExtra("data")));
-        ((TextView)findViewById(R.id.popup_title)).setText(data.get(1) + "의 상세정보");
-        ((TextView)findViewById(R.id.popup_name)).setText(data.get(1));
-        ((TextView)findViewById(R.id.popup_address)).setText(data.get(2));
-        ((TextView)findViewById(R.id.popup_category)).setText(data.get(3));
-        ((TextView)findViewById(R.id.popup_tell)).setText(data.get(4).equals("")?"전화번호 없음":data.get(4));
-        final FranchiseDTO franchiseDTO = new FranchiseDTO(Integer.parseInt(data.get(0)), data.get(1), data.get(2), data.get(3), data.get(4), Double.parseDouble(data.get(5)), Double.parseDouble(data.get(6)));
-        ((TextView)findViewById(R.id.popup_review)).setText("리뷰: "+data.get(7)+"개");
+       intent = getIntent();
+       id = intent.getExtras().getInt("id");
+       name = intent.getExtras().getString("name");
+       address = intent.getExtras().getString("address");
+       category = intent.getExtras().getString("category");
+       tel = intent.getExtras().getString("tel");
+       latitude = intent.getExtras().getDouble("latitude");
+       longitude = intent.getExtras().getDouble("longitude");
+       reviewCount = intent.getExtras().getInt("reviewCount");
+       mode = intent.getExtras().getInt("mode");
 
-    star = findViewById(R.id.popup_star);
+        ((TextView) findViewById(R.id.info_popup_title)).setText(name + "의 상세정보");
+        ((TextView) findViewById(R.id.info_popup_name)).setText(name);
+        ((TextView) findViewById(R.id.info_popup_address)).setText(address);
+        ((TextView) findViewById(R.id.info_popup_category)).setText(category);
+        ((TextView) findViewById(R.id.info_popup_tell)).setText(tel.equals("") ? "전화번호 없음" : tel);
+        ((TextView) findViewById(R.id.info_popup_review)).setText("리뷰: " + reviewCount + "개");
+        final FranchiseDTO franchiseDTO = new FranchiseDTO(id, name, address, category, tel, latitude, longitude);
+
+        star = findViewById(R.id.info_popup_star);
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,57 +90,57 @@ public class PopupActivity extends Activity {
 
             }
         });
-        map = findViewById(R.id.popup_map);
+        map = findViewById(R.id.info_popup_map);
 
-        if (Integer.parseInt(data.get(8)) != R.id.mapmode){
-        map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.ui.bottomNavigationView.setSelectedItemId(R.id.mapmode);
-                Maps.singleMarkers.setMap(null);
-                Maps.singleMarkers = new Marker();
-                Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
-                Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
-                //마커 크기지정 아마 3:4비율인듯
+        if (mode != R.id.mapmode) {
+            map.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MainActivity.ui.bottomNavigationView.setSelectedItemId(R.id.mapmode);
+                    Maps.singleMarkers.setMap(null);
+                    Maps.singleMarkers = new Marker();
+                    Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
+                    Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
+                    //마커 크기지정 아마 3:4비율인듯
 //                        marker.setWidth(90);
 //                        marker.setHeight(120);
-                Maps.singleMarkers.setCaptionText(franchiseDTO.name); //메인캡션
-                Maps.singleMarkers.setTag(franchiseDTO);//인포뷰에 전달할 태그값
-                Maps.singleMarkers.setSubCaptionText(franchiseDTO.category); //서브캡션
-                Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
-                Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+                    Maps.singleMarkers.setCaptionText(franchiseDTO.name); //메인캡션
+                    Maps.singleMarkers.setTag(franchiseDTO);//인포뷰에 전달할 태그값
+                    Maps.singleMarkers.setSubCaptionText(franchiseDTO.category); //서브캡션
+                    Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                    Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
+                    Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
 
-                Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
-                    @Override
-                    public boolean onClick(@NonNull Overlay overlay) {
-                        //클릭시 카메라 이동
-                        Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
-                        //infoWindow에 franchises값 태그로 전달
-                        Maps.infoWindow.setTag(franchiseDTO);
-                        //인포뷰 활성화
-                        Maps.infoWindow.open(Maps.singleMarkers);
-                        return true;
-                    }
-                });
+                    Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
+                        @Override
+                        public boolean onClick(@NonNull Overlay overlay) {
+                            //클릭시 카메라 이동
+                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
+                            //infoWindow에 franchises값 태그로 전달
+                            Maps.infoWindow.setTag(franchiseDTO);
+                            //인포뷰 활성화
+                            Maps.infoWindow.open(Maps.singleMarkers);
+                            return true;
+                        }
+                    });
 
-                Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
-                Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
-                Maps.singleMarkers.performClick();
+                    Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
+                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
+                    Maps.singleMarkers.performClick();
 //하단 정보창 닫기
-                if (Maps.mLayout != null &&
-                        (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                    Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    if (Maps.mLayout != null &&
+                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    }
+                    finish();
                 }
-                finish();
-            }
-        });
-        }else{
+            });
+        } else {
             map.setTextColor(Color.parseColor("#FFFFFFFF"));
         }
 
 
-        call = findViewById(R.id.popup_call);
+        call = findViewById(R.id.info_popup_call);
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,7 +153,7 @@ public class PopupActivity extends Activity {
             }
         });
 
-        load = findViewById(R.id.popup_load);
+        load = findViewById(R.id.info_popup_load);
         load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,8 +204,22 @@ public class PopupActivity extends Activity {
 
             }
         });
-         seeReview = findViewById(R.id.popup_see_review);
-         addReview = findViewById(R.id.popup_add_review);
+        seeReview = findViewById(R.id.info_popup_see_review);
+        addReview = findViewById(R.id.info_popup_add_review);
+        addReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent addReviewIntent = new Intent(InfoPopupActivity.this, ReviewPopupActivity.class);
+
+               addReviewIntent.putExtra("id",id);
+               addReviewIntent.putExtra("name",name);
+               addReviewIntent.putExtra("mode","addReview_popup_open");
+                startActivity(addReviewIntent);
+
+                //액티비티(팝업) 닫기
+                finish();
+            }
+        });
     }
 
     /*//확인 버튼 클릭

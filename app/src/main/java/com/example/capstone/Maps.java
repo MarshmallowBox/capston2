@@ -39,6 +39,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static android.app.Activity.RESULT_OK;
 import static android.location.LocationManager.NETWORK_PROVIDER;
 
 public class Maps extends Fragment implements OnMapReadyCallback, LocationListener// Fragment 클래스를 상속받아야한다
@@ -53,11 +54,10 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
     ///
     public static SlidingUpPanelLayout mLayout;
     public static Marker singleMarkers;
+    public static DataAdapter dataAdapter;
     static ArrayList<Marker> Markers;
     private MapView mapView;
     private FusedLocationSource locationSource;
-    public static DataAdapter dataAdapter;
-
 
     //    public MarkerAdapter markerAdapter;
     ///
@@ -114,6 +114,29 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                System.out.println("RESULT_OK");
+                //데이터 받기
+                ArrayList<String> result = new ArrayList<>(Objects.requireNonNull(data.getStringArrayListExtra("result")));
+//                if (result.get(0).equals("addReview_popup_close")) {
+//                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
+//                    intent.putStringArrayListExtra("data", result);
+//                    startActivityForResult(intent, 1);
+//                }
+                if (result.get(0).equals("addReview_popup_open")) {
+                    System.out.println("equals addReview_popup_open");
+                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
+                    intent.putStringArrayListExtra("data", result);
+                    startActivityForResult(intent, 1);
+                }
+
+            }
+        }
+    }
+
+    @Override
     public void onMapReady(@NonNull final NaverMap naverMap) {
         Maps.naverMap = naverMap;
 
@@ -127,20 +150,18 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             public boolean onClick(@NonNull Overlay overlay) {
                 final FranchiseDTO tags = (FranchiseDTO) overlay.getTag();
 
-                ArrayList<String> data = new ArrayList<>();
                 assert tags != null;
-                data.add(String.valueOf(tags.id));
-                data.add(tags.name);
-                data.add(tags.address);
-                data.add(tags.category);
-                data.add(tags.tel);
-                data.add(String.valueOf(tags.latitude));
-                data.add(String.valueOf(tags.longitude));
-                data.add(String.valueOf(0)); //리뷰갯수
-                data.add(String.valueOf(MainActivity.ui.bottomNavigationView.getSelectedItemId()));
-                Intent intent = new Intent(getActivity(), PopupActivity.class);
-                intent.putStringArrayListExtra("data", data);
-                startActivityForResult(intent, 1);
+                Intent intent = new Intent(getActivity(), InfoPopupActivity.class);
+                intent.putExtra("id",tags.id);
+                intent.putExtra("name",tags.name);
+                intent.putExtra("address",tags.address);
+                intent.putExtra("category",tags.category);
+                intent.putExtra("tel",tags.tel);
+                intent.putExtra("latitude",tags.latitude);
+                intent.putExtra("longitude",tags.longitude);
+                intent.putExtra("reviewCount",0);
+                intent.putExtra("mode",MainActivity.ui.bottomNavigationView.getSelectedItemId());
+                startActivity(intent);
 
                 return true;
             }
@@ -225,7 +246,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
 //                        singleMarkers.setMap(null);
 
 
-                        if(dataAdapter != null) {
+                        if (dataAdapter != null) {
                             dataAdapter.cancel(true);
                             dataAdapter = null;
                         }
@@ -238,15 +259,14 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
 
                     if (((reason == -1) && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > 250))//드래그
                             || ((reason == -2) && Math.abs(beforezoom - naverMap.getCameraPosition().zoom) >= 1)//줌레벨변경
-                            || ((reason == 0) )) { //마커클릭
+                            || ((reason == 0))) { //마커클릭
                         beforeCamera = naverMap.getCameraPosition().target;
                         beforezoom = naverMap.getCameraPosition().zoom;
-if(reason != 0){
-    singleMarkers.setMap(null);
-}
+                        if (reason != 0) {
+                            singleMarkers.setMap(null);
+                        }
 
-
-                        if(dataAdapter != null) {
+                        if (dataAdapter != null) {
                             dataAdapter.cancel(true);
                             dataAdapter = null;
                         }

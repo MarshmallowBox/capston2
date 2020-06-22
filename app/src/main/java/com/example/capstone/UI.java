@@ -245,7 +245,15 @@ class UI {
 
                         break;
                     case R.id.info:
-                        Toast.makeText(context, "도움말", Toast.LENGTH_SHORT).show();
+                        AlertDialog.Builder help = new AlertDialog.Builder(context);
+                        help.setTitle("도움말");
+                        help.setMessage("도움말 내용");
+                        help.setNegativeButton("닫기",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                });
+                        help.show();
                         break;
                     case R.id.preferences:
                         Toast.makeText(context, "설정", Toast.LENGTH_SHORT).show();

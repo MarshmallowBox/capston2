@@ -12,7 +12,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/popup_title"
+            android:id="@+id/info_popup_title"
             android:layout_width="match_parent"
             android:layout_height="53dp"
             android:background="#00C0FF"
@@ -32,7 +32,7 @@
         android:padding="24dp">
 
         <TextView
-            android:id="@+id/popup_name"
+            android:id="@+id/info_popup_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="상호명"
@@ -40,7 +40,7 @@
             android:textSize="25dp" />
 
         <TextView
-            android:id="@+id/popup_address"
+            android:id="@+id/info_popup_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="주소"
@@ -48,7 +48,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/popup_category"
+            android:id="@+id/info_popup_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="카테고리"
@@ -56,7 +56,7 @@
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/popup_tell"
+            android:id="@+id/info_popup_tell"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="전화번호"
@@ -74,7 +74,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/popup_review"
+            android:id="@+id/info_popup_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="64dp"
@@ -84,7 +84,7 @@
             android:textSize="20dp" />
 
         <Button
-            android:id="@+id/popup_see_review"
+            android:id="@+id/info_popup_see_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -96,7 +96,7 @@
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/popup_add_review"
+            android:id="@+id/info_popup_add_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -116,7 +116,7 @@
         android:gravity="center">
 
         <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/popup_star"
+            android:id="@+id/info_popup_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -124,7 +124,7 @@
             android:button="@drawable/baseline_star_border_black_36dp" />
 
         <Button
-            android:id="@+id/popup_map"
+            android:id="@+id/info_popup_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -136,7 +136,7 @@
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/popup_call"
+            android:id="@+id/info_popup_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -149,7 +149,7 @@
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/popup_load"
+            android:id="@+id/info_popup_load"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"

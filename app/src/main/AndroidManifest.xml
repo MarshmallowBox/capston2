@@ -32,7 +32,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PopupActivity"
+            android:name=".ReviewPopupActivity"
+            >
+        </activity>
+        <activity
+            android:name=".InfoPopupActivity"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|layoutDirection"/>
