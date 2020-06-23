@@ -245,9 +245,9 @@ class UI {
 
                         break;
                     case R.id.info:
-
-                        Intent intent = new Intent(context, HelpPopupActivity.class);
-                        context.startActivity(intent);
+//
+//                        Intent intent2 = new Intent(this, HelpPopupActivity.class);
+//                        startActivity(intent2);
 
                         break;
                     case R.id.preferences:

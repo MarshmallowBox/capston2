@@ -1,5 +1,6 @@
 package com.example.capstone;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,10 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
             @Override
             public void onClick(View v) {
                 isCheckedButtonNear = true;
+                if(isCheckedButtonNear){
+                    button_near.setBackgroundColor(Color.parseColor("#00C0FF"));
+                    button_camera.setBackgroundColor(Color.parseColor("#4000C0FF"));
+                }
 
                 DataAdapter dataAdapter = new DataAdapter(container.getContext(),recyclerView);
                 dataAdapter.execute(String.valueOf(Maps.beforeLocation.getLatitude()), String.valueOf(Maps.beforeLocation.getLongitude()));
@@ -49,6 +54,11 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
             @Override
             public void onClick(View v) {
                 isCheckedButtonNear = false;
+                if(!isCheckedButtonNear){
+                    button_near.setBackgroundColor(Color.parseColor("#4000C0FF"));
+                    button_camera.setBackgroundColor(Color.parseColor("#00C0FF"));
+                }
+
                 DataAdapter dataAdapter = new DataAdapter(container.getContext(),recyclerView);
                 dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude));
             }
