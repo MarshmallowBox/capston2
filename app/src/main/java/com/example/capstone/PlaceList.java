@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 public class PlaceList extends Fragment // Fragment 클래스를 상속받아야한다
 {
+    int test;
     public static RecyclerView recyclerView;
     public static ViewGroup container;
     public static Button button_near;
