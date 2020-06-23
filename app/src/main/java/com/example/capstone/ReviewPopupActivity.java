@@ -9,9 +9,15 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class ReviewPopupActivity extends Activity {
 
@@ -25,6 +31,9 @@ public class ReviewPopupActivity extends Activity {
     double longitude;
     int reviewCount;
     String mode;
+
+
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -47,7 +56,7 @@ public class ReviewPopupActivity extends Activity {
         if(mode.equals("addReview_popup_open")){
             setContentView(R.layout.activity_review_add_popup);
 
-            ((TextView) findViewById(R.id.review_add_popup_title)).setText(name + " 리뷰쓰기");
+            ((TextView) findViewById(R.id.review_popup_title)).setText(name + " 리뷰쓰기");
             final EditText text = findViewById(R.id.review_add_popup_text);
             Button submit = findViewById(R.id.review_add_popup_submit);
             final RatingBar star = findViewById(R.id.review_add_popup_star);
@@ -75,6 +84,25 @@ public class ReviewPopupActivity extends Activity {
 
         if(mode.equals("Review_popup_open")){
             setContentView(R.layout.activity_review_popup);
+
+            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
+            reviewDTOS.add(new ReviewDTO(1,1,1,3.5,"111111111"));
+            reviewDTOS.add(new ReviewDTO(2,2,2,3.5,"222222222"));
+            reviewDTOS.add(new ReviewDTO(3,3,3,3.5,"333333333"));
+
+
+            // Inflater View 만들기
+            View view = (View) getLayoutInflater().inflate(R.layout.activity_review_popup, null);
+
+            // Inflate된 View에서 Resource(ViewGroup) 얻어 오기~!
+            LinearLayout bg = (LinearLayout) view.findViewById(R.id.review_popup);
+
+
+            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.review_popup_recyclerview);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ReviewPopupActivity.this); //리스트뷰를 띄워준다
+            ReviewRecyclerViewAdapter myRecyclerViewAdapter = new ReviewRecyclerViewAdapter(reviewDTOS);
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setAdapter(myRecyclerViewAdapter);
         }
     }
 

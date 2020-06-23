@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/review_popup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eeeeee"
@@ -16,7 +16,7 @@
         >
 
         <TextView
-            android:id="@+id/review_add_popup_title"
+            android:id="@+id/review_popup_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -40,7 +40,7 @@
 
 
         <Button
-            android:id="@+id/review_add_popup_close"
+            android:id="@+id/review_popup_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -66,7 +66,7 @@
             android:scrollbarThumbVertical="@android:color/holo_blue_bright"
             android:scrollbars="vertical"
             android:textColor="#000000"
-            app:layout_constraintBottom_toTopOf="@+id/review_add_popup_close"
+            app:layout_constraintBottom_toTopOf="@+id/review_popup_close"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
