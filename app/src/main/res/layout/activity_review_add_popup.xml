@@ -73,17 +73,19 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
+            android:gravity="top"
+            android:hint="최대 100자까지 입력 가능합니다."
+            android:maxLength="100"
             android:id="@+id/review_add_popup_text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
             android:background="#4000C0FF"
-            android:lines="1"
-            android:maxLines="20"
             android:minLines="1"
             android:padding="16dp"
             android:scrollbars="vertical"
             android:textColor="#000000"
+            android:textSize="25dp"
             app:layout_constraintBottom_toTopOf="@+id/review_add_popup_submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

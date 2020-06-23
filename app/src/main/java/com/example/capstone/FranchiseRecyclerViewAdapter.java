@@ -1,10 +1,10 @@
 package com.example.capstone;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,27 +21,30 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.ArrayList;
 
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FranchiseRecyclerViewAdapter extends RecyclerView.Adapter<FranchiseRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<FranchiseDTO> memberDTOs = new ArrayList<>();
+    private ArrayList<FranchiseDTO> franchisesDTOs = null;
 
-    RecyclerViewAdapter(ArrayList<FranchiseDTO> Franchises) {
-        memberDTOs.addAll(Franchises);
+    FranchiseRecyclerViewAdapter(ArrayList<FranchiseDTO> Franchises) {
+        franchisesDTOs = Franchises;
     }
 
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
+    public FranchiseRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, int viewType) {
         //XML을 가져오는 부분
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_item, parent, false);
+        Context context = parent.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.recyclerview_item, parent, false);
+        FranchiseRecyclerViewAdapter.ViewHolder vh = new FranchiseRecyclerViewAdapter.ViewHolder(view);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
                 FranchiseDTO franchiseDTO = null;
 
-                for (FranchiseDTO franchise : memberDTOs) {
+                for (FranchiseDTO franchise : franchisesDTOs) {
                     if (((TextView) v.findViewById(R.id.recyclerview_item_name)).getText().equals(franchise.name)) {
                         franchiseDTO = franchise;
                         break;
@@ -91,75 +94,43 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
         });
-        return new RowCell(view);
+        return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FranchiseRecyclerViewAdapter.ViewHolder holder, int position) {
         //데이터를 넣어주는 부분
 
-        ((RowCell) holder).imageView.setImageResource(R.drawable.appicon64);
-        ((RowCell) holder).name.setText(memberDTOs.get(position).name);
-        ((RowCell) holder).address.setText(memberDTOs.get(position).address);
-        ((RowCell) holder).category.setText(memberDTOs.get(position).category);
-        ((RowCell) holder).tel.setText(memberDTOs.get(position).tel);
-//        if (isNear) {
-//            System.out.println("aa");
-//            ((RowCell) holder).imageView.setImageResource(R.drawable.appicon64);
-//            ((RowCell) holder).name.setText(DbClass.nearFranchises.get(position).name);
-//            ((RowCell) holder).address.setText(DbClass.nearFranchises.get(position).address);
-//            ((RowCell) holder).category.setText(DbClass.nearFranchises.get(position).category);
-//            ((RowCell) holder).tel.setText(DbClass.nearFranchises.get(position).tel);
-//        } else {
-//            System.out.println("bb");
-//
-//            ((RowCell) holder).imageView.setImageResource(R.drawable.appicon64);
-//            ((RowCell) holder).name.setText(DbClass.Franchises.get(position).name);
-//            ((RowCell) holder).address.setText(DbClass.Franchises.get(position).address);
-//            ((RowCell) holder).category.setText(DbClass.Franchises.get(position).category);
-//            ((RowCell) holder).tel.setText(DbClass.Franchises.get(position).tel);
-//        }
+        holder.name.setText(franchisesDTOs.get(position).name);
+        holder.address.setText(franchisesDTOs.get(position).address);
+        holder.category.setText(franchisesDTOs.get(position).category);
+        holder.tel.setText(franchisesDTOs.get(position).tel);
 
 
     }
 
     @Override
     public int getItemCount() {
-
         //카운터
-        return memberDTOs.size();
+        return franchisesDTOs.size();
     }
 
     //소스코드 절약해주는 부분
-    private static class RowCell extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
         TextView name;
         TextView address;
         TextView category;
         TextView tel;
 
-        RowCell(View view) {
+        ViewHolder(View view) {
             super(view);
-            imageView = view.findViewById(R.id.recyclerview_image);
             name = view.findViewById(R.id.recyclerview_item_name);
             address = view.findViewById(R.id.recyclerview_item_address);
             category = view.findViewById(R.id.recyclerview_item_category);
             tel = view.findViewById(R.id.recyclerview_item_tel);
         }
     }
-
-//
-//    private OnItemClickListener mListener = null ;
-//
-//    public interface OnItemClickListener {
-//        void onItemClick(View v, int position) ;
-//    }
-//
-//    // OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드
-//    public void setOnItemClickListener(OnItemClickListener listener) {
-//        this.mListener = listener ;
-//    }
 
 }
 

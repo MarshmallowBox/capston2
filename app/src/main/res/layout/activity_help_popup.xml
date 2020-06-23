@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#eeeeee"
+    android:orientation="vertical">
+
+    <!-- 타이틀바 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/info_popup_title"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:background="#00C0FF"
+            android:gravity="center"
+            android:text="도움말"
+            android:textColor="#FFFFFFFF"
+            android:textSize="25dp" />
+    </LinearLayout>
+    <!-- //end 타이틀바 -->
+
+    <!-- Notice -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFFFF"
+        android:orientation="vertical"
+        android:padding="24dp">
+<!--임시 나중에 제대로 디자인 할예정-->
+        <TextView
+            android:id="@+id/help_popup_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="검색버튼\n상호명을 검색하시면 결과가 나옵니다.\n\n
+카테고리선택\n상단에 카테고리를 선택하시면 원하는 카테고리만 볼수있습니다.\n\n
+지도\n파란색 마커를 클릭하시면 상세정보를 볼수있고,\n하늘색 마커를 클릭하시면 가맹점 목록을 보여줍니다.\n
+그 목록를 선택하시면 또한 상세정보를 보실수있습니다.\n\n
+목록\n내주변 또는 화면을 기준으로 가맹점의 목록을 보여줍니다. 이또한 선택하시면 상세정보를 보실수있습니다.\n\n
+찜목록\n상세정보창에서 별표를 선택하시면 추가됩니다.\n\n
+잔액관리\n내 현재잔액에 대하여 수기,메세지읽기를 통해 관리하실수있습니다.\n\n
+메뉴\n내정보를 한눈에 파악할수있습니다.\n\n
+설정\n지역을 설정할수있습니다."
+            android:textColor="#00C0FF"
+            android:textSize="15dp" />
+
+
+
+    </LinearLayout>
+    <!-- Notice -->
+
+
+
+    <!--  버튼 -->
+    <LinearLayout
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFFFF"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/help_popup_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="#00000000"
+            android:gravity="center"
+
+            android:padding="16dp"
+            android:text="닫기"
+            android:textColor="#00C0FF"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+    <!--// 닫기 버튼 -->
+</LinearLayout>

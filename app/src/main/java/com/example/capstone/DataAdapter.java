@@ -150,11 +150,13 @@ class DataAdapter extends AsyncTask<String, Void, String> {
                         public boolean onClick(@NonNull Overlay overlay) {
                             naverMap.moveCamera(CameraUpdate.scrollTo(clusterMarker.getPosition()).animate(CameraAnimation.Easing));
 
-                            RecyclerView recyclerView = (RecyclerView) activity.findViewById(R.id.maps_recyclerview);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity); //리스트뷰를 띄워준다
-                            RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(clusterFranchises[finalI]);
-                            recyclerView.setLayoutManager(layoutManager);
-                            recyclerView.setAdapter(myRecyclerViewAdapter);
+                            RecyclerView mRecyclerView = activity.findViewById(R.id.maps_recyclerview);
+                            FranchiseRecyclerViewAdapter mAdapter = new FranchiseRecyclerViewAdapter(clusterFranchises[finalI]);
+                            mRecyclerView.setAdapter(mAdapter);
+                            mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+
+                            mAdapter.notifyDataSetChanged();//데이터변경시
+
                             if (Maps.mLayout != null &&
                                     (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
                                 Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
@@ -200,10 +202,16 @@ class DataAdapter extends AsyncTask<String, Void, String> {
             Log.d(TAG, "Exception : ", e);
         } finally {
             if( activity == null&&naverMap == null&&Markers==null&&context!=null&&recyclerView!=null){
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context); //리스트뷰를 띄워준다
-                RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(getFilteredData());
-                recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(myRecyclerViewAdapter);
+
+                FranchiseRecyclerViewAdapter mAdapter = new FranchiseRecyclerViewAdapter(getFilteredData());
+                recyclerView.setAdapter(mAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                mAdapter.notifyDataSetChanged();
+
+//                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context); //리스트뷰를 띄워준다
+//                FranchiseRecyclerViewAdapter myFranchiseRecyclerViewAdapter = new FranchiseRecyclerViewAdapter(getFilteredData());
+//                recyclerView.setLayoutManager(layoutManager);
+//                recyclerView.setAdapter(myFranchiseRecyclerViewAdapter);
             }
             if(activity != null&&naverMap != null&&Markers!=null&&context==null&&recyclerView==null){
                 setMarkersOnMap();

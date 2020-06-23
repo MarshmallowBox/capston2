@@ -1,24 +1,22 @@
 package com.example.capstone;
 
-import android.widget.Button;
-import android.widget.RatingBar;
-import android.widget.TextView;
-
-import com.naver.maps.geometry.LatLng;
-
 public class ReviewDTO {
 
     public int ID;
     public int FranchiseID;
     public int userID;
+    public String userName;
+    public String date;
     public double score;
     public String text;
 
-    public ReviewDTO(int ID, int FranchiseID, int userID, double score, String text) {
-          this.ID=ID;
-          this.FranchiseID=FranchiseID;
-          this.userID=userID;
-          this.score=score;
-          this.text=text;
+    public ReviewDTO(int ID, int FranchiseID, int userID, String userName, String date, double score, String text) {
+        this.ID = ID;
+        this.FranchiseID = FranchiseID;
+        this.userID = userID;
+        this.userName = userName;
+        this.date = date;
+        this.score = score;
+        this.text = text;
     }
 }
