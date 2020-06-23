@@ -39,6 +39,8 @@
 
         <activity android:name=".InfoPopupActivity" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".ReviewPopupActivity"/>
+        <activity android:name=".HelpPopupActivity"/>
+        <activity android:name=".SettingPopupActivity"/>
 
 
         <!--        <activity android:name=".LoginActivity"></activity>-->

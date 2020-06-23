@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +16,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ReviewPopupActivity extends Activity {
 
@@ -32,7 +33,9 @@ public class ReviewPopupActivity extends Activity {
     int reviewCount;
     String mode;
 
-
+    RecyclerView mRecyclerView = null;
+    ReviewRecyclerViewAdapter mAdapter = null;
+    ArrayList<ReviewDTO> mList = new ArrayList<ReviewDTO>();
 
 
     @SuppressLint("SetTextI18n")
@@ -53,7 +56,54 @@ public class ReviewPopupActivity extends Activity {
         reviewCount = intent.getExtras().getInt("reviewCount");
         mode = intent.getExtras().getString("mode");
 
-        if(mode.equals("addReview_popup_open")){
+        if (mode.equals("Review_popup_open")) {
+            setContentView(R.layout.activity_review_popup);
+
+            mRecyclerView = findViewById(R.id.review_popup_recyclerview);
+            // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+            mAdapter = new ReviewRecyclerViewAdapter(mList);
+            mRecyclerView.setAdapter(mAdapter);
+
+            // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+            Date date = new Date(System.currentTimeMillis());
+            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+            String formatDate = sdfNow.format(date);
+
+
+//            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
+            mList.add(new ReviewDTO(1, 1, 1,"1", formatDate,3.5, "1111111111"));
+            mList.add(new ReviewDTO(2, 2, 2,"2", formatDate, 3.5, "2222222222"));
+            mList.add(new ReviewDTO(3, 3, 3,"3", formatDate, 3.5, "3333333333"));
+            mList.add(new ReviewDTO(4, 4, 4,"4", formatDate, 3.5, "4444444444"));
+            mList.add(new ReviewDTO(5, 5, 5,"5", formatDate, 3.5, "5555555555"));
+            mList.add(new ReviewDTO(6, 6, 6,"6", formatDate, 3.5, "6666666666"));
+
+            mAdapter.notifyDataSetChanged();
+            Button close = findViewById(R.id.review_popup_close);
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
+                    addReviewIntent.putExtra("id", id);
+                    addReviewIntent.putExtra("name", name);
+                    addReviewIntent.putExtra("address", address);
+                    addReviewIntent.putExtra("category", category);
+                    addReviewIntent.putExtra("tel", tel);
+                    addReviewIntent.putExtra("latitude", latitude);
+                    addReviewIntent.putExtra("longitude", longitude);
+                    addReviewIntent.putExtra("reviewCount", 0);
+                    startActivity(addReviewIntent);
+
+                    //액티비티(팝업) 닫기
+                    finish();
+                }
+            });
+
+        }
+        if (mode.equals("addReview_popup_open")) {
             setContentView(R.layout.activity_review_add_popup);
 
             ((TextView) findViewById(R.id.review_popup_title)).setText(name + " 리뷰쓰기");
@@ -63,17 +113,23 @@ public class ReviewPopupActivity extends Activity {
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(ReviewPopupActivity.this, "평점: "+star.getRating()+"내용: " + text.getText(), Toast.LENGTH_SHORT).show();
+                    Date date = new Date(System.currentTimeMillis());
+                    SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                    String formatDate = sdfNow.format(date);
+
+                    //DB에 입력할부분
+                    //st_id: id, me_id: ?, score: star.getRating(), reviewTXT: text.getText(), date: formatDate
+                    Toast.makeText(ReviewPopupActivity.this, "st_id:"+ id+ "me_id: ?"+ "score:"+ star.getRating()+ "reviewTXT:"+ text.getText()+ "date:"+ formatDate, Toast.LENGTH_SHORT).show();
 
                     Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
-                    addReviewIntent.putExtra("id",id);
-                    addReviewIntent.putExtra("name",name);
-                    addReviewIntent.putExtra("address",address);
-                    addReviewIntent.putExtra("category",category);
-                    addReviewIntent.putExtra("tel",tel);
-                    addReviewIntent.putExtra("latitude",latitude);
-                    addReviewIntent.putExtra("longitude",longitude);
-                    addReviewIntent.putExtra("reviewCount",0);
+                    addReviewIntent.putExtra("id", id);
+                    addReviewIntent.putExtra("name", name);
+                    addReviewIntent.putExtra("address", address);
+                    addReviewIntent.putExtra("category", category);
+                    addReviewIntent.putExtra("tel", tel);
+                    addReviewIntent.putExtra("latitude", latitude);
+                    addReviewIntent.putExtra("longitude", longitude);
+                    addReviewIntent.putExtra("reviewCount", 0);
                     startActivity(addReviewIntent);
 
                     //액티비티(팝업) 닫기
@@ -82,28 +138,6 @@ public class ReviewPopupActivity extends Activity {
             });
         }
 
-        if(mode.equals("Review_popup_open")){
-            setContentView(R.layout.activity_review_popup);
-
-            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
-            reviewDTOS.add(new ReviewDTO(1,1,1,3.5,"111111111"));
-            reviewDTOS.add(new ReviewDTO(2,2,2,3.5,"222222222"));
-            reviewDTOS.add(new ReviewDTO(3,3,3,3.5,"333333333"));
-
-
-            // Inflater View 만들기
-            View view = (View) getLayoutInflater().inflate(R.layout.activity_review_popup, null);
-
-            // Inflate된 View에서 Resource(ViewGroup) 얻어 오기~!
-            LinearLayout bg = (LinearLayout) view.findViewById(R.id.review_popup);
-
-
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.review_popup_recyclerview);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(ReviewPopupActivity.this); //리스트뷰를 띄워준다
-            ReviewRecyclerViewAdapter myRecyclerViewAdapter = new ReviewRecyclerViewAdapter(reviewDTOS);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(myRecyclerViewAdapter);
-        }
     }
 
     /*//확인 버튼 클릭
@@ -124,7 +158,7 @@ public class ReviewPopupActivity extends Activity {
             finish();
             return true;
         }*/
-        finish();
+//        finish();
         return true;
     }
 
@@ -132,14 +166,14 @@ public class ReviewPopupActivity extends Activity {
     public void onBackPressed() {
         //안드로이드 백버튼
         Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
-        addReviewIntent.putExtra("id",id);
-        addReviewIntent.putExtra("name",name);
-        addReviewIntent.putExtra("address",address);
-        addReviewIntent.putExtra("category",category);
-        addReviewIntent.putExtra("tel",tel);
-        addReviewIntent.putExtra("latitude",latitude);
-        addReviewIntent.putExtra("longitude",longitude);
-        addReviewIntent.putExtra("reviewCount",0);
+        addReviewIntent.putExtra("id", id);
+        addReviewIntent.putExtra("name", name);
+        addReviewIntent.putExtra("address", address);
+        addReviewIntent.putExtra("category", category);
+        addReviewIntent.putExtra("tel", tel);
+        addReviewIntent.putExtra("latitude", latitude);
+        addReviewIntent.putExtra("longitude", longitude);
+        addReviewIntent.putExtra("reviewCount", 0);
         startActivity(addReviewIntent);
 
         //액티비티(팝업) 닫기

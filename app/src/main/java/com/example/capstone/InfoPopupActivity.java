@@ -148,7 +148,7 @@ public class InfoPopupActivity extends Activity {
             }
         });
 
-        load = findViewById(R.id.info_popup_load);
+        load = findViewById(R.id.info_popup_road);
         load.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
