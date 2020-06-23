@@ -1,6 +1,7 @@
 package com.example.capstone;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,9 +40,12 @@ public class FranchiseRecyclerViewAdapter extends RecyclerView.Adapter<Franchise
         View view = inflater.inflate(R.layout.recyclerview_item, parent, false);
         FranchiseRecyclerViewAdapter.ViewHolder vh = new FranchiseRecyclerViewAdapter.ViewHolder(view);
 
+
+
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
+
                 FranchiseDTO franchiseDTO = null;
 
                 for (FranchiseDTO franchise : franchisesDTOs) {

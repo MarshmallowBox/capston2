@@ -4,12 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,54 +14,79 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Money extends Fragment // Fragment 클래스를 상속받아야한다
 {
-    ArrayList<String> items;
-    ArrayAdapter<String> adapter;
-    ListView listView;
+    RecyclerView mRecyclerView = null;
+    MoneyRecyclerViewAdapter mAdapter = null;
+    ArrayList<MoneyDTO> mList = new ArrayList<MoneyDTO>();
+    TextView money = null;
+    EditText editText = null;
+    EditText editMoney = null;
+    Button input = null;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.activity_money, container, false);
+        money = view.findViewById(R.id.money);
+        editText = view.findViewById(R.id.money_input_text);
+        editMoney = view.findViewById(R.id.money_input_money);
+        input = view.findViewById(R.id.money_input);
 
-        items = new ArrayList<String>();
+        mRecyclerView = view.findViewById(R.id.money_recyclerview);
+        mAdapter = new MoneyRecyclerViewAdapter(mList);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-                adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
+        //DB에서 불러올부분 밑에는 보여주기용 임시데이터
+
+        mList.add(new MoneyDTO("2020-20-20 20:20", "aaaa", 1000));
+        money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(0).money));
+
+        mList.add(new MoneyDTO("2020-20-20 20:20", "bbbb", 2000));
+        money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(1).money));
+
+        mList.add(new MoneyDTO("2020-20-20 20:20", "cccc", 3000));
+        money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(2).money));
 
 
-        listView = view.findViewById(R.id.money_listView);
-        listView.setAdapter(adapter);
+        mAdapter.notifyDataSetChanged(); //얘가 리사이클러뷰 아이템들 업뎃
 
-
-
-        final TextView money = view.findViewById(R.id.textView2);
-        final EditText editText1= view.findViewById(R.id.editText1);
-        final EditText editText2= view.findViewById(R.id.editText2);
-        Button button= view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        input.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                String text1 = editText1.getText().toString();
-                String text2 = editText2.getText().toString();
+            public void onClick(View view) {
+                Date date = new Date(System.currentTimeMillis());
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+                String formatDate = sdfNow.format(date);
 
-                if (!text1.isEmpty() && !text2.isEmpty()){
-                    items.add(text1+"\t"+text2+"원");
-                    money.setText(String.valueOf( Integer.parseInt(money.getText().toString())-Integer.parseInt(editText2.getText().toString()) ));
-                    editText1.setText("");
-                    editText2.setText("");
-                    adapter.notifyDataSetChanged();
-                }
+                MoneyDTO moneyDTO = new MoneyDTO(formatDate,String.valueOf(editText.getText()),Integer.parseInt(String.valueOf(editMoney.getText())));
+                //moneyDTO DB로 보내고
+                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+//DB에서 불러올부분 밑에는 보여주기용 임시데이터
+                mList.clear();
+                mList.add(new MoneyDTO("2020-20-20 20:20", "aaaa", 1000));
+                money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(0).money));
+
+                mList.add(new MoneyDTO("2020-20-20 20:20", "bbbb", 2000));
+                money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(1).money));
+
+                mList.add(new MoneyDTO("2020-20-20 20:20", "cccc", 3000));
+                money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(2).money));
+
+                mList.add(moneyDTO);
+                money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - moneyDTO.money));
+
+
+                mAdapter.notifyDataSetChanged(); //얘가 리사이클러뷰 아이템들 업뎃
             }
         });
-
-
-
-
 
         return view;
     }
