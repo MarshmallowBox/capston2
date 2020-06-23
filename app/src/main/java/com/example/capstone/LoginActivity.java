@@ -76,15 +76,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         nologin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {//로그아웃 버튼 클릭하면
-                Toast.makeText(getApplicationContext(), "비로그인 사용자", Toast.LENGTH_SHORT).show();
-
-                
                 Intent intent = new Intent(getApplicationContext(), LoginInfo.class);
                 intent.putExtra("name", "비로그인 사용자");
                 intent.putExtra("profile", "");
                 intent.putExtra("email", "비로그인 사용자");
                 intent.putExtra("name", "GNU");
-
                 startActivity(intent);
                 Toast.makeText(context,"비로그인 사용자",Toast.LENGTH_SHORT).show();
                 finish();

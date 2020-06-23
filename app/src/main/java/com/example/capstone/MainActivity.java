@@ -1,6 +1,9 @@
 package com.example.capstone;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,6 +12,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,13 +20,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.overlay.Marker;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static FragmentManager fragmentManager;
@@ -80,6 +77,21 @@ public class MainActivity extends AppCompatActivity {
         //v_userId.setText("시발");
         //new Intent(getApplicationContext(), LoginInfo.class);
         // startActivity(intent);
+
+        //SMS 받아오기
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS}, 1000);
+        }
+
+    }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        if(requestCode == 1000){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permission granted!", Toast.LENGTH_SHORT).show();
+            } else{
+                Toast.makeText(this, "Permission not granted!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
