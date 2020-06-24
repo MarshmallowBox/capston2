@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +38,7 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.naver.maps.map.CameraUpdate;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Objects;
 
@@ -54,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment moneyFrag;
     private SearchView searchView;
     private DrawerLayout drawerLayout;
+    public static DbCon.Search Search;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI
-        String[] categoryTitle = {"전체", "일반휴게음식-일반한식", "음식", "의료", "약국", "보건", "숙박"};
+        String[] categoryTitle = {"전체", "음식","카페","유통","의료","유흥","헬스","미용","학원","의류","기타"};
 
         radioGroup = findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);
@@ -166,9 +169,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setChecked(true);
 
+
+
                 switch (item.getItemId()) {
                     case R.id.mapmode:
                         horizontalScrollView.setVisibility(View.VISIBLE);
+                        searchView.setIconified(true);
+                        searchView.clearFocus();
+                        if (Maps.mLayout != null &&
+                                (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                            Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                        }
                         Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
                         if (mapsFrag == null) {
                             mapsFrag = new Maps();
@@ -185,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().hide(moneyFrag).commit();
                         break;
                     case R.id.list:
+                        searchView.setIconified(true);
+                        searchView.clearFocus();
                         horizontalScrollView.setVisibility(View.VISIBLE);
                         if (PlaceList.isCheckedButtonNear) {
                             PlaceList.button_near.performClick();
@@ -205,6 +218,8 @@ public class MainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().hide(moneyFrag).commit();
                         break;
                     case R.id.myplaces:
+                        searchView.setIconified(true);
+                        searchView.clearFocus();
                         horizontalScrollView.setVisibility(View.VISIBLE);
                         if (myPlaceFrag == null) {
                             myPlaceFrag = new MyPlace();
@@ -220,6 +235,8 @@ public class MainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().hide(moneyFrag).commit();
                         break;
                     case R.id.edit:
+                        searchView.setIconified(true);
+                        searchView.clearFocus();
                         horizontalScrollView.setVisibility(View.INVISIBLE);
                         if (moneyFrag == null) {
                             moneyFrag = new Money();
@@ -254,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
         user_money.setText("100,000");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
         MainActivity.user_city.setText("화성시");
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -329,7 +347,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Toast.makeText(this, "이름 : " + strNickname + "이메일 : " + strEmail, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "이름 : " + strNickname + "이메일 : " + strEmail, Toast.LENGTH_SHORT).show();
 
 
         //권한 확인
@@ -378,16 +396,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.action_bar_item, menu);
-        MenuItem mSearch = menu.findItem(R.id.search_button);
+        final MenuItem mSearch = menu.findItem(R.id.search_button);
         searchView = (SearchView) mSearch.getActionView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-//                searchView.clearFocus();
-//                System.out.println(s);
-//                DbCon.Search Search = new DbCon.Search();
-//                Search.execute(s,"1");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                System.out.println(s);
+
+                if (Search != null) {
+                    Search.cancel(true);
+                    Search = null;
+                }
+                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
+                if (Search != null) {
+                    Search.execute(s,"1");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                }
+                searchView.clearFocus();
                 return true;
             }
 
@@ -395,21 +420,26 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 //입력할때마다 이벤트
                 //여기다 자동완성 넣으면 갸꿀
-                //입력할때마다 이벤트
-                //여기다 자동완성 넣으면 갸꿀
-
                 System.out.println(s);
-                DbCon.Search Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
-                Search.execute(s,"2");//인자로 city 스트링 보내면 해당 도시만 출력가능
+
+                if (Search != null) {
+                    Search.cancel(true);
+                    Search = null;
+                }
+                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
+                if (Search != null) {
+                    Search.execute(s,"2");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                }
+
                 return false;
             }
         });
+        mSearch.setChecked(true);
 //메뉴 아이콘 클릭했을 시 확장, 취소했을 시 축소
         mSearch.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 //확장시
-                Toast.makeText(MainActivity.this, "확장", Toast.LENGTH_SHORT).show();
                 searchView.setIconified(false);
                 return true;
             }
@@ -417,11 +447,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 //축소시
-                Toast.makeText(MainActivity.this, "축소", Toast.LENGTH_SHORT).show();
 
 
                 searchView.setIconified(true);
                 searchView.clearFocus();
+
                 return true;
             }
         });

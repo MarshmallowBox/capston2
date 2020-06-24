@@ -2,6 +2,8 @@ package com.example.capstone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -74,12 +76,12 @@ public class ReviewPopupActivity extends Activity {
 
             System.out.println("리뷰목록가져오기");
 //            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
-            mList.add(new ReviewDTO(1, 1, 1,"1", formatDate,3, "11111111111111111111"));
-            mList.add(new ReviewDTO(2, 1, 2,"2", formatDate, 2.5, "22222222222222222222"));
-            mList.add(new ReviewDTO(3, 1, 1,"1", formatDate, 4.5, "11111111111111111111"));
-            mList.add(new ReviewDTO(4, 1, 3,"3", formatDate, 4, "가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차"));
-            mList.add(new ReviewDTO(5, 1, 1,"1", formatDate, 5, "11111111111111111111"));
-            mList.add(new ReviewDTO(6, 1, 4,"4", formatDate, 0.5, ""));
+            mList.add(new ReviewDTO(1, 1, 1, "1", formatDate, 3, "11111111111111111111"));
+            mList.add(new ReviewDTO(2, 1, 2, "2", formatDate, 2.5, "22222222222222222222"));
+            mList.add(new ReviewDTO(3, 1, 1, "1", formatDate, 4.5, "11111111111111111111"));
+            mList.add(new ReviewDTO(4, 1, 3, "3", formatDate, 4, "가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차"));
+            mList.add(new ReviewDTO(5, 1, 1, "1", formatDate, 5, "11111111111111111111"));
+            mList.add(new ReviewDTO(6, 1, 4, "4", formatDate, 0.5, ""));
 
             mAdapter.notifyDataSetChanged();
             Button close = findViewById(R.id.review_popup_close);
@@ -119,7 +121,7 @@ public class ReviewPopupActivity extends Activity {
                     System.out.println("여기서리뷰목록에추가?");
                     //DB에 입력할부분
                     //st_id: id, me_id: ?, score: star.getRating(), reviewTXT: text.getText(), date: formatDate
-                    Toast.makeText(ReviewPopupActivity.this, "st_id:"+ id+ "me_id: ?"+ "score:"+ star.getRating()+ "reviewTXT:"+ text.getText()+ "date:"+ formatDate, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ReviewPopupActivity.this, "st_id:" + id + "me_id: ?" + "score:" + star.getRating() + "reviewTXT:" + text.getText() + "date:" + formatDate, Toast.LENGTH_SHORT).show();
 
                     Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
                     addReviewIntent.putExtra("id", id);
@@ -164,22 +166,37 @@ public class ReviewPopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if(mode.equals("addReview_popup_open")){
-
-        }
         //안드로이드 백버튼
-        Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
-        addReviewIntent.putExtra("id", id);
-        addReviewIntent.putExtra("name", name);
-        addReviewIntent.putExtra("address", address);
-        addReviewIntent.putExtra("category", category);
-        addReviewIntent.putExtra("tel", tel);
-        addReviewIntent.putExtra("latitude", latitude);
-        addReviewIntent.putExtra("longitude", longitude);
-        addReviewIntent.putExtra("reviewCount", 0);
-        startActivity(addReviewIntent);
 
-        //액티비티(팝업) 닫기
-        finish();
+        if (mode.equals("addReview_popup_open")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ReviewPopupActivity.this);
+            builder.setTitle("알림");
+            builder.setMessage("리뷰를 저장하지 않고 닫겠습니까?");
+            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
+                    addReviewIntent.putExtra("id", id);
+                    addReviewIntent.putExtra("name", name);
+                    addReviewIntent.putExtra("address", address);
+                    addReviewIntent.putExtra("category", category);
+                    addReviewIntent.putExtra("tel", tel);
+                    addReviewIntent.putExtra("latitude", latitude);
+                    addReviewIntent.putExtra("longitude", longitude);
+                    addReviewIntent.putExtra("reviewCount", 0);
+                    startActivity(addReviewIntent);
+
+                    //액티비티(팝업) 닫기
+                    finish();
+                }
+            });
+            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
+        }else{
+            finish();
+        }
     }
 }

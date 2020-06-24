@@ -53,8 +53,8 @@ public  class Distance {
         return dist;
     }
 
-    public static int getClusterDist(NaverMap naverMap) {
-        double zoomLevel = naverMap.getCameraPosition().zoom;
+    public static int getClusterDist(double zoomLevel) {
+
         if (zoomLevel < 14) {
             return 500;
         } else if (zoomLevel < 15) {

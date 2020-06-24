@@ -28,7 +28,7 @@ public class Clustering {
                     clusterData[i].add(rawData.get(i));
                     for (int j = i + 1; j < rawData.size(); j++) {
                         if ((rawData.get(j) != null)
-                                && (Distance.getDistance(rawData.get(i).getLatLng(), rawData.get(j).getLatLng()) < Distance.getClusterDist(naverMap))) {//naverMap수정하기
+                                && (Distance.getDistance(rawData.get(i).getLatLng(), rawData.get(j).getLatLng()) < Distance.getClusterDist(naverMap.getCameraPosition().zoom))) {//naverMap수정하기
                             clusterData[i].add(rawData.get(j));
                             rawData.set(j, null);
                         }
@@ -46,6 +46,12 @@ public class Clustering {
                 index += 1;
             }
         }
+//        for(int i=0;i<sortedClusterData.length;i++){
+//            for(int j=0;j<sortedClusterData[i].size();j++){
+//                System.out.print(sortedClusterData[i].get(j).name+" ");
+//            }
+//            System.out.println("");
+//        }
         return sortedClusterData;
     }
 }

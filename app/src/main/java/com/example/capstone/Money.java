@@ -34,7 +34,6 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     ImageButton addbtn;
 
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
         //editMoney = view.findViewById(R.id.money_input_money);
         //input = view.findViewById(R.id.money_input);
         //addbtn = view.findViewById(R.id.addButton);
-        addbtn = (ImageButton)view.findViewById(R.id.addButton);//오른쪽 아래 '+' 버튼
+        addbtn = (ImageButton) view.findViewById(R.id.addButton);//오른쪽 아래 '+' 버튼
         //addbtn.setOnClickListener();
         mRecyclerView = view.findViewById(R.id.money_recyclerview);
         mAdapter = new MoneyRecyclerViewAdapter(mList);
@@ -133,12 +132,6 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 });
                 AlertDialog dialog = alert.create();
                 dialog.show();
-
-
-
-
-
-
 
 
 //                startActivity(new Intent(getActivity().getApplicationContext(),MoneyPopupActivity.class));

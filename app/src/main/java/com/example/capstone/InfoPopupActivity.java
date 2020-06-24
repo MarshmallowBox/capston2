@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +35,7 @@ public class InfoPopupActivity extends Activity {
     Button addReview;
 
     Intent intent;
-    int franchiseID;
+    public static int franchiseID;
     String name;
     String address;
     String category;
@@ -79,38 +80,64 @@ public class InfoPopupActivity extends Activity {
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
-        System.out.println(DbCon.DBString);
+        System.out.println(DbCon.Zzim.DBString);
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
 
-            if(DbCon.DBString.isEmpty()){
-                System.out.println("하얀별");
-                star.setChecked(false);
-            }else{
-                System.out.println("검은별");
-                star.setChecked(true);
-            }
-
+        star.invalidate();
+//            if(DbCon.DBString.isEmpty()){
+//                System.out.println("하얀별");
+//                star.setChecked(false);
+//            }else{
+//                System.out.println("검은별");
+//                star.setChecked(true);
+//            }
 
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (star.isChecked()) {
-                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
+                if(star.isChecked()){
+                    System.out.println("체크되었음");
                     DbCon.Zzim Zzim = new DbCon.Zzim();
                     Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     System.out.println("찜목록추가됨");
-
-                } else {
-                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
+                }else{
+                    System.out.println("체크안되었음");
                     DbCon.Zzim Zzim = new DbCon.Zzim();
                     Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     System.out.println("찜목록삭제됨");
                 }
-
             }
         });
+        star.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
+                }else {
+                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
+                }
+        }});
+
+//        star.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (star.isChecked()) {
+//                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
+//                    DbCon.Zzim Zzim = new DbCon.Zzim();
+//                    Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+//                    System.out.println("찜목록추가됨");
+//
+//                } else {
+//                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
+//                    DbCon.Zzim Zzim = new DbCon.Zzim();
+//                    Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+//                    System.out.println("찜목록삭제됨");
+//                }
+//
+//            }
+//        });
         map = findViewById(R.id.info_popup_map);
 
         if (MainActivity.bottomNavigationView.getSelectedItemId() != R.id.mapmode) {
