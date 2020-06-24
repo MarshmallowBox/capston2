@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI
-        String[] categoryTitle = {"전체", "일반휴게음식-일반한식", "음식", "의료", "약국", "보건", "숙박"};
-
+        String[] categoryTitle = {"전체","음식","의료","헬스","미용","유통","학원","카페","유흥","의류","기타"};
         radioGroup = findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);
 
@@ -385,13 +384,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 searchView.clearFocus();
-                Toast.makeText(MainActivity.this, s + "", Toast.LENGTH_SHORT).show();
+                System.out.println(s);
+                DbCon.Search Search = new DbCon.Search();
+                Search.execute(s,"1");
 
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                System.out.println(s);
+                DbCon.Search Search = new DbCon.Search();
+                Search.execute(s,"2");
                 //입력할때마다 이벤트
                 //여기다 자동완성 넣으면 갸꿀
 

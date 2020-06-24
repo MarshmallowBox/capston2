@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 class DataAdapter extends AsyncTask<String, Void, String> {
     private final String TAG_JSON = "webnautes";
-    private final String TAG_ID = "id";
+    private final String TAG_ID = "store_id";
     private final String TAG_NAME = "name";
     private final String TAG_ADDRESS = "address";
     private final String TAG_CATEGORY = "category";

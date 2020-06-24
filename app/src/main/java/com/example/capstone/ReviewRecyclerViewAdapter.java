@@ -42,7 +42,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
     public void onBindViewHolder(@NonNull ReviewRecyclerViewAdapter.ViewHolder holder, final int position) {
         //데이터를 넣어주는 부분
         ReviewDTO item = reviewDTOS.get(position) ;
-       holder.name.setText(reviewDTOS.get(position).userName);
+//       holder.name.setText(reviewDTOS.get(position).userName);
        holder.date.setText(reviewDTOS.get(position).date);
        holder.text.setText(reviewDTOS.get(position).text);
        holder.star.setRating((float) reviewDTOS.get(position).score);
