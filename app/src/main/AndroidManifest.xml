@@ -41,6 +41,9 @@
         <activity android:name=".ReviewPopupActivity"/>
         <activity android:name=".HelpPopupActivity"/>
         <activity android:name=".SettingPopupActivity"/>
+        <activity android:name=".MoneyPopupActivity"
+                  android:theme="@android:style/Theme.Dialog"
+            />
 
 
         <!--        <activity android:name=".LoginActivity"></activity>-->

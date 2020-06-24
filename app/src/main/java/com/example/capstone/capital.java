@@ -43,8 +43,6 @@ public class capital extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
     class MyAdapter extends ArrayAdapter<String> {

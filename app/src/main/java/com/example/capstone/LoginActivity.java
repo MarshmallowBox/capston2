@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Button nologin = findViewById(R.id.nologin);
         nologin.setOnClickListener(new Button.OnClickListener() {
             @Override
-            public void onClick(View v) {//로그아웃 버튼 클릭하면
+            public void onClick(View v) {//비로그인 버튼 클릭하면
                 Intent intent = new Intent(getApplicationContext(), LoginInfo.class);
                 intent.putExtra("name", "비로그인 사용자");
                 intent.putExtra("profile", "");
