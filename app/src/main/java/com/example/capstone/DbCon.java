@@ -1,11 +1,18 @@
 package com.example.capstone;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.overlay.Marker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,7 +39,7 @@ public class DbCon extends AppCompatActivity {
     private static final String TAG_TEL ="tel";
     private static final String TAG_LATITUDE ="latitude";
     private static final String TAG_LONGITUDE ="longitude";
-    public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
+
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();;
     static String mJsonString;
     static ArrayList<String> DBString = new ArrayList<>();
@@ -45,7 +52,23 @@ public class DbCon extends AppCompatActivity {
 
 
     public static class Search extends AsyncTask<String, Void, String>{
+        public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
         String errorString = null;
+        ArrayList<Marker> Markers;
+         Activity activity = null;
+         NaverMap naverMap = null;
+        Context context;
+        RecyclerView recyclerView;
+
+        Search(Activity activity, NaverMap naverMap, ArrayList<Marker> Markers,Context context, RecyclerView recyclerView) {
+            this.activity = activity;
+            this.naverMap = naverMap;
+            this.Markers=Markers;
+            this.context=context;
+            this.recyclerView=recyclerView;
+        }
+
+
 
         @Override
         protected void onPreExecute() {
@@ -62,8 +85,9 @@ public class DbCon extends AppCompatActivity {
                 showResult();
             }
         }
-        public static void showResult(){
+        public void showResult(){
             try {
+                Franchises.clear();
                 System.out.println("과여어어어언?");
                 JSONObject jsonObject = new JSONObject(mJsonString);
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
@@ -85,6 +109,18 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
+            }finally {
+
+                    FranchiseRecyclerViewAdapter mAdapter = new FranchiseRecyclerViewAdapter(Franchises);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    mAdapter.notifyDataSetChanged();
+
+//                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context); //리스트뷰를 띄워준다
+//                FranchiseRecyclerViewAdapter myFranchiseRecyclerViewAdapter = new FranchiseRecyclerViewAdapter(getFilteredData());
+//                recyclerView.setLayoutManager(layoutManager);
+//                recyclerView.setAdapter(myFranchiseRecyclerViewAdapter);
+
             }
         }
         @Override

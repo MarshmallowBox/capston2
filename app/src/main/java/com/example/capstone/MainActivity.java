@@ -384,9 +384,10 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                searchView.clearFocus();
-                Toast.makeText(MainActivity.this, s + "", Toast.LENGTH_SHORT).show();
-
+//                searchView.clearFocus();
+//                System.out.println(s);
+//                DbCon.Search Search = new DbCon.Search();
+//                Search.execute(s,"1");//인자로 city 스트링 보내면 해당 도시만 출력가능
                 return true;
             }
 
@@ -394,8 +395,12 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextChange(String s) {
                 //입력할때마다 이벤트
                 //여기다 자동완성 넣으면 갸꿀
+                //입력할때마다 이벤트
+                //여기다 자동완성 넣으면 갸꿀
 
-
+                System.out.println(s);
+                DbCon.Search Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
+                Search.execute(s,"2");//인자로 city 스트링 보내면 해당 도시만 출력가능
                 return false;
             }
         });
