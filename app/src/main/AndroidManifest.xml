@@ -39,8 +39,11 @@
 
         <activity android:name=".InfoPopupActivity" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".ReviewPopupActivity"/>
-        <activity android:name=".HelpPopupActivity" android:theme="@android:style/Theme.Dialog"/>
-        <activity android:name=".SettingPopupActivity" android:theme="@android:style/Theme.Dialog"/>
+        <activity android:name=".HelpPopupActivity"/>
+        <activity android:name=".SettingPopupActivity"/>
+        <activity android:name=".MoneyPopupActivity"
+                  android:theme="@android:style/Theme.Dialog"
+            />
 
 
         <!--        <activity android:name=".LoginActivity"></activity>-->
@@ -54,6 +57,11 @@
         <!--                <category android:name="android.intent.category.LAUNCHER" />-->
         <!--            </intent-filter>-->
         <!--        </activity>-->
+        <receiver android:name=".ReceiveSms">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

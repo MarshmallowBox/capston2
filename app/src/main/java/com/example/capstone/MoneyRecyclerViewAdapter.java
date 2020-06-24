@@ -49,9 +49,9 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
     public void onBindViewHolder(@NonNull MoneyRecyclerViewAdapter.ViewHolder holder, int position) {
         //데이터를 넣어주는 부분
         MoneyDTO item = moneyDTOS.get(position) ;
-       holder.date.setText(moneyDTOS.get(position).date);
-       holder.text.setText(moneyDTOS.get(position).text);
-       holder.money.setText(String.valueOf(moneyDTOS.get(position).money));
+        holder.date.setText(moneyDTOS.get(position).date);
+        holder.text.setText(moneyDTOS.get(position).text);
+        holder.money.setText(String.valueOf(moneyDTOS.get(position).money));
 
     }
 

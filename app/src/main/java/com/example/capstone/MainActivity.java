@@ -1,7 +1,10 @@
 package com.example.capstone;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
         //앱바(툴바) 생성부분인데 밑에 이벤트와같이 UI클래스에 같이 합칠수있는지 시도해보기
         toolbar = findViewById(R.id.toolbar);
         drawerLayout = findViewById(R.id.main);
@@ -78,6 +80,21 @@ public class MainActivity extends AppCompatActivity {
         //v_userId.setText("시발");
         //new Intent(getApplicationContext(), LoginInfo.class);
         // startActivity(intent);
+
+        //SMS 받아오기
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.RECEIVE_SMS}, 1000);
+        }
+
+    }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        if(requestCode == 1000){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permission granted!", Toast.LENGTH_SHORT).show();
+            } else{
+                Toast.makeText(this, "Permission not granted!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

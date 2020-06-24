@@ -20,122 +20,119 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="8dp"
-            android:padding="8dp"
-            android:textSize="20dp"
-            android:text="현재잔액 : "
-            android:textColor="#000000"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:gravity="right"
-    android:padding="8dp">
-        <TextView
-            android:id="@+id/money"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:textSize="25dp"
-            android:gravity="center"
-            android:text="10000"
-            android:textColor="#000000"
-             />
+
             <TextView
-                android:layout_marginLeft="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:textSize="25dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
                 android:gravity="center"
-                android:text="원"
+                android:padding="5dp"
+                android:text="   l 현재잔액 l "
                 android:textColor="#000000"
-                />
-</LinearLayout>
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:gravity="right"
+                android:padding="2dp">
+                <TextView
+                    android:id="@+id/money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="20dp"
+                    android:gravity="center"
+                    android:text="10000"
+                    android:textColor="#000000"
+                    />
+                <TextView
+                    android:layout_marginLeft="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="25dp"
+                    android:gravity="center"
+                    android:text="원"
+                    android:textColor="#000000"
+                    />
+            </LinearLayout>
         </LinearLayout>
 
-        <TextView
-            android:background="#4000C0FF"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="내역"
-            android:padding="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:textSize="25dp"
-            android:textColor="#000000"
-             />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:background="#4000C0FF">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/money_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="16dp"
-        android:scrollbarSize="12dp"
-        android:scrollbarThumbVertical="@android:color/holo_blue_bright"
-        android:scrollbars="vertical"
-        android:textColor="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+            <TextView
+
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="45dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="날짜"
+                android:textColor="#000000"
+                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="140dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
+        <ListView
+            android:id="@+id/money_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-        android:layout_width="match_parent"
+            />
+
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:gravity="center"
+        android:hint="내용입력"
+        app:layout_constraintBottom_toTopOf="@+id/editText2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="금액입력"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:text="입력"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:background="#4000C0FF"
-
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/money_input"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <EditText
-                android:id="@+id/money_input_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="내용입력"
-
-                app:layout_constraintHorizontal_bias="1.0"
-                 />
-
-            <EditText
-                android:id="@+id/money_input_money"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:hint="금액입력"
-                 />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/money_input"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:textSize="25dp"
-            android:text="입력"
-            android:background="#4000C0FF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
