@@ -22,7 +22,7 @@
                 android:icon="@android:drawable/ic_menu_info_details"
                 android:title="도움말" />
             <item
-                android:id="@+id/preferences"
+                android:id="@+id/setting"
                 android:icon="@android:drawable/ic_menu_preferences"
                 android:title="설정" />
         </menu>

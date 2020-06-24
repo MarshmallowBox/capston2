@@ -236,7 +236,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             @Override
             public void onCameraChange(int reason, boolean animated) {
                 //드래그 -1 f, 마커클릭 0 t, 현위치버튼 -3 tf,
-               System.out.println("reasonreason:"+reason);
+               //System.out.println("reasonreason:"+reason);
                 if (beforeCamera != null) {
                     if ((reason == -3) && (Distance.getDistance(beforeLocation, naverMap.getCameraPosition().target) == 0)
                             && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > 5)

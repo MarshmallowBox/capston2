@@ -3,6 +3,7 @@ package com.example.capstone;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -24,20 +25,20 @@ import com.naver.maps.map.CameraUpdate;
 
 class UI {
 
-    private Activity context;
-    public BottomNavigationView bottomNavigationView;
     public static RadioGroup radioGroup;
     public static Fragment mapsFrag;
+    public BottomNavigationView bottomNavigationView;
     Fragment placeListFrag;
     Fragment myPlaceFrag;
     Fragment moneyFrag;
+    private Activity context;
 
     UI(Activity context) {
         this.context = context;
     }
 
     void createCategory() {
-        String[] categoryTitle = {"전체", "일반휴게음식-일반한식","음식","의료","약국","보건","숙박"};
+        String[] categoryTitle = {"전체", "일반휴게음식-일반한식", "음식", "의료", "약국", "보건", "숙박"};
 
         radioGroup = context.findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);
@@ -93,7 +94,7 @@ class UI {
                 }
                 if (bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
                     Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
-                }else{
+                } else {
                     if (PlaceList.isCheckedButtonNear) {
                         PlaceList.button_near.performClick();
                     } else {
@@ -256,14 +257,14 @@ class UI {
 //                        dialog1.show();
 
                         break;
-                    case R.id.info:
-//
-//                        Intent intent2 = new Intent(this, HelpPopupActivity.class);
-//                        startActivity(intent2);
+                    case R.id.information:
+                        Intent information = new Intent(context, HelpPopupActivity.class);
+                        context.startActivity(information);
 
                         break;
-                    case R.id.preferences:
-                        Toast.makeText(context, "설정", Toast.LENGTH_SHORT).show();
+                    case R.id.setting:
+                        Intent setting = new Intent(context, SettingPopupActivity.class);
+                        context.startActivity(setting);
                         break;
                 }
                 return true;
