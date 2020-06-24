@@ -87,11 +87,11 @@ public class InfoPopupActivity extends Activity {
         });
         map = findViewById(R.id.info_popup_map);
 
-        if (MainActivity.ui.bottomNavigationView.getSelectedItemId() != R.id.mapmode) {
+        if (MainActivity.bottomNavigationView.getSelectedItemId() != R.id.mapmode) {
             map.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MainActivity.ui.bottomNavigationView.setSelectedItemId(R.id.mapmode);
+                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.mapmode);
                     Maps.singleMarkers.setMap(null);
                     Maps.singleMarkers = new Marker();
                     Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도

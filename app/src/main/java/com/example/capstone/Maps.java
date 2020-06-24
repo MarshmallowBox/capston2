@@ -1,8 +1,10 @@
 package com.example.capstone;
 
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.PointF;
 import android.location.Location;
 import android.os.Bundle;
@@ -67,6 +69,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
 
         //현재위치 받아오기
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+
 
 //DB로 받아올 부분 건강식품 일반휴게음식 유통업 약국 귀금속 세탁소 컴퓨터 문구용품 학원 레져업소 보건위생 휴대폰
 
@@ -380,6 +383,15 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                 naverMap.setLocationTrackingMode(LocationTrackingMode.None);
             }
             return;
+        } else{
+
+        }
+        if(requestCode == 1000){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(getActivity(), "Permission granted!", Toast.LENGTH_SHORT).show();
+            } else{
+                Toast.makeText(getActivity(), "Permission not granted!", Toast.LENGTH_SHORT).show();
+            }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

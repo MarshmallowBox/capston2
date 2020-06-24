@@ -70,7 +70,7 @@ class DataAdapter extends AsyncTask<String, Void, String> {
 
     public ArrayList<FranchiseDTO> getFilteredData() {
         ArrayList<FranchiseDTO> categoryFilteredFranchises = new ArrayList<>();
-        RadioButton checkedRadioButton = (RadioButton) UI.radioGroup.getChildAt(UI.radioGroup.getCheckedRadioButtonId());
+        RadioButton checkedRadioButton = (RadioButton) MainActivity.radioGroup.getChildAt(MainActivity.radioGroup.getCheckedRadioButtonId());
         for (FranchiseDTO franchiseDTO : Franchises) {
             if (checkedRadioButton.getText().equals(franchiseDTO.category) || checkedRadioButton.getText().equals("전체")) {
                 categoryFilteredFranchises.add(franchiseDTO);
