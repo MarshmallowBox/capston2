@@ -27,11 +27,10 @@ public class SettingPopupActivity extends Activity {
         setContentView(R.layout.activity_setting_popup);
 
         final String[] city = getResources().getStringArray(R.array.cityArray);
+        final Spinner citySpinner = findViewById(R.id.city_spinner);
 
-        Spinner citySpinner = findViewById(R.id.city_spinner);
-
-        final ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,city);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,R.layout.spinner_item,city);
+        adapter.setDropDownViewResource(R.layout.spinner_item);
         citySpinner.setAdapter(adapter);
 
         citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -42,7 +41,6 @@ public class SettingPopupActivity extends Activity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
@@ -52,6 +50,8 @@ public class SettingPopupActivity extends Activity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
+//                Toast.makeText(SettingPopupActivity.this, String.valueOf(citySpinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
@@ -82,6 +82,7 @@ public class SettingPopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+
         //안드로이드 백버튼
         finish();
     }

@@ -91,8 +91,15 @@ class UI {
                         btn.setButtonDrawable(R.drawable.baseline_sentiment_satisfied_black_18dp);
                     }
                 }
-
-                Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
+                if (bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
+                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
+                }else{
+                    if (PlaceList.isCheckedButtonNear) {
+                        PlaceList.button_near.performClick();
+                    } else {
+                        PlaceList.button_camera.performClick();
+                    }
+                }
 
             }
         });
@@ -120,6 +127,7 @@ class UI {
                 switch (item.getItemId()) {
                     case R.id.mapmode:
                         horizontalScrollView.setVisibility(View.VISIBLE);
+                        Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
                         if (mapsFrag == null) {
                             mapsFrag = new Maps();
                             mapsFrag.setRetainInstance(true);
@@ -203,6 +211,10 @@ class UI {
         textView.setText(Name);
         final TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
         textView1.setText(Email);
+        final TextView user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
+        user_money.setText("100,000");
+        MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
+        MainActivity.user_city.setText("화성시");
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

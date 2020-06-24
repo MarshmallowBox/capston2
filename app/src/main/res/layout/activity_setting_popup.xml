@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="#eeeeee"
@@ -17,19 +19,20 @@
             android:layout_height="53dp"
             android:background="#00C0FF"
             android:gravity="center"
-            android:text="상세정보"
+            android:text="설정"
             android:textColor="#FFFFFFFF"
             android:textSize="25dp" />
     </LinearLayout>
     <!-- //end 타이틀바 -->
 
     <!-- Notice -->
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFFFF"
         android:orientation="horizontal"
         android:paddingTop="24dp"
+        android:gravity="center"
         android:paddingBottom="12dp"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
@@ -39,20 +42,28 @@
             android:id="@+id/info_popup_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="지역선택"
+            android:text="지역선택 : "
             android:textColor="#00C0FF"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <Spinner
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/city_spinner"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="16dp"
+            android:background="#FFFFFFFF"
             android:spinnerMode="dropdown"
-            android:entries="@array/cityArray"
 
 
-            />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/info_popup_name"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- Notice -->
 
 
