@@ -257,8 +257,8 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                     }
 
                     if (((reason == -1) && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > 250))//드래그
-                            || ((reason == -2) && Math.abs(beforezoom - naverMap.getCameraPosition().zoom) >= 1)//줌레벨변경
-                            || ((reason == 0))) { //마커클릭
+                            || ((reason == -2) && Math.abs(beforezoom - naverMap.getCameraPosition().zoom) >= 1))
+                    { //마커클릭
                         beforeCamera = naverMap.getCameraPosition().target;
                         beforezoom = naverMap.getCameraPosition().zoom;
                         if (reason != 0) {

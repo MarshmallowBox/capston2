@@ -19,6 +19,7 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.activity_myplace,container,false);
+        System.out.println("찜목록보여주기");
 
 //        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.myplace_recyclerview);
 //        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext()); //리스트뷰를 띄워준다

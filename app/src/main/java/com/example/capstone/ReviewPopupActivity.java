@@ -72,7 +72,7 @@ public class ReviewPopupActivity extends Activity {
             SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm");
             String formatDate = sdfNow.format(date);
 
-
+            System.out.println("리뷰목록가져오기");
 //            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
             mList.add(new ReviewDTO(1, 1, 1,"1", formatDate,3.5, "1111111111"));
             mList.add(new ReviewDTO(2, 2, 2,"2", formatDate, 3.5, "2222222222"));
@@ -116,7 +116,7 @@ public class ReviewPopupActivity extends Activity {
                     Date date = new Date(System.currentTimeMillis());
                     SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm");
                     String formatDate = sdfNow.format(date);
-
+                    System.out.println("여기서리뷰목록에추가?");
                     //DB에 입력할부분
                     //st_id: id, me_id: ?, score: star.getRating(), reviewTXT: text.getText(), date: formatDate
                     Toast.makeText(ReviewPopupActivity.this, "st_id:"+ id+ "me_id: ?"+ "score:"+ star.getRating()+ "reviewTXT:"+ text.getText()+ "date:"+ formatDate, Toast.LENGTH_SHORT).show();
