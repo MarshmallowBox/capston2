@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     public static UI ui;
+    public static UI ui2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
