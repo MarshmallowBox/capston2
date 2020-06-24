@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Money extends Fragment // Fragment 클래스를 상속받아야한다
 {
@@ -105,8 +105,8 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 builder.setView(view);
 
 
-                final TextInputEditText etUsername = alertLayout.findViewById(R.id.tiet_username);
-                final TextInputEditText etPassword = alertLayout.findViewById(R.id.tiet_password);
+                final TextInputEditText using = alertLayout.findViewById(R.id.using);
+                final TextInputEditText price = alertLayout.findViewById(R.id.price);
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
                 alert.setTitle("Login");
@@ -126,9 +126,9 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String user = etUsername.getText().toString();
-                        String pass = etPassword.getText().toString();
-                        Toast.makeText(getContext(), "Username: " + user + " Password: " + pass, Toast.LENGTH_SHORT).show();
+                        String user = using.getText().toString();
+                        String pass = price.getText().toString();
+                        Toast.makeText(getContext(), "사용처: " + user + " 가격: " + pass, Toast.LENGTH_SHORT).show();
                     }
                 });
                 AlertDialog dialog = alert.create();

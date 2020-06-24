@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_username"
+            android:id="@+id/using"
             android:layout_width="366dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="23dp"
@@ -44,15 +44,17 @@
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tiet_password"
+            android:id="@+id/price"
             android:layout_width="366dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="23dp"
             android:layout_marginLeft="23dp"
-            android:inputType="textPassword"
             android:singleLine="true"
+            android:inputType="numberDecimal"
             android:hint="가격"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
