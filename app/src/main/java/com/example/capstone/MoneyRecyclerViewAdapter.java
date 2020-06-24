@@ -36,7 +36,7 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                Intent intent2 = new Intent(parent.getContext(), HelpPopupActivity.class);
+                Intent intent2 = new Intent(parent.getContext(), SettingPopupActivity.class);
                 parent.getContext().startActivity(intent2);
             }
         });

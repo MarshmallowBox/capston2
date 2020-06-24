@@ -74,12 +74,12 @@ public class ReviewPopupActivity extends Activity {
 
 
 //            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
-            mList.add(new ReviewDTO(1, 1, 1,"1", formatDate,3.5, "1111111111"));
-            mList.add(new ReviewDTO(2, 2, 2,"2", formatDate, 3.5, "2222222222"));
-            mList.add(new ReviewDTO(3, 3, 3,"3", formatDate, 3.5, "3333333333"));
-            mList.add(new ReviewDTO(4, 4, 4,"4", formatDate, 3.5, "4444444444"));
-            mList.add(new ReviewDTO(5, 5, 5,"5", formatDate, 3.5, "5555555555"));
-            mList.add(new ReviewDTO(6, 6, 6,"6", formatDate, 3.5, "6666666666"));
+            mList.add(new ReviewDTO(1, 1, 1,"1", formatDate,3, "11111111111111111111"));
+            mList.add(new ReviewDTO(2, 1, 2,"2", formatDate, 2.5, "22222222222222222222"));
+            mList.add(new ReviewDTO(3, 1, 1,"1", formatDate, 4.5, "11111111111111111111"));
+            mList.add(new ReviewDTO(4, 1, 3,"3", formatDate, 4, "가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차"));
+            mList.add(new ReviewDTO(5, 1, 1,"1", formatDate, 5, "11111111111111111111"));
+            mList.add(new ReviewDTO(6, 1, 4,"4", formatDate, 0.5, ""));
 
             mAdapter.notifyDataSetChanged();
             Button close = findViewById(R.id.review_popup_close);
@@ -164,6 +164,9 @@ public class ReviewPopupActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        if(mode.equals("addReview_popup_open")){
+
+        }
         //안드로이드 백버튼
         Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
         addReviewIntent.putExtra("id", id);

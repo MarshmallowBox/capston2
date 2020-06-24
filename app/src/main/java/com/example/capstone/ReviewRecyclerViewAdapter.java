@@ -39,17 +39,24 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
 
 
     @Override
-    public void onBindViewHolder(@NonNull ReviewRecyclerViewAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReviewRecyclerViewAdapter.ViewHolder holder, final int position) {
         //데이터를 넣어주는 부분
         ReviewDTO item = reviewDTOS.get(position) ;
        holder.name.setText(reviewDTOS.get(position).userName);
        holder.date.setText(reviewDTOS.get(position).date);
        holder.text.setText(reviewDTOS.get(position).text);
        holder.star.setRating((float) reviewDTOS.get(position).score);
+       if(reviewDTOS.get(position).userID!=1){
+           ((Button)holder.delete).setVisibility(View.INVISIBLE);
+       }
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("삭제");
+                reviewDTOS.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, reviewDTOS.size());
+                //DB에서도 삭제 하기
+
             }
         });
 

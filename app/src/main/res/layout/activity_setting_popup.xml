@@ -43,14 +43,11 @@
             android:textColor="#00C0FF"
             android:textSize="20dp" />
         <Spinner
-
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
-
             android:id="@+id/city_spinner"
-
             android:spinnerMode="dropdown"
+            android:entries="@array/cityArray"
 
 
             />

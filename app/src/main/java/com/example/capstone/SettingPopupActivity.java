@@ -16,7 +16,6 @@ public class SettingPopupActivity extends Activity {
 
 
 
-    String[] str = getResources().getStringArray(R.array.cityArray);
 
 
     @SuppressLint("SetTextI18n")
@@ -27,15 +26,28 @@ public class SettingPopupActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting_popup);
 
+        final String[] city = getResources().getStringArray(R.array.cityArray);
+
         Spinner citySpinner = findViewById(R.id.city_spinner);
-        final ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,str);
-        citySpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        final ArrayAdapter<String> adapter= new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,city);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        citySpinner.setAdapter(adapter);
+
+        citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(SettingPopupActivity.this, str[position], Toast.LENGTH_SHORT).show();
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(SettingPopupActivity.this, city[i], Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
-        citySpinner.setAdapter(adapter);
+
+
+
         Button save = findViewById(R.id.setting_popup_save);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
