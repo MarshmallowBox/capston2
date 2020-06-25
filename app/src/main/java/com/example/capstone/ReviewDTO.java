@@ -10,7 +10,7 @@ public class ReviewDTO {
     public double score;
     public String text;
 
-    public ReviewDTO(int ID, int FranchiseID, int userID, String userName, String date, double score, String text) {
+    public ReviewDTO(int ID, int FranchiseID, int userID, String userName, String date, double score, String text) { //유저네임 빠져있음
         this.ID = ID;
         this.FranchiseID = FranchiseID;
         this.userID = userID;

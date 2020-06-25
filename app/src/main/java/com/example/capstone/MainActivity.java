@@ -169,8 +169,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 item.setChecked(true);
 
-
-
                 switch (item.getItemId()) {
                     case R.id.mapmode:
                         horizontalScrollView.setVisibility(View.VISIBLE);
