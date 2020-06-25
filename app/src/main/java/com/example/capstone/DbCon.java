@@ -2,6 +2,7 @@ package com.example.capstone;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -35,7 +36,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DbCon extends AppCompatActivity {
     private static String TAG = "phpquerytest";
@@ -331,6 +331,7 @@ public class DbCon extends AppCompatActivity {
     public static class Search extends AsyncTask<String, Void, String> {
         public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
         String errorString = null;
+        String mJsonString = null;
         ArrayList<Marker> Markers;
         Activity activity;
         NaverMap naverMap;
@@ -376,9 +377,7 @@ public class DbCon extends AppCompatActivity {
                     String tel = item.getString(TAG_TEL);
                     String latitude = item.getString(TAG_LATITUDE);
                     String longitude = item.getString(TAG_LONGITUDE);
-                    HashMap<String, String> hashMap = new HashMap<>();
                     Franchises.add(new FranchiseDTO(Integer.parseInt(id), name, address, category, tel, Double.parseDouble(latitude), Double.parseDouble(longitude)));
-                    mArrayList.add(hashMap);
                 }
                 System.out.println("**************");
                 System.out.println(Franchises);
@@ -484,39 +483,20 @@ public class DbCon extends AppCompatActivity {
     }
 
     public static class Zzim extends AsyncTask<String, Void, String> {
-        static ArrayList<String> DBString = new ArrayList<>();
+        static ArrayList<FranchiseDTO> ZzimFranchise = new ArrayList<>();
         static String mode = null;
+        private static Context context;
         String errorString = null;
+        static String mJsonString = null;
+        private static RecyclerView recyclerView;
+        Zzim(){
 
-        public static void showResult() {
-            if (mode.equals("call")) {
-                try {
-                    DBString.clear();
-                    System.out.println("믿고있었다구");
-                    System.out.println("111111");
-                    JSONObject jsonObject = new JSONObject(mJsonString);
-                    System.out.println("222222");
-                    JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
-                    System.out.println("333333");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        System.out.println(i);
-                        JSONObject item = jsonArray.getJSONObject(i);
-                        DBString.add(item.getString(TAG_S_ID));
-                        if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_S_ID))) {
-                            InfoPopupActivity.star.setChecked(true);
-                            break;
-                        } else {
-                            InfoPopupActivity.star.setChecked(false);
-                        }
-                    }
-                } catch (JSONException e) {
-                    Log.d(TAG, "showResult : ", e);
-                } finally {
-                    InfoPopupActivity.star.invalidate();
-                }
-            }
         }
+        Zzim(Context context, RecyclerView recyclerView) {
 
+            this.context = context;
+            this.recyclerView = recyclerView;
+        }
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -531,6 +511,50 @@ public class DbCon extends AppCompatActivity {
                 showResult();
             }
         }
+        public static void showResult() {
+            if (mode.equals("call")) {
+                try {
+                    ZzimFranchise.clear();
+                    System.out.println("믿고있었다구");
+                    System.out.println("111111");
+                    JSONObject jsonObject = new JSONObject(mJsonString);
+                    System.out.println("222222");
+                    JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+                    System.out.println("333333");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        System.out.println(i);
+                        JSONObject item = jsonArray.getJSONObject(i);
+                        String id = item.getString(TAG_ID);
+                        String name = item.getString(TAG_NAME);
+                        String address = item.getString(TAG_ADDRESS);
+                        String category = item.getString(TAG_CATEGORY);
+                        String tel = item.getString(TAG_TEL);
+                        String latitude = item.getString(TAG_LATITUDE);
+                        String longitude = item.getString(TAG_LONGITUDE);
+                        ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id), name, address, category, tel, Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                        if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_S_ID))) {
+                            InfoPopupActivity.star.setChecked(true);
+                        } else {
+                            InfoPopupActivity.star.setChecked(false);
+                        }
+                    }
+                } catch (JSONException e) {
+                    Log.d(TAG, "showResult : ", e);
+                } finally {
+                    FranchiseRecyclerViewAdapter mAdapter = new FranchiseRecyclerViewAdapter(ZzimFranchise);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+                    mAdapter.notifyDataSetChanged();//데이터변경시
+                    if(InfoPopupActivity.star!=null){
+                    InfoPopupActivity.star.invalidate();
+                    }
+                }
+            }
+        }
+
+
 
         @Override
         protected String doInBackground(String... params) {
@@ -584,6 +608,12 @@ public class DbCon extends AppCompatActivity {
 
     public static class Review extends AsyncTask<String, Void, String>{
         String errorString = null;
+        static String mJsonString = null;
+
+        public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
+        Review(){
+
+        }
 
         @Override
         protected void onPreExecute() {
@@ -593,9 +623,7 @@ public class DbCon extends AppCompatActivity {
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
             Log.d(TAG, "response ----리뷰---- " + result);
-            if (result == null){
-            }
-            else {
+            if (result != null) {
                 mJsonString = result;
                 showResult();
             }

@@ -80,7 +80,7 @@ public class InfoPopupActivity extends Activity {
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
-        System.out.println(DbCon.Zzim.DBString);
+        System.out.println(DbCon.Zzim.ZzimFranchise);
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");

@@ -125,9 +125,9 @@ public class ReviewPopupActivity extends Activity {
                     System.out.println("여기서리뷰목록에추가?");
                     //DB에 입력할부분
                     //st_id: id, me_id: ?, score: star.getRating(), reviewTXT: text.getText(), date: formatDate
-                    Toast.makeText(ReviewPopupActivity.this, "st_id:"+ id+ "me_id: ?"+ "score:"+ star.getRating()+ "reviewTXT:"+ text.getText()+ "date:"+ formatDate, Toast.LENGTH_SHORT).show();
                     DbCon.Review review = new DbCon.Review();
-                    review.execute(String.valueOf(id),"2","2",String.valueOf(star.getRating()),String.valueOf(text.getText()),formatDate);//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
+                    review.execute(String.valueOf(id),"2","2",String.valueOf(star.getRating()),String.valueOf(text.getText()),formatDate);
+                    //store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
                     Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
                     addReviewIntent.putExtra("id", id);
                     addReviewIntent.putExtra("name", name);
@@ -146,17 +146,6 @@ public class ReviewPopupActivity extends Activity {
         }
 
     }
-
-    /*//확인 버튼 클릭
-    public void mOnClose(View v) {
-        //데이터 전달하기
-        Intent intent = new Intent();
-        intent.putExtra("result", "Close Popup");
-        setResult(RESULT_OK, intent);
-
-        //액티비티(팝업) 닫기
-        finish();
-    }*/
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
