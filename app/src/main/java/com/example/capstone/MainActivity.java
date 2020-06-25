@@ -1,7 +1,6 @@
 package com.example.capstone;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -15,15 +14,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
     public static FragmentManager fragmentManager;
@@ -70,16 +66,6 @@ public class MainActivity extends AppCompatActivity {
         ui.createNav_Bottom();
         ui.createNav_Drawer(strNickname, strEmail);
         Toast.makeText(this, "이름 : " + strNickname + "이메일 : " + strEmail, Toast.LENGTH_SHORT).show();
-
-
-        //로그인값
-        //tv_userId = (TextView)findViewById(R.id.user_id);
-
-        //Toast.makeText(MainActivity.this, strNickname , Toast.LENGTH_SHORT).show();
-
-        //v_userId.setText("시발");
-        //new Intent(getApplicationContext(), LoginInfo.class);
-        // startActivity(intent);
 
         //SMS 받아오기
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){

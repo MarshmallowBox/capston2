@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        
+
     }
 
     //////////////카카오////////////
@@ -128,6 +128,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 @Override
                 public void onSuccess(MeV2Response result) {
+                    //일단 지워놓기
                     String needsScopeAutority = ""; // 정보 제공이 허용되지 않은 항목의 이름을 저장하는 변수
 
                     // 이메일, 성별, 연령대, 생일 정보를 제공하는 것에 동의했는지 체크
@@ -279,11 +280,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
 
         naverLogInButton.setOAuthLoginHandler(naverLoginHandler);
-        tv_mail = (TextView)findViewById(R.id.textView4);
+//        tv_mail = (TextView)findViewById(R.id.textView4);
         btnGetApi = (Button)findViewById(R.id.btngetapi);
         btnGetApi.setOnClickListener(this);
-        btnLogout = (Button)findViewById(R.id.logout2);
-        btnLogout.setOnClickListener(this);
+//        btnLogout = (Button)findViewById(R.id.logout2);
+//        btnLogout.setOnClickListener(this);
 
     }
 
@@ -291,10 +292,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if(v.getId() == R.id.btngetapi){
             new RequestApiTask().execute();//static이 아니므로 클래스 만들어서 시행.
         }
-        if(v.getId() == R.id.logout2){
-            naverLoginInstance.logout(context);
-            tv_mail.setText((String) "");//메일 란 비우기
-        }
+//        if(v.getId() == R.id.logout2){
+//            naverLoginInstance.logout(context);
+//            tv_mail.setText((String) "");//메일 란 비우기
+//        }
 
     }
 
@@ -318,7 +319,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         public void onPostExecute(String content) {//doInBackground 에서 리턴된 값이 여기로 들어온다.
             try {
-                Toast.makeText(context,"성공적으로 Main에 네이버 로그인정보 전송1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"성공적으로 Main에 네이버 로그인정보 전송",Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject(content);
                 JSONObject response = jsonObject.getJSONObject("response");
                 //String email = response.getString("email");

@@ -66,24 +66,29 @@ public class LoginInfo extends AppCompatActivity {
             public void onClick(View v) {//다음 버튼을 누르면
                 Toast.makeText(getApplicationContext(), "정상적으로 메인문으로 갑니다~", Toast.LENGTH_SHORT).show();
 
-                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {//로그아웃실행
-                    @Override
-                    public void onCompleteLogout() {
-                        //로그아웃 성공 시 로그인 화면(LoginActivity)로 이동
-                        Intent intent = new Intent(LoginInfo.this, MainActivity.class);
-                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        if (strNickname == "none")
-                            intent.putExtra("name", "일반사용자");
-                        else
-                            intent.putExtra("name", strNickname);
-
-                        if (strEmail=="none")
-                            intent.putExtra("Email", "00000@naver.com");
-                        else
-                            intent.putExtra("Email", strEmail);
-                        startActivity(intent);
-                    }
-                });
+//                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {//로그아웃실행
+//                    @Override
+//                    public void onCompleteLogout() {
+//                        //로그아웃 성공 시 로그인 화면(LoginActivity)로 이동
+//                        Intent intent = new Intent(LoginInfo.this, MainActivity.class);
+//                        //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        if (strNickname == "none")
+//                            intent.putExtra("name", "일반사용자");
+//                        else
+//                            intent.putExtra("name", strNickname);
+//
+//                        if (strEmail=="none")
+//                            intent.putExtra("Email", "00000@naver.com");
+//                        else
+//                            intent.putExtra("Email", strEmail);
+//                        startActivity(intent);
+//                    }
+//                });
+                Intent intent = new Intent(LoginInfo.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("name", strNickname);
+                intent.putExtra("Email", strEmail);
+                startActivity(intent);
             }
         });
 
