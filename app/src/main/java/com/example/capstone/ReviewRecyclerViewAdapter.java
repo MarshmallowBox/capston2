@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 
 public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecyclerViewAdapter.ViewHolder> {
+
 
     private ArrayList<ReviewDTO> reviewDTOS = null;
 
@@ -42,7 +44,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
     public void onBindViewHolder(@NonNull ReviewRecyclerViewAdapter.ViewHolder holder, final int position) {
         //데이터를 넣어주는 부분
         ReviewDTO item = reviewDTOS.get(position) ;
-//       holder.name.setText(reviewDTOS.get(position).userName);
+       holder.name.setText(reviewDTOS.get(position).userName);
        holder.date.setText(reviewDTOS.get(position).date);
        holder.text.setText(reviewDTOS.get(position).text);
        holder.star.setRating((float) reviewDTOS.get(position).score);
@@ -52,6 +54,10 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                System.out.println(reviewDTOS.get(position).ID);
+                DbCon.Review review = new DbCon.Review();
+                review.execute(String.valueOf(reviewDTOS.get(position).ID),"3","1","1","1","1");//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
                 reviewDTOS.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, reviewDTOS.size());

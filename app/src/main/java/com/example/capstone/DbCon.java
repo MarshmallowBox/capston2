@@ -273,14 +273,14 @@ public class DbCon extends AppCompatActivity {
                     System.out.println("4");
                     String user_id = item.getString(TAG_ME_ID);
                     System.out.println("5");
-                    //String user_name = item.getString(TAG_USERNAME);
+                    String user_name = item.getString(TAG_USERNAME);
                     String date = item.getString(TAG_DATE);
                     System.out.println("6");
                     String score = item.getString(TAG_SCORE);
                     System.out.println("7");
                     String text = item.getString(TAG_REVIEWTXt);
                     System.out.println("8");
-                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),date,Double.parseDouble(score),text));//유저네임빠져있음
+                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
                     System.out.println("9");
                 }
                 System.out.println("**************");

@@ -73,16 +73,18 @@ public class ReviewPopupActivity extends Activity {
             String formatDate = sdfNow.format(date);
 
             System.out.println("리뷰목록가져오기");
+            System.out.println(id);
+            System.out.println(name);
             DbCon.Review review = new DbCon.Review();
-            review.execute("272332","1","1","1","1","1");//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
+            review.execute(String.valueOf(id),"1","1","1","1","1");//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
 //            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
 
-            mList.add(new ReviewDTO(1, 1, 1, formatDate,3, "11111111111111111111"));
-            mList.add(new ReviewDTO(2, 1, 2, formatDate, 2.5, "22222222222222222222"));
-            mList.add(new ReviewDTO(3, 1, 1,formatDate, 4.5, "11111111111111111111"));
-            mList.add(new ReviewDTO(4, 1, 3, formatDate, 4, "가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차"));
-            mList.add(new ReviewDTO(5, 1, 1, formatDate, 5, "11111111111111111111"));
-            mList.add(new ReviewDTO(6, 1, 4, formatDate, 0.5, ""));
+            mList.add(new ReviewDTO(1, 1, 1,"1", formatDate,3, "11111111111111111111"));
+            mList.add(new ReviewDTO(2, 1, 2,"1", formatDate, 2.5, "22222222222222222222"));
+            mList.add(new ReviewDTO(3, 1, 1,"1",formatDate, 4.5, "11111111111111111111"));
+            mList.add(new ReviewDTO(4, 1, 3,"1", formatDate, 4, "가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차"));
+            mList.add(new ReviewDTO(8, 1, 1,"1", formatDate, 5, "11111111111111111111"));
+            mList.add(new ReviewDTO(6, 1, 4,"1", formatDate, 0.5, ""));
 
             mAdapter.notifyDataSetChanged();
             Button close = findViewById(R.id.review_popup_close);
@@ -124,7 +126,7 @@ public class ReviewPopupActivity extends Activity {
                     //st_id: id, me_id: ?, score: star.getRating(), reviewTXT: text.getText(), date: formatDate
                     Toast.makeText(ReviewPopupActivity.this, "st_id:"+ id+ "me_id: ?"+ "score:"+ star.getRating()+ "reviewTXT:"+ text.getText()+ "date:"+ formatDate, Toast.LENGTH_SHORT).show();
                     DbCon.Review review = new DbCon.Review();
-                    review.execute("272332","2","1","1","1","1");//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
+                    review.execute(String.valueOf(id),"2","2",String.valueOf(star.getRating()),String.valueOf(text.getText()),formatDate);//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
                     Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
                     addReviewIntent.putExtra("id", id);
                     addReviewIntent.putExtra("name", name);
