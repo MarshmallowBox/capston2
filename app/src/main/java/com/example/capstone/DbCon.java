@@ -60,7 +60,6 @@ public class DbCon extends AppCompatActivity {
     public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();;
     static String mJsonString;
-    private static String TAG = "phpquerytest";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

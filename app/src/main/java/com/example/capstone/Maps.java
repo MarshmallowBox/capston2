@@ -32,6 +32,7 @@ import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.widget.LocationButtonView;
 import com.naver.maps.map.widget.ZoomControlView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -80,59 +81,32 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
         mapView.getMapAsync(this);
 
         mLayout = view.findViewById(R.id.sliding_layout);
-//        mLayout.addPanelSlideListener(new PanelSlideListener() {
-//            @Override
-//            public void onPanelSlide(View panel, float slideOffset) {
-//
-//                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
-//            }
-//
-//            @Override
-//            public void onPanelStateChanged(View panel, PanelState previousState, PanelState newState) {
-////                if(newState == PanelState.EXPANDED){
-////                    mLayout.setPanelHeight(70*4);
-////                } else{
-////                    mLayout.setPanelHeight(0);
-////                }
-//
-//                Log.i(TAG, "onPanelStateChanged " + newState);
-//            }
-//        });
-//        mLayout.setFadeOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mLayout.setPanelState(PanelState.COLLAPSED);
-//            }
-//        });
+        mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+            }
 
-//        markerAdapter= new MarkerAdapter();
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+//                if(newState == PanelState.EXPANDED){
+//                    mLayout.setPanelHeight(70*4);
+//                } else{
+//                    mLayout.setPanelHeight(0);
+//                }
+
+            }
+        });
+        mLayout.setFadeOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            }
+        });
+
         Markers = new ArrayList<>();
         singleMarkers = new Marker();
         return view;
     }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == 1) {
-//            if (resultCode == RESULT_OK) {
-//                System.out.println("RESULT_OK");
-//                //데이터 받기
-//                ArrayList<String> result = new ArrayList<>(Objects.requireNonNull(data.getStringArrayListExtra("result")));
-////                if (result.get(0).equals("addReview_popup_close")) {
-////                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
-////                    intent.putStringArrayListExtra("data", result);
-////                    startActivityForResult(intent, 1);
-////                }
-//                if (result.get(0).equals("addReview_popup_open")) {
-//                    System.out.println("equals addReview_popup_open");
-//                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
-//                    intent.putStringArrayListExtra("data", result);
-//                    startActivityForResult(intent, 1);
-//                }
-//
-//            }
-//        }
-//    }
 
     @Override
     public void onMapReady(@NonNull final NaverMap naverMap) {
@@ -400,7 +374,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             if (rootView == null) {
                 rootView = View.inflate(context, R.layout.view_custom_info_window, null);
                 name = rootView.findViewById(R.id.view_custom_info_window_title);
-                address = rootView.findViewById(R.id.view_custom_info_window_desc);
+                address = rootView.findViewById(R.id.view_custom_info_window_category);
             }
 
             if (infoWindow.getMarker() != null) {

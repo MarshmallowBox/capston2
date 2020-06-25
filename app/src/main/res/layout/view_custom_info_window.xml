@@ -38,7 +38,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/view_custom_info_window_desc"
+            android:id="@+id/view_custom_info_window_category"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:ellipsize="end"
