@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //이거 UI로 옮기는거 찾으면 더깔끔쓰~
         //하단바클릭이벤트를 위한 프레그먼트 생성
 
+        
         //사용자 데이터
         fragmentManager = getSupportFragmentManager();
         Intent intent = getIntent();
