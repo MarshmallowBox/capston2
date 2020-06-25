@@ -2,7 +2,6 @@ package com.example.capstone;
 
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -36,6 +35,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DbCon extends AppCompatActivity {
     private static String TAG = "phpquerytest";
@@ -56,7 +56,6 @@ public class DbCon extends AppCompatActivity {
     private static final String TAG_DATE ="date";
     private static final String TAG_REVIEWTXt ="reviewTXT";
 
-    public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
     public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();;
     static String mJsonString;
@@ -329,9 +328,9 @@ public class DbCon extends AppCompatActivity {
 
 
     public static class Search extends AsyncTask<String, Void, String> {
+
         public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
         String errorString = null;
-        String mJsonString = null;
         ArrayList<Marker> Markers;
         Activity activity;
         NaverMap naverMap;
@@ -377,7 +376,9 @@ public class DbCon extends AppCompatActivity {
                     String tel = item.getString(TAG_TEL);
                     String latitude = item.getString(TAG_LATITUDE);
                     String longitude = item.getString(TAG_LONGITUDE);
+                    HashMap<String, String> hashMap = new HashMap<>();
                     Franchises.add(new FranchiseDTO(Integer.parseInt(id), name, address, category, tel, Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                    mArrayList.add(hashMap);
                 }
                 System.out.println("**************");
                 System.out.println(Franchises);
@@ -482,6 +483,7 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
+
     public static class Zzim extends AsyncTask<String, Void, String> {
         static ArrayList<FranchiseDTO> ZzimFranchise = new ArrayList<>();
         static String mode = null;
@@ -532,7 +534,8 @@ public class DbCon extends AppCompatActivity {
                         String tel = item.getString(TAG_TEL);
                         String latitude = item.getString(TAG_LATITUDE);
                         String longitude = item.getString(TAG_LONGITUDE);
-                        ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id), name, address, category, tel, Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                        ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
+
                         if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_S_ID))) {
                             InfoPopupActivity.star.setChecked(true);
                         } else {
@@ -603,6 +606,7 @@ public class DbCon extends AppCompatActivity {
                 errorString = e.toString();
                 return null;
             }
+
         }
     }
 
