@@ -176,6 +176,13 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                //비회원 관리
+                if(MainActivity.strNickname.equals("비회원")){
+                    if(item.getItemId()==R.id.myplaces || item.getItemId()==R.id.edit){
+                        Toast.makeText(MainActivity.this, "로그인후 이용가능한 기능입니다.", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                }
                 item.setChecked(true);
 
                 switch (item.getItemId()) {
@@ -228,16 +235,12 @@ public class MainActivity extends AppCompatActivity {
                         searchView.setIconified(true);
                         searchView.clearFocus();
                         horizontalScrollView.setVisibility(View.VISIBLE);
-                        if (myPlaceFrag == null) {
                             myPlaceFrag = new MyPlace();
                             fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
-                        }
                         if (mapsFrag != null)
                             fragmentManager.beginTransaction().hide(mapsFrag).commit();
                         if (placeListFrag != null)
                             fragmentManager.beginTransaction().hide(placeListFrag).commit();
-                        if (myPlaceFrag != null)
-                            fragmentManager.beginTransaction().show(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             fragmentManager.beginTransaction().hide(moneyFrag).commit();
                         break;
@@ -277,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
         user_money.setText("100,000");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
-        MainActivity.user_city.setText("화성시");
+//        MainActivity.user_city.setText("화성시");
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -375,7 +378,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
             }
         }
-
+        if(MainActivity.strNickname.equals("비회원")){
+            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
+            startActivity(setting);
+        }
 
     }
 

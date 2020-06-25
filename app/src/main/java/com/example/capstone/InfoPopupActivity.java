@@ -80,7 +80,7 @@ public class InfoPopupActivity extends Activity {
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
-        System.out.println(DbCon.Zzim.ZzimFranchise);
+//        System.out.println(DbCon.Zzim.ZzimFranchise);
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
@@ -97,6 +97,10 @@ public class InfoPopupActivity extends Activity {
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.myplaces){
+                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.myplaces);
+                }
+
                 if(star.isChecked()){
                     System.out.println("체크되었음");
                     DbCon.Zzim Zzim = new DbCon.Zzim();
@@ -292,6 +296,10 @@ public class InfoPopupActivity extends Activity {
                 finish();
             }
         });
+        if(MainActivity.strNickname.equals("비회원")){
+            addReview.setVisibility(View.INVISIBLE);
+            star.setVisibility(View.INVISIBLE);
+        }
     }
 
     /*//확인 버튼 클릭

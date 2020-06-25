@@ -1,15 +1,12 @@
 package com.example.capstone;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +45,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
        holder.date.setText(reviewDTOS.get(position).date);
        holder.text.setText(reviewDTOS.get(position).text);
        holder.star.setRating((float) reviewDTOS.get(position).score);
-       if(reviewDTOS.get(position).userID!=1){
+       if(reviewDTOS.get(position).userID!=2){
            ((Button)holder.delete).setVisibility(View.INVISIBLE);
        }
         holder.delete.setOnClickListener(new View.OnClickListener() {

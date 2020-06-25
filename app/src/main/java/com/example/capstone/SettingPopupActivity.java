@@ -77,6 +77,7 @@ public class SettingPopupActivity extends Activity {
     @Override
     public void onBackPressed() {
         //안드로이드 백버튼
+
         if (citySpinner.getSelectedItemId() == 0) {
             Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
         } else if (!(String.valueOf(citySpinner.getSelectedItem()).equals(String.valueOf(MainActivity.user_city.getText())))) {

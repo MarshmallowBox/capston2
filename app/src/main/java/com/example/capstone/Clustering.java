@@ -38,7 +38,7 @@ public class Clustering {
             }
         }
 
-        ArrayList<FranchiseDTO>[] sortedClusterData = new ArrayList[lengthCount];
+        ArrayList[] sortedClusterData = new ArrayList[lengthCount];
 
         for (int i = 0, index = 0; i < clusterData.length; i++) {
             if (clusterData[i] != null) {

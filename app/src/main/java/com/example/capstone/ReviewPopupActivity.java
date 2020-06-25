@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,8 +35,6 @@ public class ReviewPopupActivity extends Activity {
     String mode;
 
     RecyclerView mRecyclerView = null;
-    ReviewRecyclerViewAdapter mAdapter = null;
-    ArrayList<ReviewDTO> mList = new ArrayList<ReviewDTO>();
 
 
     @SuppressLint("SetTextI18n")
@@ -60,34 +57,20 @@ public class ReviewPopupActivity extends Activity {
 
         if (mode.equals("Review_popup_open")) {
             setContentView(R.layout.activity_review_popup);
+            ((TextView) findViewById(R.id.review_popup_title)).setText(name + " 리뷰보기");
 
             mRecyclerView = findViewById(R.id.review_popup_recyclerview);
-            // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-            mAdapter = new ReviewRecyclerViewAdapter(mList);
-            mRecyclerView.setAdapter(mAdapter);
-
-            // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
-            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-
-            Date date = new Date(System.currentTimeMillis());
-            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            String formatDate = sdfNow.format(date);
 
             System.out.println("리뷰목록가져오기");
             System.out.println(id);
             System.out.println(name);
-            DbCon.Review review = new DbCon.Review();
-            review.execute(String.valueOf(id),"1","1","1","1","1");//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
+            DbCon.Review review = new DbCon.Review(this,mRecyclerView);
+            // store_id, function, member_id, score, reviewTXT, date 순으로 보내는거임 임의로
+            review.execute(String.valueOf(id),"1","1","1","1","1");
 //            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
-            mList.add(new ReviewDTO(1, 1, 1,"1", formatDate,3, "11111111111111111111"));
-            mList.add(new ReviewDTO(2, 1, 2,"2", formatDate, 2.5, "22222222222222222222"));
-            mList.add(new ReviewDTO(3, 1, 1,"1", formatDate, 4.5, "11111111111111111111"));
-            mList.add(new ReviewDTO(4, 1, 3,"3", formatDate, 4, "가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차가나다라마바사아자차"));
-            mList.add(new ReviewDTO(5, 1, 1,"1", formatDate, 5, "11111111111111111111"));
-            mList.add(new ReviewDTO(6, 1, 4,"4", formatDate, 0.5, ""));
 
-            mAdapter.notifyDataSetChanged();
+
+
             Button close = findViewById(R.id.review_popup_close);
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,7 +95,7 @@ public class ReviewPopupActivity extends Activity {
         if (mode.equals("addReview_popup_open")) {
             setContentView(R.layout.activity_review_add_popup);
 
-            ((TextView) findViewById(R.id.review_popup_title)).setText(name + " 리뷰쓰기");
+            ((TextView) findViewById(R.id.review_add_popup_title)).setText(name + " 리뷰쓰기");
             final EditText text = findViewById(R.id.review_add_popup_text);
             Button submit = findViewById(R.id.review_add_popup_submit);
             final RatingBar star = findViewById(R.id.review_add_popup_star);

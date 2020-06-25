@@ -36,7 +36,6 @@
         <activity android:name=".MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|layoutDirection"/>
         <activity android:name=".LoginInfo" />
-
         <activity android:name=".InfoPopupActivity" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".ReviewPopupActivity"/>
         <activity android:name=".HelpPopupActivity" android:theme="@android:style/Theme.Dialog"/>

@@ -483,14 +483,14 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-
-    public static class Zzim extends AsyncTask<String, Void, String> {
-        static ArrayList<FranchiseDTO> ZzimFranchise = new ArrayList<>();
-        static String mode = null;
-        private static Context context;
+    static class Zzim extends AsyncTask<String, Void, String> {
+        ArrayList<FranchiseDTO> ZzimFranchise = new ArrayList<>();
+        String mode = null;
         String errorString = null;
-        static String mJsonString = null;
-        private static RecyclerView recyclerView;
+        String mJsonString = null;
+        Context context= null;
+        RecyclerView recyclerView= null;
+        FranchiseRecyclerViewAdapter mAdapter= null;
         Zzim(){
 
         }
@@ -513,7 +513,7 @@ public class DbCon extends AppCompatActivity {
                 showResult();
             }
         }
-        public static void showResult() {
+        public void showResult() {
             if (mode.equals("call")) {
                 try {
                     ZzimFranchise.clear();
@@ -535,22 +535,33 @@ public class DbCon extends AppCompatActivity {
                         String latitude = item.getString(TAG_LATITUDE);
                         String longitude = item.getString(TAG_LONGITUDE);
                         ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
-
-                        if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_S_ID))) {
-                            InfoPopupActivity.star.setChecked(true);
-                        } else {
-                            InfoPopupActivity.star.setChecked(false);
+Log.d("ZZIMZZIM","InfoPopupActivity.franchiseID: "+InfoPopupActivity.franchiseID);
+Log.d("ZZIMZZIM","item.getString(TAG_ID): "+item.getString(TAG_ID));
+                        if(InfoPopupActivity.franchiseID!=0){
+                            if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_ID))) {
+                                InfoPopupActivity.star.setChecked(true);
+                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(true);");
+                            } else {
+                                InfoPopupActivity.star.setChecked(false);
+                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(false);");
+                            }
                         }
+
                     }
                 } catch (JSONException e) {
                     Log.d(TAG, "showResult : ", e);
                 } finally {
-                    FranchiseRecyclerViewAdapter mAdapter = new FranchiseRecyclerViewAdapter(ZzimFranchise);
-                    recyclerView.setAdapter(mAdapter);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    if(context!=null && recyclerView !=null){
+                        Log.d(TAG, "asjkfhkajshgkjashgkjhasgkj");
+                        mAdapter = new FranchiseRecyclerViewAdapter(ZzimFranchise);
+                        recyclerView.setAdapter(mAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-                    mAdapter.notifyDataSetChanged();//데이터변경시
+                        mAdapter.notifyDataSetChanged();//데이터변경시
+
+                    }
                     if(InfoPopupActivity.star!=null){
+
                     InfoPopupActivity.star.invalidate();
                     }
                 }
@@ -613,10 +624,15 @@ public class DbCon extends AppCompatActivity {
     public static class Review extends AsyncTask<String, Void, String>{
         String errorString = null;
         static String mJsonString = null;
-
+static Activity activity=null;
+        static RecyclerView mRecyclerView = null;
         public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
         Review(){
 
+        }
+        Review(ReviewPopupActivity activity, RecyclerView mRecyclerView){
+this.activity=activity;
+this.mRecyclerView=mRecyclerView;
         }
 
         @Override
@@ -641,30 +657,29 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("222222");
                 Reviews.clear();
                 for(int i=0;i<jsonArray.length();i++){
-                    System.out.println("1");
                     JSONObject item = jsonArray.getJSONObject(i);
-                    System.out.println("2");
                     String review_id = item.getString(TAG_REVIEWID);
-                    System.out.println("3");
                     String store_id = item.getString(TAG_STORE_ID);
-                    System.out.println("4");
                     String user_id = item.getString(TAG_ME_ID);
-                    System.out.println("5");
                     String user_name = item.getString(TAG_USERNAME);
                     String date = item.getString(TAG_DATE);
-                    System.out.println("6");
                     String score = item.getString(TAG_SCORE);
-                    System.out.println("7");
                     String text = item.getString(TAG_REVIEWTXt);
-                    System.out.println("8");
                     Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
-                    System.out.println("9");
                 }
                 System.out.println("**************");
                 System.out.println(Reviews);
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
+            } finally {
+                // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+                ReviewRecyclerViewAdapter mAdapter = new ReviewRecyclerViewAdapter(Reviews);
+                mRecyclerView.setAdapter(mAdapter);
+
+                // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                mAdapter.notifyDataSetChanged();
             }
         }
         @Override
