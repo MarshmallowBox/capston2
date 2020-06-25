@@ -140,7 +140,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
-                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
+                    DbCon.DataAdapter dataAdapter=null;
+                    if (dataAdapter != null) {
+                        dataAdapter.cancel(true);
+                        dataAdapter = null;
+                    }
+                    dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
+                    Log.i("DataAdapter", "현위치");
+                    if (dataAdapter != null) {
+                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude));
+                    }
                 } else {
                     if (PlaceList.isCheckedButtonNear) {
                         PlaceList.button_near.performClick();
