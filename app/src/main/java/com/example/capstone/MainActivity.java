@@ -40,6 +40,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.naver.maps.map.CameraUpdate;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,12 +59,12 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     public static DbCon.Search Search;
 
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         //앱바(툴바) 생성부분인데 밑에 이벤트와같이 UI클래스에 같이 합칠수있는지 시도해보기
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -78,10 +79,18 @@ public class MainActivity extends AppCompatActivity {
         //하단바클릭이벤트를 위한 프레그먼트 생성
 
         //사용자 데이터
+        System.out.println("시작이다!!!");
+
         fragmentManager = getSupportFragmentManager();
         Intent intent = getIntent();
         strNickname = Objects.requireNonNull(intent.getExtras()).getString("name");
         strEmail = intent.getExtras().getString("Email");
+        DbCon.Member Member = new DbCon.Member();
+        Member.execute(strEmail);
+
+        System.out.println(strNickname);
+
+        System.out.println("야호!!!");
 
 
         //UI
@@ -112,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             //그룹에 추가
             radioGroup.addView(radioButton);
+
         }
 
         //첫번째 라디오버튼(전체 카테고리) 셋팅
@@ -120,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         firstBitton.setChecked(true);
         //아이콘 삽입
         firstBitton.setButtonDrawable(R.drawable.baseline_sentiment_very_satisfied_black_18dp);
+
 
         //전체 라디오버튼에 대한 이벤트
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {

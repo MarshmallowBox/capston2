@@ -187,6 +187,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             @Override
             public void onOptionChange() {
 
+
                 //모드 가져오기
                 LocationTrackingMode mode = naverMap.getLocationTrackingMode();
 

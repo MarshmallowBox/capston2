@@ -58,8 +58,10 @@ public class DbCon extends AppCompatActivity {
 
     public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
     public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
+    public static ArrayList<MemberDTO> Members = new ArrayList<>();
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();;
     static String mJsonString;
+    static int rowcount=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -327,8 +329,8 @@ public class DbCon extends AppCompatActivity {
 
     }
 
-
     public static class Search extends AsyncTask<String, Void, String> {
+
         public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
         String errorString = null;
         ArrayList<Marker> Markers;
@@ -501,8 +503,15 @@ public class DbCon extends AppCompatActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         System.out.println(i);
                         JSONObject item = jsonArray.getJSONObject(i);
-                        DBString.add(item.getString(TAG_S_ID));
-                        if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_S_ID))) {
+                        String id = item.getString(TAG_ID);
+                        String name = item.getString(TAG_NAME);
+                        String address = item.getString(TAG_ADDRESS);
+                        String category = item.getString(TAG_CATEGORY);
+                        String tel = item.getString(TAG_TEL);
+                        String latitude = item.getString(TAG_LATITUDE);
+                        String longitude = item.getString(TAG_LONGITUDE);
+                        Franchises.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
+                        if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_ID))) {
                             InfoPopupActivity.star.setChecked(true);
                             break;
                         } else {
@@ -627,6 +636,7 @@ public class DbCon extends AppCompatActivity {
                     System.out.println("8");
                     Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
                     System.out.println("9");
+                    rowcount++;
                 }
                 System.out.println("**************");
                 System.out.println(Reviews);
@@ -686,6 +696,223 @@ public class DbCon extends AppCompatActivity {
             }
         }
     }
+
+    public static class Member extends AsyncTask<String, Void, String>{
+        String errorString = null;
+
+        private static final String TAG_MEMBER_ID = "member_id";
+        private static final String TAG_TEL = "tel";
+        private static final String TAG_NAME = "name";
+        private static final String TAG_NICKNAME = "nickname";
+        private static final String TAG_EMAIL = "email";
+        private static final String TAG_AGERANGE = "agerange";
+        private static final String TAG_GENDER = "gender";
+        private static final String TAG_BIRTHDAY = "birthday";
+        private static final String TAG_PROFILEIMG = "profileimg";
+        private static final String TAG_STARTMONEY = "startmoney";
+        private static final String TAG_CT_ID = "ct_id";
+
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "response ----멤버---- " + result);
+            if (result == null){
+            }
+            else {
+                mJsonString = result;
+                showResult();
+            }
+        }
+        public static void showResult(){
+            try {
+                System.out.println("멤버멤버멤버");
+                JSONObject jsonObject = new JSONObject(mJsonString);
+                System.out.println("111111");
+                JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+                System.out.println("222222");
+                Reviews.clear();
+                for(int i=0;i<jsonArray.length();i++){
+                    JSONObject item = jsonArray.getJSONObject(i);
+                    String member_id = item.getString(TAG_MEMBER_ID);
+                    String tel = item.getString(TAG_TEL);
+                    String name = item.getString(TAG_NAME);
+                    String nickname = item.getString(TAG_NICKNAME);
+                    String email = item.getString(TAG_EMAIL);
+                    String agerange = item.getString(TAG_AGERANGE);
+                    String gender = item.getString(TAG_GENDER);
+                    String birthday = item.getString(TAG_BIRTHDAY);
+                    String profileimg = item.getString(TAG_PROFILEIMG);
+                    String startmoney = item.getString(TAG_STARTMONEY);
+                    String ct_id = item.getString(TAG_CT_ID);
+                    Members.add(new MemberDTO(Integer.parseInt(member_id),tel,name,nickname,email,agerange,gender,birthday,profileimg,startmoney,Integer.parseInt(ct_id)));
+                    System.out.println("12");
+                }
+                System.out.println("**************");
+                System.out.println(Members);
+                System.out.println("**************");
+            } catch (JSONException e) {
+                Log.d(TAG, "showResult : ", e);
+            }
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            String searchKeyword1 = params[0];
+
+
+            System.out.println(searchKeyword1);
+            String serverURL = "http://rtemd.suwon.ac.kr/capstone/member.php";
+            System.out.println(serverURL);
+            String postParameters = "email=" + searchKeyword1 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            System.out.println(postParameters);
+            try {
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.connect();
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "response code - " + responseStatusCode);
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+                bufferedReader.close();
+                return sb.toString().trim();
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                errorString = e.toString();
+                return null;
+            }
+        }
+    }
+
+    public static class Money extends AsyncTask<String, Void, String>{
+        String errorString = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "response ----리뷰---- " + result);
+            if (result == null){
+            }
+            else {
+                mJsonString = result;
+                showResult();
+            }
+        }
+        public static void showResult(){
+            try {
+                System.out.println("리뷰리뷰리뷰");
+                JSONObject jsonObject = new JSONObject(mJsonString);
+                System.out.println("111111");
+                JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+                System.out.println("222222");
+                Reviews.clear();
+                for(int i=0;i<jsonArray.length();i++){
+                    System.out.println("1");
+                    JSONObject item = jsonArray.getJSONObject(i);
+                    System.out.println("2");
+                    String review_id = item.getString(TAG_REVIEWID);
+                    System.out.println("3");
+                    String store_id = item.getString(TAG_STORE_ID);
+                    System.out.println("4");
+                    String user_id = item.getString(TAG_ME_ID);
+                    System.out.println("5");
+                    String user_name = item.getString(TAG_USERNAME);
+                    String date = item.getString(TAG_DATE);
+                    System.out.println("6");
+                    String score = item.getString(TAG_SCORE);
+                    System.out.println("7");
+                    String text = item.getString(TAG_REVIEWTXt);
+                    System.out.println("8");
+                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
+                    System.out.println("9");
+                }
+                System.out.println("**************");
+                System.out.println(Reviews);
+                System.out.println("**************");
+            } catch (JSONException e) {
+                Log.d(TAG, "showResult : ", e);
+            }
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            String searchKeyword1 = params[0];
+            String searchKeyword2 = params[1];
+            String searchKeyword3 = params[2];
+            String searchKeyword4 = params[3];
+            String searchKeyword5 = params[4];
+            String searchKeyword6 = params[5];
+
+            System.out.println(searchKeyword1);
+            String serverURL = "http://rtemd.suwon.ac.kr/capstone/review.php";
+            System.out.println(serverURL);
+            String postParameters = "st_id=" + searchKeyword1 + "&function=" + searchKeyword2  + "&me_id=" + searchKeyword3  + "&score=" + searchKeyword4  + "&reviewTXT=" + searchKeyword5  + "&date=" + searchKeyword6 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            System.out.println(postParameters);
+            try {
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.connect();
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.flush();
+                outputStream.close();
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "response code - " + responseStatusCode);
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+                bufferedReader.close();
+                return sb.toString().trim();
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                errorString = e.toString();
+                return null;
+            }
+        }
+    }
+
 
 
 
