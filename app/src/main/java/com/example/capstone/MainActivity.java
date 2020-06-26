@@ -490,7 +490,7 @@ Thread thread = new Thread(){
                 }
                 Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s, "1");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "1",String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
                 searchView.clearFocus();
                 return true;
@@ -508,7 +508,7 @@ Thread thread = new Thread(){
                 }
                 Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s, "2");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "2",String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
 
                 return false;
