@@ -792,6 +792,11 @@ public class DbCon extends AppCompatActivity {
                 if(Members.size()==0){
                     MainActivity.flag = true;
                 }
+
+                MainActivity.textView.setText(Members.get(0).name);
+                MainActivity.textView1.setText(Members.get(0).email);
+                MainActivity.user_money.setText(Members.get(0).startmoney);
+
             }
         }
 

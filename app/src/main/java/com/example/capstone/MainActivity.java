@@ -64,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     DbCon dbCon;
     private SearchView searchView;
     private DrawerLayout drawerLayout;
+  public static TextView textView;
+  public static TextView textView1;
+  public static TextView user_money;
+
+
 public static boolean flag = false;
     public void zz(){
         if (MainActivity.strNickname.equals("비회원")) {
@@ -315,12 +320,12 @@ public static boolean flag = false;
         // xml 파일에서 넣어놨던 header 선언
         // header에 있는 리소스 가져오기
         //로그인시 유저의 아이디값 로그인인텐트에서 받아와 이름변경
-        final TextView textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
+        textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
+        textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
+        user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
         textView.setText(strNickname);
-        final TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
         textView1.setText(strEmail);
-        final TextView user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
-        user_money.setText("100,000");
+        user_money.setText("0");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
         MainActivity.user_city.setText("지역을 선택하세요.");
 
@@ -338,11 +343,10 @@ Thread thread = new Thread(){
         try {
         while (!flag){
                 sleep(100);
-                Log.d("runrunrun","runrun");
-        }
+        }if(!strNickname.equals("비회원")){
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
             setting.putExtra("mode","new");
-            startActivity(setting);
+            startActivity(setting);}
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

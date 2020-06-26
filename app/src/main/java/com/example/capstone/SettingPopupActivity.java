@@ -21,7 +21,7 @@ import java.util.Objects;
 
 public class SettingPopupActivity extends Activity {
     Spinner citySpinner = null;
-String mdoe="";
+String mode="";
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -30,7 +30,8 @@ String mdoe="";
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting_popup);
         Intent intent = getIntent();
-        mdoe = intent.getStringExtra("mode");
+        mode = intent.getStringExtra("mode");
+        Log.d("modemodemode","mode: "+mode);
 
 
         final String[] city = getResources().getStringArray(R.array.cityArray);
@@ -61,10 +62,9 @@ String mdoe="";
                 if (citySpinner.getSelectedItemId() == 0) {
                     Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
-                    if(mdoe.equals("new")){
+                    if(mode!=null&&mode.equals("new")){
 //                        String.valueOf(citySpinner.getSelectedItem()) -> city값
                         //DB ADD
-                        Log.d("plezzzzzzzzzzzzzz","asdasdasdasd");
                     }
                     MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
 //                Toast.makeText(SettingPopupActivity.this, String.valueOf(citySpinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
