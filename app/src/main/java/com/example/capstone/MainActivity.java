@@ -34,6 +34,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,21 +45,29 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    public static String strNickname, strProfile, strEmail, strAgeRange, strGender, strBirthday;;
+    public static String strNickname, strProfile, strEmail, strAgeRange, strGender, strBirthday;
     @SuppressLint("StaticFieldLeak")
-    public static TextView user_city;
+    public static TextView user_city, user_money;
     @SuppressLint("StaticFieldLeak")
     public static RadioGroup radioGroup;
     public static Fragment mapsFrag;
     public static BottomNavigationView bottomNavigationView;
-    public static int originmoney=1000000;  //여기에 초기 가지고있는 돈 넣어놓으면 됨
+    public static int originmoney=0;  //여기에 초기 가지고있는 돈 넣어놓으면 됨
     public FragmentManager fragmentManager;
     Fragment placeListFrag;
     Fragment myPlaceFrag;
     Fragment moneyFrag;
+    DbCon.Search Search;
+    DbCon.Member Member;
+    DbCon.DataAdapter dataAdapter;
+    DbCon dbCon;
     private SearchView searchView;
     private DrawerLayout drawerLayout;
-    public static DbCon.Search Search;
+  public static TextView textView;
+  public static TextView textView1;
+
+
+public static boolean flag = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -92,8 +101,16 @@ public class MainActivity extends AppCompatActivity {
         strGender = intent.getExtras().getString("gender");
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
         strEmail = intent.getExtras().getString("email");
-        DbCon.Member Member = new DbCon.Member();
-        Member.execute(strEmail);
+
+        if (Member != null) {
+            Member.cancel(true);
+            Member = null;
+        }
+        Member = new DbCon.Member();
+        if (Member != null) {
+            Member.execute(strEmail,strNickname);
+        }
+
 
         System.out.println(strNickname);
 
@@ -101,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI
-        String[] categoryTitle = {"전체", "음식","카페","유통","의료","유흥","헬스","미용","학원","의류","기타"};
+        String[] categoryTitle = {"전체", "음식", "카페", "유통", "의료", "유흥", "헬스", "미용", "학원", "의류", "기타"};
 
         radioGroup = findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);
@@ -156,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
-                    DbCon.DataAdapter dataAdapter=null;
                     if (dataAdapter != null) {
                         dataAdapter.cancel(true);
                         dataAdapter = null;
@@ -164,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
                     Log.i("DataAdapter", "현위치");
                     if (dataAdapter != null) {
-                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude));
+                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
                     }
                 } else {
                     if (PlaceList.isCheckedButtonNear) {
@@ -193,8 +209,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //비회원 관리
-                if(MainActivity.strNickname.equals("비회원")){
-                    if(item.getItemId()==R.id.myplaces || item.getItemId()==R.id.edit){
+                if (MainActivity.strNickname.equals("비회원")) {
+                    if (item.getItemId() == R.id.myplaces || item.getItemId() == R.id.edit) {
                         Toast.makeText(MainActivity.this, "로그인후 이용가능한 기능입니다.", Toast.LENGTH_SHORT).show();
                         return false;
                     }
@@ -250,15 +266,22 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.myplaces:
                         searchView.setIconified(true);
                         searchView.clearFocus();
-                        horizontalScrollView.setVisibility(View.VISIBLE);
-                        myPlaceFrag = new MyPlace();
-                        fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
+                        horizontalScrollView.setVisibility(View.INVISIBLE);
+                        if (myPlaceFrag == null) {
+                            myPlaceFrag = new MyPlace();
+                            fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
+                        }
                         if (mapsFrag != null)
                             fragmentManager.beginTransaction().hide(mapsFrag).commit();
                         if (placeListFrag != null)
                             fragmentManager.beginTransaction().hide(placeListFrag).commit();
+                        if (myPlaceFrag != null)
+                            fragmentManager.beginTransaction().show(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             fragmentManager.beginTransaction().hide(moneyFrag).commit();
+
+                        FragmentTransaction transaction =  getSupportFragmentManager().beginTransaction();
+                        transaction.detach(myPlaceFrag).attach(myPlaceFrag).commit();
                         break;
                     case R.id.edit:
                         searchView.setIconified(true);
@@ -290,13 +313,33 @@ public class MainActivity extends AppCompatActivity {
         // header에 있는 리소스 가져오기
         //로그인시 유저의 아이디값 로그인인텐트에서 받아와 이름변경
         final TextView textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
-        textView.setText(strNickname);
         final TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
+        user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
+        textView.setText(strNickname);
         textView1.setText(strEmail);
-        final TextView user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
-        user_money.setText("100000");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
-//        MainActivity.user_city.setText("화성시");
+        MainActivity.user_city.setText("지역을 선택하세요.");
+
+
+Thread thread = new Thread(){
+    @Override
+    public void run() {
+        super.run();
+        try {
+        while (!flag){
+                sleep(100);
+                Log.d("Ssibal","쓰레드");
+        }if(!strNickname.equals("비회원")){
+            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
+            setting.putExtra("mode","new");
+            startActivity(setting);}
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+};
+        thread.start();
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -399,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
             }
         }
-        if(MainActivity.strNickname.equals("비회원")){
+        if (MainActivity.strNickname.equals("비회원")) {
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
             startActivity(setting);
         }
@@ -411,6 +454,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case android.R.id.home:// 왼쪽 상단 버튼 눌렀을 때
 //                Toast.makeText(MainActivity.this, "햄버거", Toast.LENGTH_SHORT).show();
+                user_money.setText(String.valueOf(MoneyRecyclerViewAdapter.leftovermoney));
                 drawerLayout.openDrawer(GravityCompat.START);
 
                 return true;
@@ -442,9 +486,9 @@ public class MainActivity extends AppCompatActivity {
                     Search.cancel(true);
                     Search = null;
                 }
-                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
+                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s,"1");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "1");//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
                 searchView.clearFocus();
                 return true;
@@ -460,9 +504,9 @@ public class MainActivity extends AppCompatActivity {
                     Search.cancel(true);
                     Search = null;
                 }
-                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
+                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s,"2");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "2");//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
 
                 return false;

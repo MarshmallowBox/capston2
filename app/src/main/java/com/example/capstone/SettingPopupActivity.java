@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -18,7 +19,7 @@ import android.widget.Toast;
 
 public class SettingPopupActivity extends Activity {
     Spinner citySpinner = null;
-
+String mode="";
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -26,6 +27,10 @@ public class SettingPopupActivity extends Activity {
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_setting_popup);
+        Intent intent = getIntent();
+        mode = intent.getStringExtra("mode");
+        Log.d("modemodemode","mode: "+mode);
+
 
         final String[] city = getResources().getStringArray(R.array.cityArray);
         citySpinner = findViewById(R.id.city_spinner);
@@ -55,6 +60,10 @@ public class SettingPopupActivity extends Activity {
                 if (citySpinner.getSelectedItemId() == 0) {
                     Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
+                    if(mode!=null&&mode.equals("new")){
+//                        String.valueOf(citySpinner.getSelectedItem()) -> city값
+                        //DB ADD
+                    }
                     MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
 //                Toast.makeText(SettingPopupActivity.this, String.valueOf(citySpinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
                     finish();

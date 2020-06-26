@@ -60,7 +60,6 @@ public class DbCon extends AppCompatActivity {
     public static ArrayList<MemberDTO> Members = new ArrayList<>();
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();
     static String mJsonString;
-    static int rowcount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -284,12 +283,13 @@ public class DbCon extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
             String searchKeyword2 = params[1];
+            String searchKeyword3 = params[2];
             Log.i("DataAdapter", "doInBackground");
             System.out.println(searchKeyword1);
             System.out.println(searchKeyword2);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/query.php";
             System.out.println(serverURL);
-            String postParameters = "name=jsh&latitude=" + searchKeyword1 + "&longitude=" + searchKeyword2; // 여기서 범위지정 가능활듯? 범위를 변수로 줘서 + - 시키면????
+            String postParameters = "name=jsh&latitude=" + searchKeyword1 + "&longitude=" + searchKeyword2 + "&city=" + searchKeyword3; // 여기서 범위지정 가능활듯? 범위를 변수로 줘서 + - 시키면????
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -536,15 +536,12 @@ public class DbCon extends AppCompatActivity {
                         String latitude = item.getString(TAG_LATITUDE);
                         String longitude = item.getString(TAG_LONGITUDE);
                         ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
-                        Log.d("ZZIMZZIM","InfoPopupActivity.franchiseID: "+InfoPopupActivity.franchiseID);
-                        Log.d("ZZIMZZIM","item.getString(TAG_ID): "+item.getString(TAG_ID));
+
                         if(InfoPopupActivity.franchiseID!=0){
                             if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_ID))) {
                                 InfoPopupActivity.star.setChecked(true);
-                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(true);");
                             } else {
                                 InfoPopupActivity.star.setChecked(false);
-                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(false);");
                             }
                         }
 
@@ -558,7 +555,6 @@ public class DbCon extends AppCompatActivity {
                         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
                         mAdapter.notifyDataSetChanged();//데이터변경시
-
                     }
                     if(InfoPopupActivity.star!=null){
 
@@ -626,6 +622,8 @@ public class DbCon extends AppCompatActivity {
         static String mJsonString = null;
         static Activity activity=null;
         static RecyclerView mRecyclerView = null;
+        static int rowCount;
+
         public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
         Review(){
 
@@ -642,6 +640,7 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("111111");
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
+                rowCount=0;
                 Reviews.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
@@ -653,7 +652,7 @@ public class DbCon extends AppCompatActivity {
                     String score = item.getString(TAG_SCORE);
                     String text = item.getString(TAG_REVIEWTXt);
                     Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
-                    rowcount++;
+                    rowCount++;
                 }
                 System.out.println("**************");
                 System.out.println(Reviews);
@@ -661,13 +660,18 @@ public class DbCon extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
             }finally {
-                // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-                ReviewRecyclerViewAdapter mAdapter = new ReviewRecyclerViewAdapter(Reviews);
-                mRecyclerView.setAdapter(mAdapter);
+                if(InfoPopupActivity.reviewCounter!=null){
+                    InfoPopupActivity.reviewCounter.setText("리뷰: " + rowCount + "개");
+                }
+                if(activity!=null && mRecyclerView!=null){
+                    // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+                    ReviewRecyclerViewAdapter mAdapter = new ReviewRecyclerViewAdapter(Reviews);
+                    mRecyclerView.setAdapter(mAdapter);
 
-                // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-                mAdapter.notifyDataSetChanged();
+                    // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         }
 
@@ -749,9 +753,10 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_PROFILEIMG = "profileimg";
         private static final String TAG_STARTMONEY = "startmoney";
         private static final String TAG_CT_ID = "ct_id";
+        private static final String TAG_CITY_NAME = "city_name";
         String errorString = null;
 
-        public static void showResult() {
+        public void showResult() {
             try {
                 System.out.println("멤버멤버멤버");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -772,6 +777,8 @@ public class DbCon extends AppCompatActivity {
                     String profileimg = item.getString(TAG_PROFILEIMG);
                     String startmoney = item.getString(TAG_STARTMONEY);
                     String ct_id = item.getString(TAG_CT_ID);
+                    MainActivity.user_city.setText(item.getString(TAG_CITY_NAME));
+                    System.out.println(MainActivity.user_city);
                     Members.add(new MemberDTO(Integer.parseInt(member_id), tel, name, nickname, email, agerange, gender, birthday, profileimg, startmoney, Integer.parseInt(ct_id)));
                     System.out.println("12");
                 }
@@ -780,6 +787,18 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
+            } finally {
+                if(Members.size()==0){
+                    MainActivity.flag = true;
+
+                }else{
+                    MainActivity.textView.setText(Members.get(0).name);
+                    MainActivity.textView1.setText(Members.get(0).email);
+                    MainActivity.user_money.setText(Members.get(0).startmoney);
+                }
+
+
+
             }
         }
 
@@ -802,12 +821,14 @@ public class DbCon extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
+            String searchKeyword2 = params[1];
 
 
             System.out.println(searchKeyword1);
+            System.out.println(searchKeyword2);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/member.php";
             System.out.println(serverURL);
-            String postParameters = "email=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);

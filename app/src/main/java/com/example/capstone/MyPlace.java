@@ -22,6 +22,9 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
+//        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        transaction.detach(this).attach(this).commit();
+
         View view = inflater.inflate(R.layout.activity_myplace, container, false);
         recyclerView = view.findViewById(R.id.myplace_recyclerview);
         System.out.println("찜목록보여주기");

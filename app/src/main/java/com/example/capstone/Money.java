@@ -32,7 +32,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     RecyclerView mRecyclerView = null;
     MoneyRecyclerViewAdapter mAdapter = null;
     ArrayList<MoneyDTO> mList = new ArrayList<MoneyDTO>();
-    static TextView money = null, mainmoney;
+    static TextView money = null;
     EditText datetv,timetv,editText = null;
     EditText editMoney = null;
     Button setoriginmoney, month_day,time_day;
@@ -50,7 +50,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
         //editMoney = view.findViewById(R.id.money_input_money);
         //input = view.findViewById(R.id.money_input);
         //addbtn = view.findViewById(R.id.addButton);
-        addbtn = (ImageButton)view.findViewById(R.id.addButton);//오른쪽 아래 '+' 버튼
+
         //addbtn.setOnClickListener();
         mRecyclerView = view.findViewById(R.id.money_recyclerview);
         mAdapter = new MoneyRecyclerViewAdapter(mList);
@@ -59,25 +59,55 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 
 
         //DB에서 불러올부분 밑에는 보여주기용 임시데이터
-
 //        mList.add(new MoneyDTO("2020-12-20","20:20", "aaaa", 1000));
-////        money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(0).money));
-//
-//        mList.add(new MoneyDTO("2020-12-20","20:20", "bbbb", 2000));
-//
-//
-//        mList.add(new MoneyDTO("2019-12-20","11:11", "cccc", 3000));
-
 
         mAdapter.notifyDataSetChanged(); //얘가 리사이클러뷰 아이템들 업뎃
 
 
+        setoriginmoney = view.findViewById(R.id.setoriginmoneybtn);
+        setoriginmoney.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "클릭", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater2 = getActivity().getLayoutInflater();
+                View alertLayout2 = inflater2.inflate(R.layout.originmoney_popup, null);
+                builder2.setView(view);
+                final TextInputEditText TvOriginmoney = alertLayout2.findViewById(R.id.tvoriginmoney);
+                AlertDialog.Builder alert2 = new AlertDialog.Builder(getActivity());
+                alert2.setTitle("현재 잔액을 넣어주세요");
+                alert2.setView(alertLayout2);
+                TvOriginmoney.setText(String.valueOf(MainActivity.originmoney));
+
+                //취소, 확인버튼
+                alert2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                alert2.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.originmoney=Integer.parseInt(String.valueOf(TvOriginmoney.getText()));
+                        MoneyRecyclerViewAdapter.leftovermoney();
+                        changeleftmoney();
+                    }
+                });
+                AlertDialog dialog = alert2.create();
+                dialog.show();
+
+            }
+        });
+
+        addbtn = (ImageButton)view.findViewById(R.id.addButton);//오른쪽 아래 '+' 버튼
         addbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 View alertLayout = inflater.inflate(R.layout.money_popup, null);
+
                 builder.setView(view);
 
                 // money_popup 텍스트필드 이름생성
@@ -85,13 +115,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 final TextInputEditText priceid = alertLayout.findViewById(R.id.pricepopuptext);
                 final TextInputEditText dateid = alertLayout.findViewById(R.id.datepopuptext);
                 final TextInputEditText timeid = alertLayout.findViewById(R.id.timepopuptext);
-                setoriginmoney = alertLayout.findViewById(R.id.setoriginmoneybtn);
-                setoriginmoney.setOnClickListener(new Button.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {//비로그인 버튼 클릭하면
-                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                    }
-                });
+
                 datetv = alertLayout.findViewById(R.id.datepopuptext);
                 timetv = alertLayout.findViewById(R.id.timepopuptext);
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());

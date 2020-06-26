@@ -14,11 +14,9 @@ import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class ReviewPopupActivity extends Activity {
@@ -33,7 +31,7 @@ public class ReviewPopupActivity extends Activity {
     double longitude;
     int reviewCount;
     String mode;
-
+    DbCon.Review review;
     RecyclerView mRecyclerView = null;
 
 
@@ -64,9 +62,19 @@ public class ReviewPopupActivity extends Activity {
             System.out.println("리뷰목록가져오기");
             System.out.println(id);
             System.out.println(name);
-            DbCon.Review review = new DbCon.Review(this,mRecyclerView);
+
+            if (review != null) {
+                review.cancel(true);
+                review = null;
+            }
+            review = new DbCon.Review(this,mRecyclerView);
+            if (review != null) {
+                review.execute(String.valueOf(id),"1","1","1","1","1");
+            }
+
+
             // store_id, function, member_id, score, reviewTXT, date 순으로 보내는거임 임의로
-            review.execute(String.valueOf(id),"1","1","1","1","1");
+
 //            ArrayList<ReviewDTO> reviewDTOS = new ArrayList<>();
 
 
@@ -107,9 +115,20 @@ public class ReviewPopupActivity extends Activity {
                     String formatDate = sdfNow.format(date);
                     System.out.println("여기서리뷰목록에추가?");
                     //DB에 입력할부분
-                    //st_id: id, me_id: ?, score: star.getRating(), reviewTXT: text.getText(), date: formatDate
-                    DbCon.Review review = new DbCon.Review();
-                    review.execute(String.valueOf(id),"2","2",String.valueOf(star.getRating()),String.valueOf(text.getText()),formatDate);
+
+                    if (review != null) {
+                        review.cancel(true);
+                        review = null;
+                    }
+                    review = new DbCon.Review();
+                    if (review != null) {
+                        //store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
+                        review.execute(String.valueOf(id),"2","2",String.valueOf(star.getRating()),String.valueOf(text.getText()),formatDate);
+                    }
+
+
+
+
                     //store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
                     Intent addReviewIntent = new Intent(ReviewPopupActivity.this, InfoPopupActivity.class);
                     addReviewIntent.putExtra("id", id);

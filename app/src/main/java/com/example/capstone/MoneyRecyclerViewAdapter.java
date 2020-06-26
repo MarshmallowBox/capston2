@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
 
 public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecyclerViewAdapter.ViewHolder> {
 
-    private ArrayList<MoneyDTO> moneyDTOS = null;
+    public static ArrayList<MoneyDTO> moneyDTOS = null;
     private Context context;
     MoneyRecyclerViewAdapter(ArrayList<MoneyDTO> reviews) {
         moneyDTOS =reviews;
@@ -256,10 +256,10 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
     };
 
     //처음잔액 여기다가 넣어주면 됨
-    public void leftovermoney(){
+    public static void leftovermoney(){
         int orimoney= MainActivity.originmoney;
         int usingmoney = 0;
-        for(int i = 0 ; i < getItemCount() ; i++){
+        for(int i = 0 ; i < moneyDTOS.size() ; i++){
             usingmoney += moneyDTOS.get(i).getMoney();
         }
         leftovermoney = orimoney-usingmoney;

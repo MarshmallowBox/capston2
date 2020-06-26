@@ -19,6 +19,19 @@
         app:layout_constraintEnd_toStartOf="@+id/recyclerview_item_category"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:textColor="#000000"
+        android:id="@+id/recyclerview_item_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/recyclerview_item_address"
+        android:gravity="center"
+        android:text="category"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/recyclerview_item_name"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/recyclerview_item_address"
@@ -33,19 +46,7 @@
         app:layout_constraintEnd_toStartOf="@+id/recyclerview_item_tel"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:textColor="#000000"
-        android:id="@+id/recyclerview_item_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/recyclerview_item_address"
-        android:gravity="center"
-        android:text="category"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/recyclerview_item_name"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:textColor="#000000"

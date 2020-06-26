@@ -43,8 +43,8 @@ public class InfoPopupActivity extends Activity {
     double latitude;
     double longitude;
     int reviewCount;
-
-
+    DbCon.Zzim Zzim;
+    public static TextView reviewCounter;
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -65,8 +65,8 @@ public class InfoPopupActivity extends Activity {
         longitude = intent.getExtras().getDouble("longitude");
         reviewCount = intent.getExtras().getInt("reviewCount");
 
-//        DbCon.Review Review = new DbCon.Review();
-//        Review.execute(String.valueOf(franchiseID),"1","1","1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
+        DbCon.Review Review = new DbCon.Review();
+        Review.execute(String.valueOf(franchiseID),"1","1","1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
 
 
         ((TextView) findViewById(R.id.info_popup_title)).setText(name + "의 상세정보");
@@ -74,14 +74,21 @@ public class InfoPopupActivity extends Activity {
         ((TextView) findViewById(R.id.info_popup_address)).setText(address);
         ((TextView) findViewById(R.id.info_popup_category)).setText(category);
         ((TextView) findViewById(R.id.info_popup_tell)).setText(tel.equals("") ? "전화번호 없음" : tel);
-        ((TextView) findViewById(R.id.info_popup_review)).setText("리뷰: " + reviewCount + "개");
+        reviewCounter=findViewById(R.id.info_popup_review);
+        reviewCounter.setText("리뷰: " + reviewCount + "개");
         final FranchiseDTO franchiseDTO = new FranchiseDTO(franchiseID, name, address, category, tel, latitude, longitude);
 
 
         star = findViewById(R.id.info_popup_star);
         //만약 해당가게id와 유저id가 이미 likes table에 들어가있다면 true 없다면 false
-        DbCon.Zzim Zzim = new DbCon.Zzim();
-        Zzim.execute("1",String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+        if (Zzim != null) {
+            Zzim.cancel(true);
+            Zzim = null;
+        }
+        Zzim = new DbCon.Zzim();
+        if (Zzim != null) {
+            Zzim.execute("1",String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+        }
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
@@ -90,9 +97,6 @@ public class InfoPopupActivity extends Activity {
         System.out.println("%$%$");
         System.out.println("%$%$");
 
-        System.out.println("리뷰개수");
-        System.out.println(DbCon.rowcount);//여기서 만약 제대로 사용했따면
-        DbCon.rowcount=0;
 
         star.invalidate();
 //            if(DbCon.DBString.isEmpty()){
@@ -106,19 +110,32 @@ public class InfoPopupActivity extends Activity {
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.myplaces){
-//                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.myplaces);
-//                }
+                if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.myplaces){
+                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.myplaces);
+                }
 
                 if(star.isChecked()){
                     System.out.println("체크되었음");
-                    DbCon.Zzim Zzim = new DbCon.Zzim();
-                    Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+
+                    if (Zzim != null) {
+                        Zzim.cancel(true);
+                        Zzim = null;
+                    }
+                    Zzim = new DbCon.Zzim();
+                    if (Zzim != null) {
+                        Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                    }
                     System.out.println("찜목록추가됨");
                 }else{
                     System.out.println("체크안되었음");
-                    DbCon.Zzim Zzim = new DbCon.Zzim();
-                    Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                    if (Zzim != null) {
+                        Zzim.cancel(true);
+                        Zzim = null;
+                    }
+                    Zzim = new DbCon.Zzim();
+                    if (Zzim != null) {
+                        Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                    }
                     System.out.println("찜목록삭제됨");
                 }
             }

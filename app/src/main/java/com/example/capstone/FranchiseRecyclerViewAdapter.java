@@ -1,7 +1,6 @@
 package com.example.capstone;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,7 +107,7 @@ public class FranchiseRecyclerViewAdapter extends RecyclerView.Adapter<Franchise
         holder.name.setText(franchisesDTOs.get(position).name);
         holder.address.setText(franchisesDTOs.get(position).address);
         holder.category.setText(franchisesDTOs.get(position).category);
-        holder.tel.setText(franchisesDTOs.get(position).tel);
+        holder.tel.setText(franchisesDTOs.get(position).tel.equals("") ? "전화번호 없음" : franchisesDTOs.get(position).tel);
 
 
     }
