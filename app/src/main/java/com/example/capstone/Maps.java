@@ -224,7 +224,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                         dataAdapter = new DbCon.DataAdapter(getActivity(), naverMap, Markers);
                         Log.i("DataAdapter", "현위치");
                         if (dataAdapter != null) {
-                            dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
+                            dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
                         }
                     }
 
@@ -242,7 +242,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                         dataAdapter = new DbCon.DataAdapter(getActivity(), naverMap, Markers);
                         Log.i("DataAdapter", naverMap.getCameraPosition().zoom + "드래그" + Distance.getClusterDist(naverMap.getCameraPosition().zoom - 1));
                         if (dataAdapter != null) {
-                            dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
+                            dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
                         }
                     }
                 }

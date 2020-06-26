@@ -43,6 +43,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.naver.maps.map.CameraUpdate;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -110,7 +111,7 @@ public static boolean flag = false;
         }
         Member = new DbCon.Member();
         if (Member != null) {
-            Member.execute(strEmail);
+            Member.execute(strEmail,strNickname);
         }
 
 
@@ -182,7 +183,7 @@ public static boolean flag = false;
                     dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
                     Log.i("DataAdapter", "현위치");
                     if (dataAdapter != null) {
-                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude));
+                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
                     }
                 } else {
                     if (PlaceList.isCheckedButtonNear) {
