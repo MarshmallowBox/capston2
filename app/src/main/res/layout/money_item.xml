@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="40dp"
     android:layout_margin="2dp"
@@ -10,24 +11,35 @@
 
     <TextView
         android:id="@+id/money_item_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
         android:gravity="center"
-        android:padding="8dp"
-        android:text="2020-06-23 22:58"
+        android:padding="0dp"
+        android:text="2020-06-23"
         android:textColor="#000000"
         android:textSize="12dp"
-        app:layout_constraintEnd_toStartOf="@+id/money_item_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/money_item_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:padding="4dp"
+        android:text="22:58"
+        android:textColor="#000000"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/money_item_date"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/money_item_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
         android:gravity="center"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
@@ -35,24 +47,25 @@
         android:textColor="#000000"
         android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/money_item_money"
-        app:layout_constraintStart_toEndOf="@+id/money_item_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/money_item_date"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/money_item_money"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="25dp"
         android:gravity="center"
         android:padding="8dp"
+        android:paddingBottom="8dp"
         android:text="6,000원"
         android:textColor="#000000"
         android:textSize="12dp"
-        app:layout_constraintStart_toEndOf="@+id/money_item_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

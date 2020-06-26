@@ -2,7 +2,6 @@ package com.example.capstone;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -16,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -35,6 +35,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.naver.maps.map.CameraUpdate;
@@ -43,7 +44,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    public static String strNickname, strEmail;
+    public static String strNickname, strProfile, strEmail, strAgeRange, strGender, strBirthday;;
     @SuppressLint("StaticFieldLeak")
     public static TextView user_city;
     @SuppressLint("StaticFieldLeak")
@@ -78,11 +79,15 @@ public class MainActivity extends AppCompatActivity {
         //하단바클릭이벤트를 위한 프레그먼트 생성
 
         //사용자 데이터
+        //이메일, 나잇대, 성별, 생일을 intent에서 가져와서 각 String에 저장함
         fragmentManager = getSupportFragmentManager();
         Intent intent = getIntent();
         strNickname = Objects.requireNonNull(intent.getExtras()).getString("name");
-        strEmail = intent.getExtras().getString("Email");
-
+        strEmail = intent.getStringExtra("email");
+        strProfile = intent.getExtras().getString("profile");
+        strAgeRange = intent.getExtras().getString("ageRange");
+        strGender = intent.getExtras().getString("gender");
+        strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
 
         //UI
         String[] categoryTitle = {"전체", "음식","카페","유통","의료","유흥","헬스","미용","학원","의류","기타"};
@@ -235,8 +240,8 @@ public class MainActivity extends AppCompatActivity {
                         searchView.setIconified(true);
                         searchView.clearFocus();
                         horizontalScrollView.setVisibility(View.VISIBLE);
-                            myPlaceFrag = new MyPlace();
-                            fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
+                        myPlaceFrag = new MyPlace();
+                        fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
                         if (mapsFrag != null)
                             fragmentManager.beginTransaction().hide(mapsFrag).commit();
                         if (placeListFrag != null)
@@ -312,25 +317,39 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.logout:
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                        builder.setTitle("회원정보");
-                        builder.setMessage("회원정보를 보시겠습니까?");
-                        builder.setPositiveButton("예",
+                        LayoutInflater inflater2 = getLayoutInflater();
+                        View view2 = inflater2.inflate(R.layout.user_data, null);
+                        builder.setView(view2);
+                        TextView ni = view2.findViewById(R.id.tvNickname);
+                        ni.setText(strNickname);
+                        TextView em = view2.findViewById(R.id.tvEmail);
+                        em.setText(strEmail);
+                        TextView ag = view2.findViewById(R.id.tvAgeRange);
+                        ag.setText(strAgeRange);
+                        ImageView ivProfile = view2.findViewById(R.id.ivProfile);
+                        Glide.with(getApplicationContext()).load(strProfile).into(ivProfile);
 
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Intent intent = new Intent();
-                                        intent.putExtra("logout_user", textView.getText().toString() + "님이 로그아웃 하셨습니다.");
-                                        setResult(LoginActivity.LOG_OUT_FLAG = 1, intent);
-                                        finish();
-                                    }
-                                });
-                        builder.setNegativeButton("아니오",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-//                                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
-                                    }
-                                });
-                        builder.show();
+                        final AlertDialog dialog2 = builder.create();
+                        dialog2.show();
+//                        builder.setTitle("회원정보");
+//                        builder.setMessage("회원정보를 보시겠습니까?");
+//                        builder.setPositiveButton("예",
+//
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        Intent intent = new Intent();
+//                                        intent.putExtra("logout_user", textView.getText().toString() + "님이 로그아웃 하셨습니다.");
+//                                        setResult(LoginActivity.LOG_OUT_FLAG = 1, intent);
+//                                        finish();
+//                                    }
+//                                });
+//                        builder.setNegativeButton("아니오",
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int which) {
+////                                        Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.",Toast.LENGTH_LONG).show();
+//                                    }
+//                                });
+//                        builder.show();
 
                         break;
                     case R.id.user_info:

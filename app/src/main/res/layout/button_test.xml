@@ -8,7 +8,7 @@
     <com.kakao.usermgmt.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,43 +17,43 @@
     <com.nhn.android.naverlogin.ui.view.OAuthLoginButton
         android:id="@+id/buttonNaverLogin"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginBottom="20dp"
+        android:layout_height="90dp"
+
+        android:padding="20dp"
         app:layout_constraintBottom_toTopOf="@+id/login_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <!--    <Button-->
+    <!--        android:id="@+id/logout2"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="52dp"-->
+    <!--        android:text="로그아웃"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/btngetapi"-->
+    <!--        app:layout_constraintVertical_bias="0.291" />-->
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/textView4"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="64dp"-->
+    <!--        android:layout_marginBottom="16dp"-->
+    <!--        android:text="TextView"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/btngetapi"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
+
     <Button
         android:id="@+id/btngetapi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:text="네이버값 받아오기"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
-
-    <Button
-        android:id="@+id/logout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:text="로그아웃"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btngetapi"
-        app:layout_constraintVertical_bias="0.291" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginBottom="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/btngetapi"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/nologin" />
 
     <Button
         android:id="@+id/nologin"

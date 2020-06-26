@@ -3,7 +3,6 @@ package com.example.capstone;
 import android.location.Location;
 
 import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.NaverMap;
 
 public  class Distance {
     //Location, LatLng

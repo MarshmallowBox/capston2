@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         nologin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {//비로그인 버튼 클릭하면
-                Intent intent = new Intent(getApplicationContext(), LoginInfo.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("name", "비로그인 사용자");
                 intent.putExtra("profile", "");
                 intent.putExtra("email", "비로그인 사용자");
@@ -87,12 +87,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
 
-        
+
     }
 
     //////////////카카오////////////
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Toast.makeText(context,"bbbbb",Toast.LENGTH_SHORT).show();
         if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
@@ -101,14 +102,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onDestroy() {
+        Toast.makeText(context,"ccc",Toast.LENGTH_SHORT).show();
         super.onDestroy();
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
     private class SessionCallback implements ISessionCallback {
+
         @Override
         public void onSessionOpened() {
             UserManagement.getInstance().me(new MeV2ResponseCallback() {
+
                 @Override
                 public void onFailure(ErrorResult errorResult) {
                     int result = errorResult.getErrorCode();
@@ -129,6 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onSuccess(MeV2Response result) {
                     String needsScopeAutority = ""; // 정보 제공이 허용되지 않은 항목의 이름을 저장하는 변수
+                    Toast.makeText(context,"dddd",Toast.LENGTH_SHORT).show();
 
                     // 이메일, 성별, 연령대, 생일 정보를 제공하는 것에 동의했는지 체크
                     if(result.getKakaoAccount().needsScopeAccountEmail()) {
@@ -177,7 +182,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             public void onSuccess(Long result) { }
                         });
                     } else { // 모든 항목에 동의했다면 -> 유저 정보를 가져와서 MainActivity에 전달하고 MainActivity 실행.
-                        Intent intent = new Intent(getApplicationContext(), LoginInfo.class);
+                        Toast.makeText(context,"eeeee",Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("name", result.getNickname());
                         intent.putExtra("profile", result.getProfileImagePath());
 
@@ -252,22 +258,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //회원이름, 이메일, 별명, 프로필사진, 성별, 생일, 연령대
     //초기화
     private void init(){
+
         context = this;
+        Toast.makeText(context,"11111",Toast.LENGTH_SHORT).show();
         naverLoginInstance = OAuthLogin.getInstance();
         naverLoginInstance.init(this,ID,SECRET,NAME);
+        Toast.makeText(context,"44444444",Toast.LENGTH_SHORT).show();
     }
     //변수 붙이기
     private void init_View(){
+        Toast.makeText(context,"22222",Toast.LENGTH_SHORT).show();
         naverLogInButton = (OAuthLoginButton)findViewById(R.id.buttonNaverLogin);
 
         //로그인 핸들러
         OAuthLoginHandler naverLoginHandler  = new OAuthLoginHandler() {
             @Override
             public void run(boolean success) {
+                Toast.makeText(context,"3333333",Toast.LENGTH_SHORT).show();
                 if (success) {//로그인 성공
                     new RequestApiTask().execute();//static이 아니므로 클래스 만들어서 시행.
                     Toast.makeText(context,"로그인 성공",Toast.LENGTH_SHORT).show();
-                    //finish();
+//                    finish();
 
                 } else {//로그인 실패
                     String errorCode = naverLoginInstance.getLastErrorCode(context).getCode();
@@ -279,22 +290,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
 
         naverLogInButton.setOAuthLoginHandler(naverLoginHandler);
-        tv_mail = (TextView)findViewById(R.id.textView4);
+//        tv_mail = (TextView)findViewById(R.id.textView4);
         btnGetApi = (Button)findViewById(R.id.btngetapi);
         btnGetApi.setOnClickListener(this);
-        btnLogout = (Button)findViewById(R.id.logout2);
-        btnLogout.setOnClickListener(this);
-
+//        btnLogout = (Button)findViewById(R.id.logout2);
+//        btnLogout.setOnClickListener(this);
+        Toast.makeText(context,"555555555",Toast.LENGTH_SHORT).show();
     }
 
     public void onClick(View v) {
+        Toast.makeText(context,"66666666",Toast.LENGTH_SHORT).show();
         if(v.getId() == R.id.btngetapi){
+            Toast.makeText(context,"77777777",Toast.LENGTH_SHORT).show();
             new RequestApiTask().execute();//static이 아니므로 클래스 만들어서 시행.
         }
-        if(v.getId() == R.id.logout2){
-            naverLoginInstance.logout(context);
-            tv_mail.setText((String) "");//메일 란 비우기
-        }
+//        if(v.getId() == R.id.logout2){
+//            naverLoginInstance.logout(context);
+//            tv_mail.setText((String) "");//메일 란 비우기
+//        }
 
     }
 
@@ -318,7 +331,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         public void onPostExecute(String content) {//doInBackground 에서 리턴된 값이 여기로 들어온다.
             try {
-                Toast.makeText(context,"성공적으로 Main에 네이버 로그인정보 전송1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"99999999",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"성공적으로 Main에 네이버 로그인정보 전송",Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject(content);
                 JSONObject response = jsonObject.getJSONObject("response");
                 //String email = response.getString("email");
@@ -326,17 +340,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 //메인페이지로 데이터 보내기
 
-                Toast.makeText(context,"1",Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), LoginInfo.class);
+                Toast.makeText(context,"데이터 받아오는중...",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("name", response.getString("name"));
-                plz = response.getString("name");
-                Toast.makeText(context,"이름이 말이야 : "+ plz,Toast.LENGTH_SHORT).show();
                 intent.putExtra("profile", response.getString("profile_image"));
                 intent.putExtra("email", response.getString("email"));
                 //intent.putExtra("", response.getString("id"));
                 //intent.putExtra("", response.getString("nickname"));
                 //intent.putExtra("ageRange", response.getString("age"));
                 //intent.putExtra("gender", response.getString("gender"));
+                //Toast.makeText(context,"이사람은 남자일까 여자일까 ? :"+response.getString("gender"),Toast.LENGTH_SHORT).show();
 
 
                 //intent.putExtra("birthday", response.getString("birthday"));

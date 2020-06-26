@@ -133,7 +133,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/addmoney"
-        android:background="#fff"
+        android:background="#00ff0000"
         />
 
 
