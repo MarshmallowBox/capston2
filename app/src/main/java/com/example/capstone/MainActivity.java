@@ -71,13 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 public static boolean flag = false;
-    public void zz(){
-        if (MainActivity.strNickname.equals("비회원")) {
-            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
-            setting.putExtra("mode","new");
-            startActivity(setting);
-        }
-    }
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -329,13 +323,7 @@ public static boolean flag = false;
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
         MainActivity.user_city.setText("지역을 선택하세요.");
 
-        //디비연동해서 DB이메일이랑 현재 이메일비교 없으면
-        if (MainActivity.strNickname.equals("비회원")) {
-            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
-            setting.putExtra("mode","new");
-            startActivity(setting);
-        }
-        // 디비에 add
+
 Thread thread = new Thread(){
     @Override
     public void run() {
@@ -343,6 +331,7 @@ Thread thread = new Thread(){
         try {
         while (!flag){
                 sleep(100);
+                Log.d("Ssibal","쓰레드");
         }if(!strNickname.equals("비회원")){
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
             setting.putExtra("mode","new");
