@@ -147,7 +147,7 @@ public class LoginInfo extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onSuccess(Long result) {  //회원탈퇴에 성공하면 로그인창으로 이동ㅇ
+                                    public void onSuccess(Long result) {  //회원탈퇴에 성공하면 로그인창으로 이동
                                         Toast.makeText(getApplicationContext(), "회원탈퇴에 성공했습니다.", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(LoginInfo.this, LoginActivity.class);
                                         startActivity(intent);

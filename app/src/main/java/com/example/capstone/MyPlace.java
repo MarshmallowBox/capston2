@@ -1,5 +1,6 @@
 package com.example.capstone;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,24 +9,29 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Objects;
 
 public class MyPlace extends Fragment // Fragment 클래스를 상속받아야한다
 {
-
+    public static RecyclerView recyclerView;
+    @SuppressLint("StaticFieldLeak")
+    public static DbCon.Zzim mAdapter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.activity_myplace,container,false);
+        View view = inflater.inflate(R.layout.activity_myplace, container, false);
+        recyclerView = view.findViewById(R.id.myplace_recyclerview);
+        System.out.println("찜목록보여주기");
 
-//        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.myplace_recyclerview);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(container.getContext()); //리스트뷰를 띄워준다
-//        RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(DataBaseAdapter.nearFranchises);
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(myRecyclerViewAdapter);
-
+        if (mAdapter != null) {
+            mAdapter.cancel(true);
+            mAdapter = null;
+        }
+        mAdapter = new DbCon.Zzim(Objects.requireNonNull(container).getContext(),recyclerView);
+        mAdapter.execute("1","0","call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
 
         return view;
     }

@@ -1,12 +1,10 @@
 package com.example.capstone;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 
 
 public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecyclerViewAdapter.ViewHolder> {
+
 
     private ArrayList<ReviewDTO> reviewDTOS = null;
 
@@ -46,12 +45,16 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
        holder.date.setText(reviewDTOS.get(position).date);
        holder.text.setText(reviewDTOS.get(position).text);
        holder.star.setRating((float) reviewDTOS.get(position).score);
-       if(reviewDTOS.get(position).userID!=1){
+       if(reviewDTOS.get(position).userID!=2){
            ((Button)holder.delete).setVisibility(View.INVISIBLE);
        }
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                System.out.println(reviewDTOS.get(position).ID);
+                DbCon.Review review = new DbCon.Review();
+                review.execute(String.valueOf(reviewDTOS.get(position).ID),"3","1","1","1","1");//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
                 reviewDTOS.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, reviewDTOS.size());

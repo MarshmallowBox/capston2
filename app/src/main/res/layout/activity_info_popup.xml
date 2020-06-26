@@ -119,7 +119,7 @@
         android:background="#FFFFFFFF"
         android:gravity="center">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
+        <CheckBox
             android:id="@+id/info_popup_star"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,18 +32,15 @@ import com.naver.maps.map.util.FusedLocationSource;
 import com.naver.maps.map.widget.LocationButtonView;
 import com.naver.maps.map.widget.ZoomControlView;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelSlideListener;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static android.app.Activity.RESULT_OK;
 import static android.location.LocationManager.NETWORK_PROVIDER;
 
 public class Maps extends Fragment implements OnMapReadyCallback, LocationListener// Fragment 클래스를 상속받아야한다
 {
-    public static final String TAG = "DemoActivity";
+    //    public static final String TAG = "DemoActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1000;
     public static NaverMap naverMap;
     public static InfoWindow infoWindow;
@@ -54,8 +50,8 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
     ///
     public static SlidingUpPanelLayout mLayout;
     public static Marker singleMarkers;
-    public static DataAdapter dataAdapter;
     static ArrayList<Marker> Markers;
+    public DbCon.DataAdapter dataAdapter;
     private MapView mapView;
     private FusedLocationSource locationSource;
 
@@ -67,6 +63,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
 
         //현재위치 받아오기
         locationSource = new FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE);
+
 
 //DB로 받아올 부분 건강식품 일반휴게음식 유통업 약국 귀금속 세탁소 컴퓨터 문구용품 학원 레져업소 보건위생 휴대폰
 
@@ -83,58 +80,32 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
         mapView.getMapAsync(this);
 
         mLayout = view.findViewById(R.id.sliding_layout);
-        mLayout.addPanelSlideListener(new PanelSlideListener() {
+        mLayout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-
-                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
             }
 
             @Override
-            public void onPanelStateChanged(View panel, PanelState previousState, PanelState newState) {
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
 //                if(newState == PanelState.EXPANDED){
 //                    mLayout.setPanelHeight(70*4);
 //                } else{
 //                    mLayout.setPanelHeight(0);
 //                }
 
-                Log.i(TAG, "onPanelStateChanged " + newState);
             }
         });
-        mLayout.setFadeOnClickListener(new OnClickListener() {
+        mLayout.setFadeOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mLayout.setPanelState(PanelState.COLLAPSED);
+                mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
             }
         });
-//        markerAdapter= new MarkerAdapter();
+
         Markers = new ArrayList<>();
         singleMarkers = new Marker();
         return view;
     }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == 1) {
-//            if (resultCode == RESULT_OK) {
-//                System.out.println("RESULT_OK");
-//                //데이터 받기
-//                ArrayList<String> result = new ArrayList<>(Objects.requireNonNull(data.getStringArrayListExtra("result")));
-////                if (result.get(0).equals("addReview_popup_close")) {
-////                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
-////                    intent.putStringArrayListExtra("data", result);
-////                    startActivityForResult(intent, 1);
-////                }
-//                if (result.get(0).equals("addReview_popup_open")) {
-//                    System.out.println("equals addReview_popup_open");
-//                    Intent intent = new Intent(getActivity(), ReviewPopupActivity.class);
-//                    intent.putStringArrayListExtra("data", result);
-//                    startActivityForResult(intent, 1);
-//                }
-//
-//            }
-//        }
-//    }
 
     @Override
     public void onMapReady(@NonNull final NaverMap naverMap) {
@@ -152,14 +123,14 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
 
                 assert tags != null;
                 Intent intent = new Intent(getActivity(), InfoPopupActivity.class);
-                intent.putExtra("id",tags.id);
-                intent.putExtra("name",tags.name);
-                intent.putExtra("address",tags.address);
-                intent.putExtra("category",tags.category);
-                intent.putExtra("tel",tags.tel);
-                intent.putExtra("latitude",tags.latitude);
-                intent.putExtra("longitude",tags.longitude);
-                intent.putExtra("reviewCount",0);
+                intent.putExtra("id", tags.id);
+                intent.putExtra("name", tags.name);
+                intent.putExtra("address", tags.address);
+                intent.putExtra("category", tags.category);
+                intent.putExtra("tel", tags.tel);
+                intent.putExtra("latitude", tags.latitude);
+                intent.putExtra("longitude", tags.longitude);
+                intent.putExtra("reviewCount", 0);
                 startActivity(intent);
 
                 return true;
@@ -236,7 +207,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             @Override
             public void onCameraChange(int reason, boolean animated) {
                 //드래그 -1 f, 마커클릭 0 t, 현위치버튼 -3 tf,
-               //System.out.println("reasonreason:"+reason);
+                //System.out.println("reasonreason:"+reason);
                 if (beforeCamera != null) {
                     if ((reason == -3) && (Distance.getDistance(beforeLocation, naverMap.getCameraPosition().target) == 0)
                             && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > 5)
@@ -249,28 +220,26 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                             dataAdapter.cancel(true);
                             dataAdapter = null;
                         }
-                        dataAdapter = new DataAdapter(getActivity(), naverMap, Markers);
+                        dataAdapter = new DbCon.DataAdapter(getActivity(), naverMap, Markers);
                         Log.i("DataAdapter", "현위치");
                         if (dataAdapter != null) {
                             dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
                         }
                     }
 
-                    if (((reason == -1) && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > 250))//드래그
-                            || ((reason == -2) && Math.abs(beforezoom - naverMap.getCameraPosition().zoom) >= 1)//줌레벨변경
-                            || ((reason == 0))) { //마커클릭
+                    if (((reason == -1) && (Distance.getDistance(beforeCamera, naverMap.getCameraPosition().target) > Distance.getClusterDist(naverMap.getCameraPosition().zoom - 1)))//드래그
+                            || ((reason == -2) && Math.abs(beforezoom - naverMap.getCameraPosition().zoom) >= 1))
+                        /*|| (reason == 0))*/ { //마커클릭
                         beforeCamera = naverMap.getCameraPosition().target;
                         beforezoom = naverMap.getCameraPosition().zoom;
-                        //if (reason != 0) {
-                        //    singleMarkers.setMap(null);
-                        //}
+                        singleMarkers.setMap(null);
 
                         if (dataAdapter != null) {
                             dataAdapter.cancel(true);
                             dataAdapter = null;
                         }
-                        dataAdapter = new DataAdapter(getActivity(), naverMap, Markers);
-                        Log.i("DataAdapter", "드래그");
+                        dataAdapter = new DbCon.DataAdapter(getActivity(), naverMap, Markers);
+                        Log.i("DataAdapter", naverMap.getCameraPosition().zoom + "드래그" + Distance.getClusterDist(naverMap.getCameraPosition().zoom - 1));
                         if (dataAdapter != null) {
                             dataAdapter.execute(String.valueOf(beforeCamera.latitude), String.valueOf(beforeCamera.longitude));
                         }
@@ -404,7 +373,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             if (rootView == null) {
                 rootView = View.inflate(context, R.layout.view_custom_info_window, null);
                 name = rootView.findViewById(R.id.view_custom_info_window_title);
-                address = rootView.findViewById(R.id.view_custom_info_window_desc);
+                address = rootView.findViewById(R.id.view_custom_info_window_category);
             }
 
             if (infoWindow.getMarker() != null) {

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class InfoPopupActivity extends Activity {
 
-    CheckBox star;
+    public static CheckBox star;
     Button map;
     Button call;
     Button load;
@@ -34,7 +35,7 @@ public class InfoPopupActivity extends Activity {
     Button addReview;
 
     Intent intent;
-    int id;
+    public static int franchiseID;
     String name;
     String address;
     String category;
@@ -55,7 +56,7 @@ public class InfoPopupActivity extends Activity {
 
         //데이터 가져오기
         intent = getIntent();
-        id = intent.getExtras().getInt("id");
+        franchiseID = intent.getExtras().getInt("id");
         name = intent.getExtras().getString("name");
         address = intent.getExtras().getString("address");
         category = intent.getExtras().getString("category");
@@ -70,28 +71,84 @@ public class InfoPopupActivity extends Activity {
         ((TextView) findViewById(R.id.info_popup_category)).setText(category);
         ((TextView) findViewById(R.id.info_popup_tell)).setText(tel.equals("") ? "전화번호 없음" : tel);
         ((TextView) findViewById(R.id.info_popup_review)).setText("리뷰: " + reviewCount + "개");
-        final FranchiseDTO franchiseDTO = new FranchiseDTO(id, name, address, category, tel, latitude, longitude);
+        final FranchiseDTO franchiseDTO = new FranchiseDTO(franchiseID, name, address, category, tel, latitude, longitude);
 
         star = findViewById(R.id.info_popup_star);
-        star.setChecked(false);
+        //만약 해당가게id와 유저id가 이미 likes table에 들어가있다면 true 없다면 false
+        DbCon.Zzim Zzim = new DbCon.Zzim();
+        Zzim.execute("1",String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+        System.out.println("%$%$");
+        System.out.println("%$%$");
+        System.out.println("%$%$");
+//        System.out.println(DbCon.Zzim.ZzimFranchise);
+        System.out.println("%$%$");
+        System.out.println("%$%$");
+        System.out.println("%$%$");
+
+        star.invalidate();
+//            if(DbCon.DBString.isEmpty()){
+//                System.out.println("하얀별");
+//                star.setChecked(false);
+//            }else{
+//                System.out.println("검은별");
+//                star.setChecked(true);
+//            }
+
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (star.isChecked()) {
-                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
-                } else {
-                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
+                if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.myplaces){
+                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.myplaces);
                 }
 
+                if(star.isChecked()){
+                    System.out.println("체크되었음");
+                    DbCon.Zzim Zzim = new DbCon.Zzim();
+                    Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                    System.out.println("찜목록추가됨");
+                }else{
+                    System.out.println("체크안되었음");
+                    DbCon.Zzim Zzim = new DbCon.Zzim();
+                    Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                    System.out.println("찜목록삭제됨");
+                }
             }
         });
+        star.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
+                }else {
+                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
+                }
+        }});
+
+//        star.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (star.isChecked()) {
+//                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
+//                    DbCon.Zzim Zzim = new DbCon.Zzim();
+//                    Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+//                    System.out.println("찜목록추가됨");
+//
+//                } else {
+//                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
+//                    DbCon.Zzim Zzim = new DbCon.Zzim();
+//                    Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+//                    System.out.println("찜목록삭제됨");
+//                }
+//
+//            }
+//        });
         map = findViewById(R.id.info_popup_map);
 
-        if (MainActivity.ui.bottomNavigationView.getSelectedItemId() != R.id.mapmode) {
+        if (MainActivity.bottomNavigationView.getSelectedItemId() != R.id.mapmode) {
             map.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MainActivity.ui.bottomNavigationView.setSelectedItemId(R.id.mapmode);
+                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.mapmode);
                     Maps.singleMarkers.setMap(null);
                     Maps.singleMarkers = new Marker();
                     Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
@@ -204,7 +261,7 @@ public class InfoPopupActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent addReviewIntent = new Intent(InfoPopupActivity.this, ReviewPopupActivity.class);
-                addReviewIntent.putExtra("id",id);
+                addReviewIntent.putExtra("id", franchiseID);
                 addReviewIntent.putExtra("name",name);
                 addReviewIntent.putExtra("address",address);
                 addReviewIntent.putExtra("category",category);
@@ -224,7 +281,7 @@ public class InfoPopupActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent addReviewIntent = new Intent(InfoPopupActivity.this, ReviewPopupActivity.class);
-                addReviewIntent.putExtra("id",id);
+                addReviewIntent.putExtra("id", franchiseID);
                 addReviewIntent.putExtra("name",name);
                 addReviewIntent.putExtra("address",address);
                 addReviewIntent.putExtra("category",category);
@@ -239,6 +296,10 @@ public class InfoPopupActivity extends Activity {
                 finish();
             }
         });
+        if(MainActivity.strNickname.equals("비회원")){
+            addReview.setVisibility(View.INVISIBLE);
+            star.setVisibility(View.INVISIBLE);
+        }
     }
 
     /*//확인 버튼 클릭
