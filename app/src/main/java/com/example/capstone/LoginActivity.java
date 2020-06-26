@@ -93,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //////////////카카오////////////
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(context,"bbbbb",Toast.LENGTH_SHORT).show();
         if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
@@ -102,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onDestroy() {
-        Toast.makeText(context,"ccc",Toast.LENGTH_SHORT).show();
         super.onDestroy();
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
@@ -133,7 +131,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onSuccess(MeV2Response result) {
                     String needsScopeAutority = ""; // 정보 제공이 허용되지 않은 항목의 이름을 저장하는 변수
-                    Toast.makeText(context,"dddd",Toast.LENGTH_SHORT).show();
 
                     // 이메일, 성별, 연령대, 생일 정보를 제공하는 것에 동의했는지 체크
                     if(result.getKakaoAccount().needsScopeAccountEmail()) {
@@ -182,7 +179,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             public void onSuccess(Long result) { }
                         });
                     } else { // 모든 항목에 동의했다면 -> 유저 정보를 가져와서 MainActivity에 전달하고 MainActivity 실행.
-                        Toast.makeText(context,"eeeee",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("name", result.getNickname());
                         intent.putExtra("profile", result.getProfileImagePath());

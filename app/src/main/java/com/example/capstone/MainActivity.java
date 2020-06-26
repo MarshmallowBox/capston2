@@ -2,7 +2,8 @@ package com.example.capstone;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
+
+import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -42,11 +43,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.naver.maps.map.CameraUpdate;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    public static String strNickname, strProfile, strEmail, strAgeRange, strGender, strBirthday;;
+    public static String strNickname, strProfile, strEmail, strAgeRange, strGender, strBirthday;
     @SuppressLint("StaticFieldLeak")
     public static TextView user_city;
     @SuppressLint("StaticFieldLeak")
@@ -57,9 +57,12 @@ public class MainActivity extends AppCompatActivity {
     Fragment placeListFrag;
     Fragment myPlaceFrag;
     Fragment moneyFrag;
+    DbCon.Search Search;
+    DbCon.Member Member;
+    DbCon.DataAdapter dataAdapter;
+    DbCon dbCon;
     private SearchView searchView;
     private DrawerLayout drawerLayout;
-    public static DbCon.Search Search;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -93,8 +96,16 @@ public class MainActivity extends AppCompatActivity {
         strGender = intent.getExtras().getString("gender");
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
         strEmail = intent.getExtras().getString("Email");
-        DbCon.Member Member = new DbCon.Member();
-        Member.execute(strEmail);
+
+        if (Member != null) {
+            Member.cancel(true);
+            Member = null;
+        }
+        Member = new DbCon.Member();
+        if (Member != null) {
+            Member.execute(strEmail);
+        }
+
 
         System.out.println(strNickname);
 
@@ -102,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI
-        String[] categoryTitle = {"전체", "음식","카페","유통","의료","유흥","헬스","미용","학원","의류","기타"};
+        String[] categoryTitle = {"전체", "음식", "카페", "유통", "의료", "유흥", "헬스", "미용", "학원", "의류", "기타"};
 
         radioGroup = findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);
@@ -157,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if (bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
-                    DbCon.DataAdapter dataAdapter=null;
                     if (dataAdapter != null) {
                         dataAdapter.cancel(true);
                         dataAdapter = null;
@@ -194,8 +204,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //비회원 관리
-                if(MainActivity.strNickname.equals("비회원")){
-                    if(item.getItemId()==R.id.myplaces || item.getItemId()==R.id.edit){
+                if (MainActivity.strNickname.equals("비회원")) {
+                    if (item.getItemId() == R.id.myplaces || item.getItemId() == R.id.edit) {
                         Toast.makeText(MainActivity.this, "로그인후 이용가능한 기능입니다.", Toast.LENGTH_SHORT).show();
                         return false;
                     }
@@ -251,15 +261,22 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.myplaces:
                         searchView.setIconified(true);
                         searchView.clearFocus();
-                        horizontalScrollView.setVisibility(View.VISIBLE);
-                        myPlaceFrag = new MyPlace();
-                        fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
+                        horizontalScrollView.setVisibility(View.INVISIBLE);
+                        if (myPlaceFrag == null) {
+                            myPlaceFrag = new MyPlace();
+                            fragmentManager.beginTransaction().add(R.id.Main_Frame, myPlaceFrag).commit();
+                        }
                         if (mapsFrag != null)
                             fragmentManager.beginTransaction().hide(mapsFrag).commit();
                         if (placeListFrag != null)
                             fragmentManager.beginTransaction().hide(placeListFrag).commit();
+                        if (myPlaceFrag != null)
+                            fragmentManager.beginTransaction().show(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             fragmentManager.beginTransaction().hide(moneyFrag).commit();
+
+                        FragmentTransaction transaction =  getSupportFragmentManager().beginTransaction();
+                        transaction.detach(myPlaceFrag).attach(myPlaceFrag).commit();
                         break;
                     case R.id.edit:
                         searchView.setIconified(true);
@@ -297,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
         user_money.setText("100,000");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
-//        MainActivity.user_city.setText("화성시");
+        MainActivity.user_city.setText("지역을 선택하세요.");
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -409,7 +426,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
             }
         }
-        if(MainActivity.strNickname.equals("비회원")){
+        if (MainActivity.strNickname.equals("비회원")) {
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
             startActivity(setting);
         }
@@ -452,9 +469,9 @@ public class MainActivity extends AppCompatActivity {
                     Search.cancel(true);
                     Search = null;
                 }
-                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
+                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s,"1");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "1");//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
                 searchView.clearFocus();
                 return true;
@@ -470,9 +487,9 @@ public class MainActivity extends AppCompatActivity {
                     Search.cancel(true);
                     Search = null;
                 }
-                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers,PlaceList.container.getContext(),PlaceList.recyclerView);
+                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s,"2");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "2");//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
 
                 return false;

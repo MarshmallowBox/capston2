@@ -60,7 +60,6 @@ public class DbCon extends AppCompatActivity {
     public static ArrayList<MemberDTO> Members = new ArrayList<>();
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();
     static String mJsonString;
-    static int rowcount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -536,15 +535,12 @@ public class DbCon extends AppCompatActivity {
                         String latitude = item.getString(TAG_LATITUDE);
                         String longitude = item.getString(TAG_LONGITUDE);
                         ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
-                        Log.d("ZZIMZZIM","InfoPopupActivity.franchiseID: "+InfoPopupActivity.franchiseID);
-                        Log.d("ZZIMZZIM","item.getString(TAG_ID): "+item.getString(TAG_ID));
+
                         if(InfoPopupActivity.franchiseID!=0){
                             if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_ID))) {
                                 InfoPopupActivity.star.setChecked(true);
-                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(true);");
                             } else {
                                 InfoPopupActivity.star.setChecked(false);
-                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(false);");
                             }
                         }
 
@@ -558,7 +554,6 @@ public class DbCon extends AppCompatActivity {
                         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
                         mAdapter.notifyDataSetChanged();//데이터변경시
-
                     }
                     if(InfoPopupActivity.star!=null){
 
@@ -626,6 +621,8 @@ public class DbCon extends AppCompatActivity {
         static String mJsonString = null;
         static Activity activity=null;
         static RecyclerView mRecyclerView = null;
+        static int rowCount;
+
         public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
         Review(){
 
@@ -642,6 +639,7 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("111111");
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
+                rowCount=0;
                 Reviews.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
@@ -653,7 +651,7 @@ public class DbCon extends AppCompatActivity {
                     String score = item.getString(TAG_SCORE);
                     String text = item.getString(TAG_REVIEWTXt);
                     Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
-                    rowcount++;
+                    rowCount++;
                 }
                 System.out.println("**************");
                 System.out.println(Reviews);
@@ -661,13 +659,18 @@ public class DbCon extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
             }finally {
-                // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-                ReviewRecyclerViewAdapter mAdapter = new ReviewRecyclerViewAdapter(Reviews);
-                mRecyclerView.setAdapter(mAdapter);
+                if(InfoPopupActivity.reviewCounter!=null){
+                    InfoPopupActivity.reviewCounter.setText("리뷰: " + rowCount + "개");
+                }
+                if(activity!=null && mRecyclerView!=null){
+                    // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+                    ReviewRecyclerViewAdapter mAdapter = new ReviewRecyclerViewAdapter(Reviews);
+                    mRecyclerView.setAdapter(mAdapter);
 
-                // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-                mAdapter.notifyDataSetChanged();
+                    // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         }
 
