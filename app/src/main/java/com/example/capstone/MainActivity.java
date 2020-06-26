@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment myPlaceFrag;
     Fragment moneyFrag;
     DbCon.Search Search;
-    DbCon.Member Member;
+    public static DbCon.Member Member;
     DbCon.DataAdapter dataAdapter;
     DbCon dbCon;
     private SearchView searchView;
@@ -103,7 +103,7 @@ public static boolean flag = false;
         strAgeRange = intent.getExtras().getString("ageRange");
         strGender = intent.getExtras().getString("gender");
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
-        strEmail = intent.getExtras().getString("Email");
+        strEmail = intent.getExtras().getString("email");
 
         if (Member != null) {
             Member.cancel(true);
@@ -111,7 +111,7 @@ public static boolean flag = false;
         }
         Member = new DbCon.Member();
         if (Member != null) {
-            Member.execute(strEmail,strNickname);
+            Member.execute(strEmail,strNickname,"0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
         }
 
 

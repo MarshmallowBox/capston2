@@ -823,13 +823,15 @@ public class DbCon extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
             String searchKeyword2 = params[1];
+            String searchKeyword3 = params[2];
 
 
             System.out.println(searchKeyword1);
             System.out.println(searchKeyword2);
+            System.out.println(searchKeyword3);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/member.php";
             System.out.println(serverURL);
-            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2 + "&city_name=" + searchKeyword3; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
