@@ -77,10 +77,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {//비로그인 버튼 클릭하면
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("name", "비로그인 사용자");
-                intent.putExtra("profile", "");
+                intent.putExtra("name", "비회원");
                 intent.putExtra("email", "비로그인 사용자");
-                intent.putExtra("name", "GNU");
+                intent.putExtra("profile", "");
                 startActivity(intent);
                 Toast.makeText(context,"비로그인 사용자",Toast.LENGTH_SHORT).show();
                 finish();
@@ -256,21 +255,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void init(){
 
         context = this;
-        Toast.makeText(context,"11111",Toast.LENGTH_SHORT).show();
         naverLoginInstance = OAuthLogin.getInstance();
         naverLoginInstance.init(this,ID,SECRET,NAME);
-        Toast.makeText(context,"44444444",Toast.LENGTH_SHORT).show();
     }
     //변수 붙이기
     private void init_View(){
-        Toast.makeText(context,"22222",Toast.LENGTH_SHORT).show();
         naverLogInButton = (OAuthLoginButton)findViewById(R.id.buttonNaverLogin);
 
         //로그인 핸들러
         OAuthLoginHandler naverLoginHandler  = new OAuthLoginHandler() {
             @Override
             public void run(boolean success) {
-                Toast.makeText(context,"3333333",Toast.LENGTH_SHORT).show();
                 if (success) {//로그인 성공
                     new RequestApiTask().execute();//static이 아니므로 클래스 만들어서 시행.
                     Toast.makeText(context,"로그인 성공",Toast.LENGTH_SHORT).show();
@@ -291,13 +286,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnGetApi.setOnClickListener(this);
 //        btnLogout = (Button)findViewById(R.id.logout2);
 //        btnLogout.setOnClickListener(this);
-        Toast.makeText(context,"555555555",Toast.LENGTH_SHORT).show();
     }
 
     public void onClick(View v) {
-        Toast.makeText(context,"66666666",Toast.LENGTH_SHORT).show();
         if(v.getId() == R.id.btngetapi){
-            Toast.makeText(context,"77777777",Toast.LENGTH_SHORT).show();
             new RequestApiTask().execute();//static이 아니므로 클래스 만들어서 시행.
         }
 //        if(v.getId() == R.id.logout2){
@@ -327,7 +319,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         public void onPostExecute(String content) {//doInBackground 에서 리턴된 값이 여기로 들어온다.
             try {
-                Toast.makeText(context,"99999999",Toast.LENGTH_SHORT).show();
                 Toast.makeText(context,"성공적으로 Main에 네이버 로그인정보 전송",Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject(content);
                 JSONObject response = jsonObject.getJSONObject("response");
