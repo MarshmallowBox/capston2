@@ -3,6 +3,7 @@ package com.example.capstone;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -754,7 +755,7 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_CT_ID = "ct_id";
         String errorString = null;
 
-        public static void showResult() {
+        public void showResult() {
             try {
                 System.out.println("멤버멤버멤버");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -783,6 +784,10 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
+            } finally {
+                if(Members.size()==0){
+                    MainActivity.flag = true;
+                }
             }
         }
 

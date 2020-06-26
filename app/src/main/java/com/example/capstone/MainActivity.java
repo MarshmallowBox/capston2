@@ -63,7 +63,14 @@ public class MainActivity extends AppCompatActivity {
     DbCon dbCon;
     private SearchView searchView;
     private DrawerLayout drawerLayout;
-
+public static boolean flag = false;
+    public void zz(){
+        if (MainActivity.strNickname.equals("비회원")) {
+            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
+            setting.putExtra("mode","new");
+            startActivity(setting);
+        }
+    }
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -315,6 +322,33 @@ public class MainActivity extends AppCompatActivity {
         user_money.setText("100,000");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
         MainActivity.user_city.setText("지역을 선택하세요.");
+
+        //디비연동해서 DB이메일이랑 현재 이메일비교 없으면
+        if (MainActivity.strNickname.equals("비회원")) {
+            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
+            setting.putExtra("mode","new");
+            startActivity(setting);
+        }
+        // 디비에 add
+Thread thread = new Thread(){
+    @Override
+    public void run() {
+        super.run();
+        try {
+        while (!flag){
+                sleep(100);
+                Log.d("runrunrun","runrun");
+        }
+            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
+            setting.putExtra("mode","new");
+            startActivity(setting);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+};
+        thread.start();
+
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
