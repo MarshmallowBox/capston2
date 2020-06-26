@@ -2,6 +2,7 @@ package com.example.capstone;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -41,6 +42,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.naver.maps.map.CameraUpdate;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
         //사용자 데이터
         //이메일, 나잇대, 성별, 생일을 intent에서 가져와서 각 String에 저장함
+        System.out.println("시작이다!!!");
+
         fragmentManager = getSupportFragmentManager();
         Intent intent = getIntent();
         strNickname = Objects.requireNonNull(intent.getExtras()).getString("name");
@@ -88,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
         strAgeRange = intent.getExtras().getString("ageRange");
         strGender = intent.getExtras().getString("gender");
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
+        strEmail = intent.getExtras().getString("Email");
+        DbCon.Member Member = new DbCon.Member();
+        Member.execute(strEmail);
+
+        System.out.println(strNickname);
+
+        System.out.println("야호!!!");
+
 
         //UI
         String[] categoryTitle = {"전체", "음식","카페","유통","의료","유흥","헬스","미용","학원","의류","기타"};

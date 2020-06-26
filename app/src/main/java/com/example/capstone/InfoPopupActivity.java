@@ -65,6 +65,10 @@ public class InfoPopupActivity extends Activity {
         longitude = intent.getExtras().getDouble("longitude");
         reviewCount = intent.getExtras().getInt("reviewCount");
 
+//        DbCon.Review Review = new DbCon.Review();
+//        Review.execute(String.valueOf(franchiseID),"1","1","1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
+
+
         ((TextView) findViewById(R.id.info_popup_title)).setText(name + "의 상세정보");
         ((TextView) findViewById(R.id.info_popup_name)).setText(name);
         ((TextView) findViewById(R.id.info_popup_address)).setText(address);
@@ -72,6 +76,7 @@ public class InfoPopupActivity extends Activity {
         ((TextView) findViewById(R.id.info_popup_tell)).setText(tel.equals("") ? "전화번호 없음" : tel);
         ((TextView) findViewById(R.id.info_popup_review)).setText("리뷰: " + reviewCount + "개");
         final FranchiseDTO franchiseDTO = new FranchiseDTO(franchiseID, name, address, category, tel, latitude, longitude);
+
 
         star = findViewById(R.id.info_popup_star);
         //만약 해당가게id와 유저id가 이미 likes table에 들어가있다면 true 없다면 false
@@ -84,6 +89,10 @@ public class InfoPopupActivity extends Activity {
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
+
+        System.out.println("리뷰개수");
+        System.out.println(DbCon.rowcount);//여기서 만약 제대로 사용했따면
+        DbCon.rowcount=0;
 
         star.invalidate();
 //            if(DbCon.DBString.isEmpty()){
