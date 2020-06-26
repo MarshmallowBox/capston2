@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 
 public class SettingPopupActivity extends Activity {
     Spinner citySpinner = null;
