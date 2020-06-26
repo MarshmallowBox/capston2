@@ -307,6 +307,11 @@ public static boolean flag = false;
 
 
         NavigationView navigationView = findViewById(R.id.nav_view);
+        if(!strNickname.equals("비회원")){
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
+        }
+        Log.d("qqqqqqqqqqqq", String.valueOf(navigationView.getMenu().getItem(0).getSubMenu().getItem(0).getTitle()));
+
 //        TextView tv_userId = (TextView) context.findViewById(R.id.user_id);
 //        tv_userId.setText(name);
         // xml 파일에서 넣어놨던 header 선언
@@ -442,6 +447,7 @@ Thread thread = new Thread(){
                 Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
             }
         }
+
         if (MainActivity.strNickname.equals("비회원")) {
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
             startActivity(setting);
