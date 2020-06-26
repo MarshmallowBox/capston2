@@ -145,6 +145,8 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
                         moneyDTOS.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         notifyItemRangeChanged(getAdapterPosition(), moneyDTOS.size());
+                        leftovermoney();
+                        Money.changeleftmoney();
                         break;
                 }
                 return true;
@@ -253,6 +255,7 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
         }
     };
 
+    //처음잔액 여기다가 넣어주면 됨
     public void leftovermoney(){
         int originmoney = 100000;
         for(int i = 0 ; i < getItemCount() ; i++){

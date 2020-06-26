@@ -93,7 +93,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //////////////카카오////////////
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Toast.makeText(context,"bbbbb",Toast.LENGTH_SHORT).show();
         if(Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
@@ -102,7 +101,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onDestroy() {
-        Toast.makeText(context,"ccc",Toast.LENGTH_SHORT).show();
         super.onDestroy();
         Session.getCurrentSession().removeCallback(sessionCallback);
     }
@@ -133,7 +131,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 @Override
                 public void onSuccess(MeV2Response result) {
                     String needsScopeAutority = ""; // 정보 제공이 허용되지 않은 항목의 이름을 저장하는 변수
-                    Toast.makeText(context,"dddd",Toast.LENGTH_SHORT).show();
 
                     // 이메일, 성별, 연령대, 생일 정보를 제공하는 것에 동의했는지 체크
                     if(result.getKakaoAccount().needsScopeAccountEmail()) {
@@ -182,7 +179,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             public void onSuccess(Long result) { }
                         });
                     } else { // 모든 항목에 동의했다면 -> 유저 정보를 가져와서 MainActivity에 전달하고 MainActivity 실행.
-                        Toast.makeText(context,"eeeee",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("name", result.getNickname());
                         intent.putExtra("profile", result.getProfileImagePath());
@@ -260,21 +256,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void init(){
 
         context = this;
-        Toast.makeText(context,"11111",Toast.LENGTH_SHORT).show();
         naverLoginInstance = OAuthLogin.getInstance();
         naverLoginInstance.init(this,ID,SECRET,NAME);
-        Toast.makeText(context,"44444444",Toast.LENGTH_SHORT).show();
     }
     //변수 붙이기
     private void init_View(){
-        Toast.makeText(context,"22222",Toast.LENGTH_SHORT).show();
         naverLogInButton = (OAuthLoginButton)findViewById(R.id.buttonNaverLogin);
 
         //로그인 핸들러
         OAuthLoginHandler naverLoginHandler  = new OAuthLoginHandler() {
             @Override
             public void run(boolean success) {
-                Toast.makeText(context,"3333333",Toast.LENGTH_SHORT).show();
                 if (success) {//로그인 성공
                     new RequestApiTask().execute();//static이 아니므로 클래스 만들어서 시행.
                     Toast.makeText(context,"로그인 성공",Toast.LENGTH_SHORT).show();
@@ -295,13 +287,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnGetApi.setOnClickListener(this);
 //        btnLogout = (Button)findViewById(R.id.logout2);
 //        btnLogout.setOnClickListener(this);
-        Toast.makeText(context,"555555555",Toast.LENGTH_SHORT).show();
     }
 
     public void onClick(View v) {
-        Toast.makeText(context,"66666666",Toast.LENGTH_SHORT).show();
         if(v.getId() == R.id.btngetapi){
-            Toast.makeText(context,"77777777",Toast.LENGTH_SHORT).show();
             new RequestApiTask().execute();//static이 아니므로 클래스 만들어서 시행.
         }
 //        if(v.getId() == R.id.logout2){
@@ -331,7 +320,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         public void onPostExecute(String content) {//doInBackground 에서 리턴된 값이 여기로 들어온다.
             try {
-                Toast.makeText(context,"99999999",Toast.LENGTH_SHORT).show();
                 Toast.makeText(context,"성공적으로 Main에 네이버 로그인정보 전송",Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject(content);
                 JSONObject response = jsonObject.getJSONObject("response");

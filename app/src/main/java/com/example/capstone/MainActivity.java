@@ -2,7 +2,6 @@ package com.example.capstone;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -42,7 +41,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.naver.maps.map.CameraUpdate;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -92,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         strAgeRange = intent.getExtras().getString("ageRange");
         strGender = intent.getExtras().getString("gender");
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
-        strEmail = intent.getExtras().getString("Email");
+        strEmail = intent.getExtras().getString("email");
         DbCon.Member Member = new DbCon.Member();
         Member.execute(strEmail);
 
@@ -295,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
         textView1.setText(strEmail);
         final TextView user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
-        user_money.setText("100,000");
+        user_money.setText("100000");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
 //        MainActivity.user_city.setText("화성시");
 

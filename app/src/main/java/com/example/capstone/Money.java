@@ -60,13 +60,13 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 
         //DB에서 불러올부분 밑에는 보여주기용 임시데이터
 
-        mList.add(new MoneyDTO("2020-12-20","20:20", "aaaa", 1000));
-//        money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(0).money));
-
-        mList.add(new MoneyDTO("2020-12-20","20:20", "bbbb", 2000));
-
-
-        mList.add(new MoneyDTO("2019-12-20","11:11", "cccc", 3000));
+//        mList.add(new MoneyDTO("2020-12-20","20:20", "aaaa", 1000));
+////        money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - mList.get(0).money));
+//
+//        mList.add(new MoneyDTO("2020-12-20","20:20", "bbbb", 2000));
+//
+//
+//        mList.add(new MoneyDTO("2019-12-20","11:11", "cccc", 3000));
 
 
         mAdapter.notifyDataSetChanged(); //얘가 리사이클러뷰 아이템들 업뎃
