@@ -92,9 +92,10 @@ public class MainActivity extends AppCompatActivity {
         strAgeRange = intent.getExtras().getString("ageRange");
         strGender = intent.getExtras().getString("gender");
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
-        strEmail = intent.getExtras().getString("Email");
+        strEmail = intent.getExtras().getString("email");
+
         DbCon.Member Member = new DbCon.Member();
-        Member.execute(strEmail);
+        Member.execute(strEmail,strNickname);
 
         System.out.println(strNickname);
 
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
                     Log.i("DataAdapter", "현위치");
                     if (dataAdapter != null) {
-                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude));
+                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
                     }
                 } else {
                     if (PlaceList.isCheckedButtonNear) {
@@ -194,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //비회원 관리
-                if(MainActivity.strNickname.equals("비회원")){
+                if(MainActivity.strNickname.equals("GNU")){
                     if(item.getItemId()==R.id.myplaces || item.getItemId()==R.id.edit){
                         Toast.makeText(MainActivity.this, "로그인후 이용가능한 기능입니다.", Toast.LENGTH_SHORT).show();
                         return false;
@@ -297,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
         user_money.setText("100,000");
         MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
-//        MainActivity.user_city.setText("화성시");
+        MainActivity.user_city.setText("지역을 선택하세요");
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -409,7 +410,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
             }
         }
-        if(MainActivity.strNickname.equals("비회원")){
+        if(MainActivity.strNickname.equals("GNU")){
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
             startActivity(setting);
         }

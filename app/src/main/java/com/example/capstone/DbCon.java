@@ -284,12 +284,13 @@ public class DbCon extends AppCompatActivity {
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
             String searchKeyword2 = params[1];
+            String searchKeyword3 = params[2];
             Log.i("DataAdapter", "doInBackground");
             System.out.println(searchKeyword1);
             System.out.println(searchKeyword2);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/query.php";
             System.out.println(serverURL);
-            String postParameters = "name=jsh&latitude=" + searchKeyword1 + "&longitude=" + searchKeyword2; // 여기서 범위지정 가능활듯? 범위를 변수로 줘서 + - 시키면????
+            String postParameters = "name=jsh&latitude=" + searchKeyword1 + "&longitude=" + searchKeyword2 + "&city=" + searchKeyword3; // 여기서 범위지정 가능활듯? 범위를 변수로 줘서 + - 시키면????
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -749,6 +750,7 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_PROFILEIMG = "profileimg";
         private static final String TAG_STARTMONEY = "startmoney";
         private static final String TAG_CT_ID = "ct_id";
+        private static final String TAG_CITY_NAME = "city_name";
         String errorString = null;
 
         public static void showResult() {
@@ -772,6 +774,8 @@ public class DbCon extends AppCompatActivity {
                     String profileimg = item.getString(TAG_PROFILEIMG);
                     String startmoney = item.getString(TAG_STARTMONEY);
                     String ct_id = item.getString(TAG_CT_ID);
+                    MainActivity.user_city.setText(item.getString(TAG_CITY_NAME));
+                    System.out.println(MainActivity.user_city);
                     Members.add(new MemberDTO(Integer.parseInt(member_id), tel, name, nickname, email, agerange, gender, birthday, profileimg, startmoney, Integer.parseInt(ct_id)));
                     System.out.println("12");
                 }
@@ -802,12 +806,14 @@ public class DbCon extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
+            String searchKeyword2 = params[1];
 
 
             System.out.println(searchKeyword1);
+            System.out.println(searchKeyword2);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/member.php";
             System.out.println(serverURL);
-            String postParameters = "email=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
