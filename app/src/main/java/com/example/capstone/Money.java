@@ -32,10 +32,10 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     RecyclerView mRecyclerView = null;
     MoneyRecyclerViewAdapter mAdapter = null;
     ArrayList<MoneyDTO> mList = new ArrayList<MoneyDTO>();
-    static TextView money = null;
+    static TextView money = null, mainmoney;
     EditText datetv,timetv,editText = null;
     EditText editMoney = null;
-    Button input = null, month_day,time_day;
+    Button setoriginmoney, month_day,time_day;
     ImageButton addbtn;
     String showdate, showtime;
 
@@ -51,12 +51,12 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
         //input = view.findViewById(R.id.money_input);
         //addbtn = view.findViewById(R.id.addButton);
         addbtn = (ImageButton)view.findViewById(R.id.addButton);//오른쪽 아래 '+' 버튼
-
         //addbtn.setOnClickListener();
         mRecyclerView = view.findViewById(R.id.money_recyclerview);
         mAdapter = new MoneyRecyclerViewAdapter(mList);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         //DB에서 불러올부분 밑에는 보여주기용 임시데이터
 
@@ -85,6 +85,13 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 final TextInputEditText priceid = alertLayout.findViewById(R.id.pricepopuptext);
                 final TextInputEditText dateid = alertLayout.findViewById(R.id.datepopuptext);
                 final TextInputEditText timeid = alertLayout.findViewById(R.id.timepopuptext);
+                setoriginmoney = alertLayout.findViewById(R.id.setoriginmoneybtn);
+                setoriginmoney.setOnClickListener(new Button.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {//비로그인 버튼 클릭하면
+                        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    }
+                });
                 datetv = alertLayout.findViewById(R.id.datepopuptext);
                 timetv = alertLayout.findViewById(R.id.timepopuptext);
                 AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
@@ -225,5 +232,4 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     public static void changeleftmoney(){
         money.setText(String.valueOf(MoneyRecyclerViewAdapter.leftovermoney));
     }
-
 }

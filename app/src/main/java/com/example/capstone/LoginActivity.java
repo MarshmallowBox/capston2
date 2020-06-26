@@ -77,10 +77,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onClick(View v) {//비로그인 버튼 클릭하면
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("name", "비로그인 사용자");
-                intent.putExtra("profile", "");
+                intent.putExtra("name", "비회원");
                 intent.putExtra("email", "비로그인 사용자");
-                intent.putExtra("name", "GNU");
+                intent.putExtra("profile", "");
                 startActivity(intent);
                 Toast.makeText(context,"비로그인 사용자",Toast.LENGTH_SHORT).show();
                 finish();

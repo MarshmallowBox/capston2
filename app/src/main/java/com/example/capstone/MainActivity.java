@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     public static RadioGroup radioGroup;
     public static Fragment mapsFrag;
     public static BottomNavigationView bottomNavigationView;
+    public static int originmoney=1000000;  //여기에 초기 가지고있는 돈 넣어놓으면 됨
     public FragmentManager fragmentManager;
     Fragment placeListFrag;
     Fragment myPlaceFrag;
@@ -303,27 +304,18 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(false);
                 switch (item.getItemId()) {
                     case R.id.login:
-                        Toast.makeText(MainActivity.this, "로그인", Toast.LENGTH_SHORT).show();
-                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                        LayoutInflater inflater = getLayoutInflater();
-                        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.button_test, null);
-                        alertDialog.setView(view);
-//        final Button submit = (Button) view.findViewById(R.id.login_button);
-//        final EditText email = (EditText) view.findViewById(R.id.edittextEmailAddress);
-//        final EditText password = (EditText) view.findViewById(R.id.edittextPassword);
+//                        Toast.makeText(MainActivity.this, "로그인", Toast.LENGTH_SHORT).show();
+//                        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+//                        LayoutInflater inflater = getLayoutInflater();
+//                        @SuppressLint("InflateParams") View view = inflater.inflate(R.layout.button_test, null);
+//                        alertDialog.setView(view);
+//                        final AlertDialog dialog = alertDialog.create();
+//                        dialog.show();  // 로그인팝업
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(),"로그인 클릭",Toast.LENGTH_SHORT).show();
+                        finish();
 
-                        final AlertDialog dialog = alertDialog.create();
-//        submit.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-////                String strEmail = email.getText().toString();
-////                String strPassword = password.getText().toString();
-//                Toast.makeText(context.getApplicationContext(), "옴뇸뇸뇸뇸",Toast.LENGTH_LONG).show();
-//
-//                dialog.dismiss();
-//            }
-//        });
-
-                        dialog.show();
                         break;
                     case R.id.logout:
                         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -499,5 +491,6 @@ public class MainActivity extends AppCompatActivity {
         });
         return true;
     }
+
 
 }

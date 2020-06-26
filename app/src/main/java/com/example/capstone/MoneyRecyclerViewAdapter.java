@@ -257,12 +257,13 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
 
     //처음잔액 여기다가 넣어주면 됨
     public void leftovermoney(){
-        int originmoney = 100000;
+        int orimoney= MainActivity.originmoney;
+        int usingmoney = 0;
         for(int i = 0 ; i < getItemCount() ; i++){
-            originmoney -= moneyDTOS.get(i).getMoney();
+            usingmoney += moneyDTOS.get(i).getMoney();
         }
-        System.out.print("남은금액 : " + originmoney);
-        leftovermoney = originmoney;
+        leftovermoney = orimoney-usingmoney;
+        System.out.print("남은금액 : " + leftovermoney);
     };
 
 }
