@@ -56,12 +56,11 @@ public class DbCon extends AppCompatActivity {
     private static final String TAG_DATE ="date";
     private static final String TAG_REVIEWTXt ="reviewTXT";
 
-    public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
     public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
     public static ArrayList<MemberDTO> Members = new ArrayList<>();
-    static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();;
+    static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();
     static String mJsonString;
-    static int rowcount=0;
+    static int rowcount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -485,47 +484,22 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    public static class Zzim extends AsyncTask<String, Void, String> {
-        static ArrayList<String> DBString = new ArrayList<>();
-        static String mode = null;
+    static class Zzim extends AsyncTask<String, Void, String> {
+        ArrayList<FranchiseDTO> ZzimFranchise = new ArrayList<>();
+        String mode = null;
         String errorString = null;
+        String mJsonString = null;
+        Context context= null;
+        RecyclerView recyclerView= null;
+        FranchiseRecyclerViewAdapter mAdapter= null;
+        Zzim(){
 
-        public static void showResult() {
-            if (mode.equals("call")) {
-                try {
-                    DBString.clear();
-                    System.out.println("믿고있었다구");
-                    System.out.println("111111");
-                    JSONObject jsonObject = new JSONObject(mJsonString);
-                    System.out.println("222222");
-                    JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
-                    System.out.println("333333");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        System.out.println(i);
-                        JSONObject item = jsonArray.getJSONObject(i);
-                        String id = item.getString(TAG_ID);
-                        String name = item.getString(TAG_NAME);
-                        String address = item.getString(TAG_ADDRESS);
-                        String category = item.getString(TAG_CATEGORY);
-                        String tel = item.getString(TAG_TEL);
-                        String latitude = item.getString(TAG_LATITUDE);
-                        String longitude = item.getString(TAG_LONGITUDE);
-                        Franchises.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
-                        if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_ID))) {
-                            InfoPopupActivity.star.setChecked(true);
-                            break;
-                        } else {
-                            InfoPopupActivity.star.setChecked(false);
-                        }
-                    }
-                } catch (JSONException e) {
-                    Log.d(TAG, "showResult : ", e);
-                } finally {
-                    InfoPopupActivity.star.invalidate();
-                }
-            }
         }
+        Zzim(Context context, RecyclerView recyclerView) {
 
+            this.context = context;
+            this.recyclerView = recyclerView;
+        }
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -540,6 +514,61 @@ public class DbCon extends AppCompatActivity {
                 showResult();
             }
         }
+        public void showResult() {
+            if (mode.equals("call")) {
+                try {
+                    ZzimFranchise.clear();
+                    System.out.println("믿고있었다구");
+                    System.out.println("111111");
+                    JSONObject jsonObject = new JSONObject(mJsonString);
+                    System.out.println("222222");
+                    JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+                    System.out.println("333333");
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        System.out.println(i);
+                        JSONObject item = jsonArray.getJSONObject(i);
+                        String id = item.getString(TAG_ID);
+                        String name = item.getString(TAG_NAME);
+                        String address = item.getString(TAG_ADDRESS);
+                        String category = item.getString(TAG_CATEGORY);
+                        String tel = item.getString(TAG_TEL);
+                        String latitude = item.getString(TAG_LATITUDE);
+                        String longitude = item.getString(TAG_LONGITUDE);
+                        ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
+                        Log.d("ZZIMZZIM","InfoPopupActivity.franchiseID: "+InfoPopupActivity.franchiseID);
+                        Log.d("ZZIMZZIM","item.getString(TAG_ID): "+item.getString(TAG_ID));
+                        if(InfoPopupActivity.franchiseID!=0){
+                            if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_ID))) {
+                                InfoPopupActivity.star.setChecked(true);
+                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(true);");
+                            } else {
+                                InfoPopupActivity.star.setChecked(false);
+                                Log.d("ZZIMZZIM","InfoPopupActivity.star.setChecked(false);");
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    Log.d(TAG, "showResult : ", e);
+                } finally {
+                    if(context!=null && recyclerView !=null){
+                        mAdapter = new FranchiseRecyclerViewAdapter(ZzimFranchise);
+                        recyclerView.setAdapter(mAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+                        mAdapter.notifyDataSetChanged();//데이터변경시
+
+                    }
+                    if(InfoPopupActivity.star!=null){
+
+                        InfoPopupActivity.star.invalidate();
+                    }
+                }
+            }
+        }
+
+
 
         @Override
         protected String doInBackground(String... params) {
@@ -588,28 +617,25 @@ public class DbCon extends AppCompatActivity {
                 errorString = e.toString();
                 return null;
             }
+
         }
     }
 
-    public static class Review extends AsyncTask<String, Void, String>{
+    public static class Review extends AsyncTask<String, Void, String> {
         String errorString = null;
+        static String mJsonString = null;
+        static Activity activity=null;
+        static RecyclerView mRecyclerView = null;
+        public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
+        Review(){
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
         }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.d(TAG, "response ----리뷰---- " + result);
-            if (result == null){
-            }
-            else {
-                mJsonString = result;
-                showResult();
-            }
+        Review(ReviewPopupActivity activity, RecyclerView mRecyclerView){
+            this.activity=activity;
+            this.mRecyclerView=mRecyclerView;
         }
-        public static void showResult(){
+
+        public static void showResult() {
             try {
                 System.out.println("리뷰리뷰리뷰");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -617,25 +643,16 @@ public class DbCon extends AppCompatActivity {
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
                 Reviews.clear();
-                for(int i=0;i<jsonArray.length();i++){
-                    System.out.println("1");
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
-                    System.out.println("2");
                     String review_id = item.getString(TAG_REVIEWID);
-                    System.out.println("3");
                     String store_id = item.getString(TAG_STORE_ID);
-                    System.out.println("4");
                     String user_id = item.getString(TAG_ME_ID);
-                    System.out.println("5");
                     String user_name = item.getString(TAG_USERNAME);
                     String date = item.getString(TAG_DATE);
-                    System.out.println("6");
                     String score = item.getString(TAG_SCORE);
-                    System.out.println("7");
                     String text = item.getString(TAG_REVIEWTXt);
-                    System.out.println("8");
                     Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
-                    System.out.println("9");
                     rowcount++;
                 }
                 System.out.println("**************");
@@ -643,8 +660,32 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
+            }finally {
+                // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+                ReviewRecyclerViewAdapter mAdapter = new ReviewRecyclerViewAdapter(Reviews);
+                mRecyclerView.setAdapter(mAdapter);
+
+                // 리사이클러뷰에 LinearLayoutManager 지정. (vertical)
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                mAdapter.notifyDataSetChanged();
             }
         }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "response ----리뷰---- " + result);
+            if (result != null) {
+                mJsonString = result;
+                showResult();
+            }
+        }
+
         @Override
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
@@ -657,7 +698,7 @@ public class DbCon extends AppCompatActivity {
             System.out.println(searchKeyword1);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/review.php";
             System.out.println(serverURL);
-            String postParameters = "st_id=" + searchKeyword1 + "&function=" + searchKeyword2  + "&me_id=" + searchKeyword3  + "&score=" + searchKeyword4  + "&reviewTXT=" + searchKeyword5  + "&date=" + searchKeyword6 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "st_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&me_id=" + searchKeyword3 + "&score=" + searchKeyword4 + "&reviewTXT=" + searchKeyword5 + "&date=" + searchKeyword6; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -668,23 +709,22 @@ public class DbCon extends AppCompatActivity {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.connect();
                 OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.write(postParameters.getBytes(StandardCharsets.UTF_8));
                 outputStream.flush();
                 outputStream.close();
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
                 InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
                     inputStream = httpURLConnection.getInputStream();
-                }
-                else{
+                } else {
                     inputStream = httpURLConnection.getErrorStream();
                 }
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 StringBuilder sb = new StringBuilder();
                 String line;
-                while((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null) {
                     sb.append(line);
                 }
                 bufferedReader.close();
@@ -697,9 +737,7 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    public static class Member extends AsyncTask<String, Void, String>{
-        String errorString = null;
-
+    public static class Member extends AsyncTask<String, Void, String> {
         private static final String TAG_MEMBER_ID = "member_id";
         private static final String TAG_TEL = "tel";
         private static final String TAG_NAME = "name";
@@ -711,25 +749,9 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_PROFILEIMG = "profileimg";
         private static final String TAG_STARTMONEY = "startmoney";
         private static final String TAG_CT_ID = "ct_id";
+        String errorString = null;
 
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.d(TAG, "response ----멤버---- " + result);
-            if (result == null){
-            }
-            else {
-                mJsonString = result;
-                showResult();
-            }
-        }
-        public static void showResult(){
+        public static void showResult() {
             try {
                 System.out.println("멤버멤버멤버");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -737,7 +759,7 @@ public class DbCon extends AppCompatActivity {
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
                 Reviews.clear();
-                for(int i=0;i<jsonArray.length();i++){
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
                     String member_id = item.getString(TAG_MEMBER_ID);
                     String tel = item.getString(TAG_TEL);
@@ -750,7 +772,7 @@ public class DbCon extends AppCompatActivity {
                     String profileimg = item.getString(TAG_PROFILEIMG);
                     String startmoney = item.getString(TAG_STARTMONEY);
                     String ct_id = item.getString(TAG_CT_ID);
-                    Members.add(new MemberDTO(Integer.parseInt(member_id),tel,name,nickname,email,agerange,gender,birthday,profileimg,startmoney,Integer.parseInt(ct_id)));
+                    Members.add(new MemberDTO(Integer.parseInt(member_id), tel, name, nickname, email, agerange, gender, birthday, profileimg, startmoney, Integer.parseInt(ct_id)));
                     System.out.println("12");
                 }
                 System.out.println("**************");
@@ -760,6 +782,23 @@ public class DbCon extends AppCompatActivity {
                 Log.d(TAG, "showResult : ", e);
             }
         }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "response ----멤버---- " + result);
+            if (result == null) {
+            } else {
+                mJsonString = result;
+                showResult();
+            }
+        }
+
         @Override
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
@@ -768,7 +807,7 @@ public class DbCon extends AppCompatActivity {
             System.out.println(searchKeyword1);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/member.php";
             System.out.println(serverURL);
-            String postParameters = "email=" + searchKeyword1 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "email=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -779,23 +818,22 @@ public class DbCon extends AppCompatActivity {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.connect();
                 OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.write(postParameters.getBytes(StandardCharsets.UTF_8));
                 outputStream.flush();
                 outputStream.close();
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
                 InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
                     inputStream = httpURLConnection.getInputStream();
-                }
-                else{
+                } else {
                     inputStream = httpURLConnection.getErrorStream();
                 }
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 StringBuilder sb = new StringBuilder();
                 String line;
-                while((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null) {
                     sb.append(line);
                 }
                 bufferedReader.close();
@@ -808,25 +846,10 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    public static class Money extends AsyncTask<String, Void, String>{
+    public static class Money extends AsyncTask<String, Void, String> {
         String errorString = null;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            Log.d(TAG, "response ----리뷰---- " + result);
-            if (result == null){
-            }
-            else {
-                mJsonString = result;
-                showResult();
-            }
-        }
-        public static void showResult(){
+        public static void showResult() {
             try {
                 System.out.println("리뷰리뷰리뷰");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -834,7 +857,7 @@ public class DbCon extends AppCompatActivity {
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
                 Reviews.clear();
-                for(int i=0;i<jsonArray.length();i++){
+                for (int i = 0; i < jsonArray.length(); i++) {
                     System.out.println("1");
                     JSONObject item = jsonArray.getJSONObject(i);
                     System.out.println("2");
@@ -851,7 +874,7 @@ public class DbCon extends AppCompatActivity {
                     System.out.println("7");
                     String text = item.getString(TAG_REVIEWTXt);
                     System.out.println("8");
-                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
+                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id), Integer.parseInt(store_id), Integer.parseInt(user_id), user_name, date, Double.parseDouble(score), text));
                     System.out.println("9");
                 }
                 System.out.println("**************");
@@ -861,6 +884,23 @@ public class DbCon extends AppCompatActivity {
                 Log.d(TAG, "showResult : ", e);
             }
         }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "response ----리뷰---- " + result);
+            if (result == null) {
+            } else {
+                mJsonString = result;
+                showResult();
+            }
+        }
+
         @Override
         protected String doInBackground(String... params) {
             String searchKeyword1 = params[0];
@@ -873,7 +913,7 @@ public class DbCon extends AppCompatActivity {
             System.out.println(searchKeyword1);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/review.php";
             System.out.println(serverURL);
-            String postParameters = "st_id=" + searchKeyword1 + "&function=" + searchKeyword2  + "&me_id=" + searchKeyword3  + "&score=" + searchKeyword4  + "&reviewTXT=" + searchKeyword5  + "&date=" + searchKeyword6 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "st_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&me_id=" + searchKeyword3 + "&score=" + searchKeyword4 + "&reviewTXT=" + searchKeyword5 + "&date=" + searchKeyword6; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -884,23 +924,22 @@ public class DbCon extends AppCompatActivity {
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.connect();
                 OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
+                outputStream.write(postParameters.getBytes(StandardCharsets.UTF_8));
                 outputStream.flush();
                 outputStream.close();
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d(TAG, "response code - " + responseStatusCode);
                 InputStream inputStream;
-                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
                     inputStream = httpURLConnection.getInputStream();
-                }
-                else{
+                } else {
                     inputStream = httpURLConnection.getErrorStream();
                 }
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 StringBuilder sb = new StringBuilder();
                 String line;
-                while((line = bufferedReader.readLine()) != null){
+                while ((line = bufferedReader.readLine()) != null) {
                     sb.append(line);
                 }
                 bufferedReader.close();
@@ -912,11 +951,6 @@ public class DbCon extends AppCompatActivity {
             }
         }
     }
-
-
-
-
-
 
 
 }

@@ -106,9 +106,9 @@ public class InfoPopupActivity extends Activity {
         star.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.myplaces){
-                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.myplaces);
-                }
+//                if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.myplaces){
+//                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.myplaces);
+//                }
 
                 if(star.isChecked()){
                     System.out.println("체크되었음");
