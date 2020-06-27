@@ -200,11 +200,16 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                         String price1 = priceid.getText().toString();
                         String date1 = dateid.getText().toString();
                         String time1 = timeid.getText().toString();
+
+
                         if ( where1.isEmpty() == true || price1.isEmpty() == true || date1.isEmpty() == true || time1.isEmpty() == true ) {  //한칸이라도 비어있다면
                             Toast.makeText(getContext(), "전체 칸을 다 입력해주세요!", Toast.LENGTH_SHORT).show();
                         } else {
                             MoneyDTO moneyDTO = new MoneyDTO(showdate,showtime, where1, Integer.parseInt(price1));
                             //moneyDTO DB로 보내고
+                            System.out.println("짤랑짤랑");
+                            DbCon.Money Money = new DbCon.Money();
+                            Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"2","날짜","시간",where1,price1);
                             mRecyclerView.setAdapter(mAdapter);
                             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

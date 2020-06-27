@@ -879,6 +879,7 @@ public class DbCon extends AppCompatActivity {
 
 
         private static final String TAG_DATE = "date";
+        private static final String TAG_TIME = "time";
         private static final String TAG_USE_WHERE = "useWhere";
         private static final String TAG_USE_MONEY = "useMoney";
 
@@ -898,16 +899,14 @@ public class DbCon extends AppCompatActivity {
                     JSONObject item = jsonArray.getJSONObject(i);
                     System.out.println("4");
                     String date = item.getString(TAG_DATE);
+                    String time = item.getString(TAG_TIME);
                     System.out.println("5");
                     String useWhere = item.getString(TAG_USE_WHERE);
                     System.out.println("6");
                     String useMoney = item.getString(TAG_USE_MONEY);
-                    String[] splitText = date.split(" ");
-                    System.out.println(splitText[0]);
-                    System.out.println(splitText[1]);
                     System.out.println(useWhere);
                     System.out.println(useMoney);
-                    com.example.capstone.Money.mList.add(new MoneyDTO(splitText[0],splitText[1],useWhere,Integer.parseInt(useMoney)));
+                    com.example.capstone.Money.mList.add(new MoneyDTO(date,time,useWhere,Integer.parseInt(useMoney)));
                     System.out.println("9");
                 }
                 System.out.println("**************");
@@ -1030,21 +1029,21 @@ public class DbCon extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
             }
-//            finally {
-//                if(Members.size()==0){
-//                    MainActivity.flag = true;
-//
-//                }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
-//
-//                    MainActivity.textView.setText(Members.get(0).name);
-//                    MainActivity.textView1.setText(Members.get(0).email);
-//                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
-//                    MainActivity.flag = true;
-//                }
-//
-//
-//
-//            }
+            finally {
+                if(Members.size()==0){
+                    MainActivity.flag = true;
+
+                }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
+
+                    MainActivity.textView.setText(Members.get(0).name);
+                    MainActivity.textView1.setText(Members.get(0).email);
+                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
+                    MainActivity.flag = true;
+                }
+
+
+
+            }
         }
 
         @Override
@@ -1072,7 +1071,7 @@ public class DbCon extends AppCompatActivity {
 
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/Qr.php";
             System.out.println(serverURL);
-            String postParameters = "s_id=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "store_id=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);

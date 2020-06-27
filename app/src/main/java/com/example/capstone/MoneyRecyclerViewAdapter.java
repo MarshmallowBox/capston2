@@ -120,13 +120,17 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
 
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 String strusing = usingid.getText().toString();
                                 int strprice = Integer.parseInt(priceid.getText().toString());
                                 String strdate = dateid.getText().toString();
                                 String strhour = timeid.getText().toString();
                                 MoneyDTO dict = new MoneyDTO(showdate, showtime, strusing, strprice );
-
-
+                                System.out.println("대충수정하는부분");
+                                System.out.println(strdate);
+                                System.out.println(strhour);
+                                System.out.println(strusing);
+                                System.out.println(strprice);
                                 // 8. ListArray에 있는 데이터를 변경하고
                                 moneyDTOS.set(getAdapterPosition(), dict);
 
