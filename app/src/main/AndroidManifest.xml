@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.capstone">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,7 +18,8 @@
         android:roundIcon="@drawable/appicon64"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        android:hardwareAccelerated="true">
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
@@ -42,7 +44,9 @@
         <activity android:name=".SettingPopupActivity" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".MoneyPopupActivity" android:theme="@android:style/Theme.Dialog"/>
 
-
+        <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation"/>
         <!--        <activity android:name=".LoginActivity"></activity>-->
         <!--        <activity android:name=".MainActivity"-->
         <!--            android:configChanges = "keyboardHidden|orientation|screenSize|layoutDirection">-->

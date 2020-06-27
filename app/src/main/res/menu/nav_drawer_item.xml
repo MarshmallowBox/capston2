@@ -11,6 +11,10 @@
                 android:id="@+id/logout"
                 android:icon="@android:drawable/ic_menu_close_clear_cancel"
                 android:title="회원정보" />
+            <item
+                android:id="@+id/scan_QR"
+                android:icon="@android:drawable/ic_menu_camera"
+                android:title="QR코드 스캔하기" />
 
         </menu>
     </item>

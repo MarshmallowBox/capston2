@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -39,7 +40,27 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.util.MarkerIcons;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
+import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Objects;
@@ -62,9 +83,11 @@ public class MainActivity extends AppCompatActivity {
     DbCon.DataAdapter dataAdapter;
     DbCon dbCon;
     private SearchView searchView;
-    private DrawerLayout drawerLayout;
+    public static DrawerLayout drawerLayout;
   public static TextView textView;
   public static TextView textView1;
+    public FranchiseDTO franchiseDTO;
+    private IntentIntegrator qrScan;
 
 
 public static boolean flag = false;
@@ -402,13 +425,11 @@ Thread thread = new Thread(){
 //                        builder.show();
 
                         break;
-                    case R.id.user_info:
-//                        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-//                        LayoutInflater inflater = context.getLayoutInflater();
-//                        View view1 = inflater.inflate(R.layout.user_data,null);
-//                        builder1.setView(view1);
-//                        final AlertDialog dialog1 = builder1.create();
-//                        dialog1.show();
+                    case R.id.scan_QR:
+                        qrScan = new IntentIntegrator(MainActivity.this);
+        qrScan.setOrientationLocked(false); // default가 세로모드인데 휴대폰 방향에 따라 가로, 세로로 자동 변경됩니다.
+        qrScan.setPrompt("QR코드를 스캔해보아요~");
+        qrScan.initiateScan();
 
                         break;
                     case R.id.information:
@@ -541,6 +562,67 @@ Thread thread = new Thread(){
         });
         return true;
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                // todo
+            } else {
+                MainActivity.drawerLayout.closeDrawer(GravityCompat.START);
+                Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                String str = result.getContents();
+                String[] array = str.split("\n");
+                if (array.length == 8 && array[0].equals("Create_Marker")) {
 
+                    franchiseDTO = new FranchiseDTO(Integer.parseInt(array[1]), array[2], array[3], array[4], array[5], Double.parseDouble(array[6]), Double.parseDouble(array[7]));
+
+                    Maps.singleMarkers.setMap(null);
+                    Maps.singleMarkers = new Marker();
+                    Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
+                    Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
+                    //마커 크기지정 아마 3:4비율인듯
+//                        marker.setWidth(90);
+//                        marker.setHeight(120);
+                    Maps.singleMarkers.setCaptionText(franchiseDTO.name); //메인캡션
+                    Maps.singleMarkers.setTag(franchiseDTO);//인포뷰에 전달할 태그값
+                    Maps.singleMarkers.setSubCaptionText(franchiseDTO.category); //서브캡션
+                    Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                    Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
+                    Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+
+                    final FranchiseDTO finalFranchiseDTO1 = franchiseDTO;
+                    Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
+                        @Override
+                        public boolean onClick(@NonNull Overlay overlay) {
+
+                            //클릭시 카메라 이동
+                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
+                            //infoWindow에 franchises값 태그로 전달
+                            Maps.infoWindow.setTag(finalFranchiseDTO1);
+                            //인포뷰 활성화
+                            Maps.infoWindow.open(Maps.singleMarkers);
+                            Maps.infoWindow.performClick();
+                            return true;
+                        }
+                    });
+
+                    Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
+                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
+                    Maps.singleMarkers.performClick();
+//하단 정보창 닫기
+                    if (Maps.mLayout != null &&
+                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    }
+                }
+
+                // todo
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
 }

@@ -4,19 +4,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraUpdate;
@@ -28,9 +27,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 public class HelpPopupActivity extends Activity {
 
 
-
-
-
+    Button close;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -39,7 +36,7 @@ public class HelpPopupActivity extends Activity {
         //타이틀바 없애기
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_help_popup);
-        Button close = findViewById(R.id.help_popup_close);
+        close = findViewById(R.id.help_popup_close);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +44,12 @@ public class HelpPopupActivity extends Activity {
             }
         });
 
+
+
+
     }
+
+
 
     /*//확인 버튼 클릭
     public void mOnClose(View v) {
