@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment myPlaceFrag;
     Fragment moneyFrag;
     DbCon.Search Search;
-    DbCon.Member Member;
+    public static DbCon.Member Member;
     DbCon.DataAdapter dataAdapter;
     DbCon dbCon;
     private SearchView searchView;
@@ -131,7 +131,7 @@ public static boolean flag = false;
         }
         Member = new DbCon.Member();
         if (Member != null) {
-            Member.execute(strEmail,strNickname);
+            Member.execute(strEmail,strNickname,"0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
         }
 
 
@@ -515,7 +515,7 @@ Thread thread = new Thread(){
                 }
                 Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s, "1");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "1",String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
                 searchView.clearFocus();
                 return true;
@@ -533,7 +533,7 @@ Thread thread = new Thread(){
                 }
                 Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s, "2");//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "2",String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
 
                 return false;
