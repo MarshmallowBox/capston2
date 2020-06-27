@@ -88,7 +88,7 @@ public class InfoPopupActivity extends Activity {
         }
         Zzim = new DbCon.Zzim();
         if (Zzim != null) {
-            Zzim.execute("1",String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+            Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
         }
         System.out.println("%$%$");
         System.out.println("%$%$");
@@ -124,7 +124,7 @@ public class InfoPopupActivity extends Activity {
                     }
                     Zzim = new DbCon.Zzim();
                     if (Zzim != null) {
-                        Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                        Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     }
                     System.out.println("찜목록추가됨");
                 }else{
@@ -135,7 +135,7 @@ public class InfoPopupActivity extends Activity {
                     }
                     Zzim = new DbCon.Zzim();
                     if (Zzim != null) {
-                        Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                        Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     }
                     System.out.println("찜목록삭제됨");
                 }
