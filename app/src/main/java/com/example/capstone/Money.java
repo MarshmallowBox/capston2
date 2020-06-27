@@ -31,7 +31,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 {
     RecyclerView mRecyclerView = null;
     MoneyRecyclerViewAdapter mAdapter = null;
-    ArrayList<MoneyDTO> mList = new ArrayList<MoneyDTO>();
+    public static ArrayList<MoneyDTO> mList = new ArrayList<MoneyDTO>();
     static TextView money = null;
     EditText datetv,timetv,editText = null;
     EditText editMoney = null;
@@ -45,7 +45,11 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.activity_money, container, false);
-        money = view.findViewById(R.id.money);
+
+        DbCon.Money Money = new DbCon.Money();
+        Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"1","0","0","0","0");//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
+
+       money = view.findViewById(R.id.money);
         //editText = view.findViewById(R.id.money_input_text);
         //editMoney = view.findViewById(R.id.money_input_money);
         //input = view.findViewById(R.id.money_input);
@@ -59,6 +63,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 
 
         //DB에서 불러올부분 밑에는 보여주기용 임시데이터
+        //mlist에 정상적으로 가져와는 졌는데 리스트를 띄울때 로딩차이때문에 못띄우는듯?
 //        mList.add(new MoneyDTO("2020-12-20","20:20", "aaaa", 1000));
 
         mAdapter.notifyDataSetChanged(); //얘가 리사이클러뷰 아이템들 업뎃

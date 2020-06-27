@@ -69,7 +69,7 @@ public class ReviewPopupActivity extends Activity {
             }
             review = new DbCon.Review(this,mRecyclerView);
             if (review != null) {
-                review.execute(String.valueOf(id),"1","1","1","1","1");
+                review.execute(String.valueOf(id),"1",String.valueOf(DbCon.Members.get(0).member_id),"1","1","1");
             }
 
 
@@ -123,7 +123,7 @@ public class ReviewPopupActivity extends Activity {
                     review = new DbCon.Review();
                     if (review != null) {
                         //store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
-                        review.execute(String.valueOf(id),"2","2",String.valueOf(star.getRating()),String.valueOf(text.getText()),formatDate);
+                        review.execute(String.valueOf(id),"2",String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(star.getRating()),String.valueOf(text.getText()),formatDate);
                     }
 
 

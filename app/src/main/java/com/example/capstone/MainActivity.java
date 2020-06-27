@@ -84,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
     DbCon dbCon;
     private SearchView searchView;
     public static DrawerLayout drawerLayout;
-  public static TextView textView;
-  public static TextView textView1;
+    public static TextView textView;
+    public static TextView textView1;
     public FranchiseDTO franchiseDTO;
     private IntentIntegrator qrScan;
 
 
-public static boolean flag = false;
+    public static boolean flag = false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -128,6 +128,7 @@ public static boolean flag = false;
 
 
 
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         if(!strNickname.equals("비회원")){
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
@@ -138,8 +139,8 @@ public static boolean flag = false;
         // xml 파일에서 넣어놨던 header 선언
         // header에 있는 리소스 가져오기
         //로그인시 유저의 아이디값 로그인인텐트에서 받아와 이름변경
-       textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
-       textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
+        textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
+        textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
         user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
         user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
         textView.setText(strNickname);
@@ -355,25 +356,25 @@ public static boolean flag = false;
 
 
 
-Thread thread = new Thread(){
-    @Override
-    public void run() {
-        super.run();
-        try {
-        while (!flag){
-                sleep(100);
-                Log.d("Ssibal","쓰레드");
-        }
-        if(!strNickname.equals("비회원")&&user_city.getText().equals("지역을 선택하세요.")){
-            Intent newUser = new Intent(MainActivity.this, SettingPopupActivity.class);
-            newUser.putExtra("mode","new");
-            startActivity(newUser);
-        }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-};
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    while (!flag){
+                        sleep(100);
+                        Log.d("Ssibal","쓰레드");
+                    }
+                    if(!strNickname.equals("비회원")&&user_city.getText().equals("지역을 선택하세요.")){
+                        Intent newUser = new Intent(MainActivity.this, SettingPopupActivity.class);
+                        newUser.putExtra("mode","new");
+                        startActivity(newUser);
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         thread.start();
 
 
@@ -435,9 +436,9 @@ Thread thread = new Thread(){
                         break;
                     case R.id.scan_QR:
                         qrScan = new IntentIntegrator(MainActivity.this);
-        qrScan.setOrientationLocked(false); // default가 세로모드인데 휴대폰 방향에 따라 가로, 세로로 자동 변경됩니다.
-        qrScan.setPrompt("QR코드를 스캔해보아요~");
-        qrScan.initiateScan();
+                        qrScan.setOrientationLocked(false); // default가 세로모드인데 휴대폰 방향에 따라 가로, 세로로 자동 변경됩니다.
+                        qrScan.setPrompt("QR코드를 스캔해보아요~");
+                        qrScan.initiateScan();
 
                         break;
                     case R.id.information:

@@ -66,7 +66,7 @@ public class InfoPopupActivity extends Activity {
         reviewCount = intent.getExtras().getInt("reviewCount");
 
         DbCon.Review Review = new DbCon.Review();
-        Review.execute(String.valueOf(franchiseID),"1","1","1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
+        Review.execute(String.valueOf(franchiseID),"1",String.valueOf(DbCon.Members.get(0).member_id),"1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
 
 
         ((TextView) findViewById(R.id.info_popup_title)).setText(name + "의 상세정보");
@@ -87,7 +87,7 @@ public class InfoPopupActivity extends Activity {
         }
         Zzim = new DbCon.Zzim();
         if (Zzim != null) {
-            Zzim.execute("1",String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+            Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
         }
         System.out.println("%$%$");
         System.out.println("%$%$");
@@ -123,7 +123,7 @@ public class InfoPopupActivity extends Activity {
                     }
                     Zzim = new DbCon.Zzim();
                     if (Zzim != null) {
-                        Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                        Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     }
                     System.out.println("찜목록추가됨");
                 }else{
@@ -134,7 +134,7 @@ public class InfoPopupActivity extends Activity {
                     }
                     Zzim = new DbCon.Zzim();
                     if (Zzim != null) {
-                        Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                        Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     }
                     System.out.println("찜목록삭제됨");
                 }
