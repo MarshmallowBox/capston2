@@ -50,7 +50,6 @@
         <activity android:name=".ReviewPopupActivity"/>
         <activity android:name=".HelpPopupActivity" android:theme="@android:style/Theme.Dialog"/>
         <activity android:name=".SettingPopupActivity" android:theme="@android:style/Theme.Dialog"/>
-        <activity android:name=".MoneyPopupActivity" android:theme="@android:style/Theme.Dialog"/>
 
         <activity android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

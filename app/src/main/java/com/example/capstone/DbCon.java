@@ -542,9 +542,8 @@ public class DbCon extends AppCompatActivity {
                         String latitude = item.getString(TAG_LATITUDE);
                         String longitude = item.getString(TAG_LONGITUDE);
                         ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
-
                         if(InfoPopupActivity.franchiseID!=0){
-                            if (String.valueOf(InfoPopupActivity.franchiseID).equals(item.getString(TAG_ID))) {
+                            if (String.valueOf(InfoPopupActivity.franchiseID).equals(id)) {
                                 InfoPopupActivity.star.setChecked(true);
                             } else {
                                 InfoPopupActivity.star.setChecked(false);
@@ -628,7 +627,7 @@ public class DbCon extends AppCompatActivity {
         static String mJsonString = null;
         static Activity activity=null;
         static RecyclerView mRecyclerView = null;
-        static int rowCount;
+        static int rowCount=0;
 
         public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
         Review(){
@@ -641,14 +640,16 @@ public class DbCon extends AppCompatActivity {
 
         public static void showResult() {
             try {
+                rowCount=0;
                 System.out.println("리뷰리뷰리뷰");
                 JSONObject jsonObject = new JSONObject(mJsonString);
                 System.out.println("111111");
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
-                rowCount=0;
+
                 Reviews.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
+                    Log.d("rowCount", ""+rowCount);
                     JSONObject item = jsonArray.getJSONObject(i);
                     String review_id = item.getString(TAG_REVIEWID);
                     String store_id = item.getString(TAG_STORE_ID);
@@ -658,7 +659,8 @@ public class DbCon extends AppCompatActivity {
                     String score = item.getString(TAG_SCORE);
                     String text = item.getString(TAG_REVIEWTXt);
                     Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
-                    rowCount++;
+                    Log.d("rowCount", ""+rowCount);
+                    rowCount+=1;
                 }
                 System.out.println("**************");
                 System.out.println(Reviews);
@@ -890,12 +892,22 @@ public class DbCon extends AppCompatActivity {
 
 
         private static final String TAG_DATE = "date";
+        private static final String TAG_TIME = "time";
         private static final String TAG_USE_WHERE = "useWhere";
         private static final String TAG_USE_MONEY = "useMoney";
         String mJsonString;
-
+        public static ArrayList<MoneyDTO> mList = new ArrayList<>();
         String errorString = null;
+        static Context context=null;
+        static RecyclerView recyclerView = null;
+        MoneyRecyclerViewAdapter mAdapter;
+        public Money() {
+        }
+        Money(Context context, RecyclerView recyclerView) {
 
+            this.context = context;
+            this.recyclerView = recyclerView;
+        }
         public void showResult() {
             try {
                 System.out.println("머니머니머니");
@@ -903,29 +915,39 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("111111");
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
-                com.example.capstone.Money.mList.clear();
+                mList.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     System.out.println("1");
                     JSONObject item = jsonArray.getJSONObject(i);
                     System.out.println("4");
                     String date = item.getString(TAG_DATE);
+                    String time = item.getString(TAG_TIME);
                     System.out.println("5");
                     String useWhere = item.getString(TAG_USE_WHERE);
                     System.out.println("6");
                     String useMoney = item.getString(TAG_USE_MONEY);
-                    String[] splitText = date.split(" ");
-                    System.out.println(splitText[0]);
-                    System.out.println(splitText[1]);
                     System.out.println(useWhere);
                     System.out.println(useMoney);
-                    com.example.capstone.Money.mList.add(new MoneyDTO(splitText[0],splitText[1],useWhere,Integer.parseInt(useMoney)));
+                    mList.add(new MoneyDTO(date,time,useWhere,Integer.parseInt(useMoney)));
                     System.out.println("9");
                 }
                 System.out.println("**************");
-                System.out.println(com.example.capstone.Money.mList);
+                System.out.println(mList);
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
+            }
+            finally {
+
+                if(context!=null && recyclerView !=null){
+                    MoneyRecyclerViewAdapter mAdapter = new MoneyRecyclerViewAdapter(mList);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+                    mAdapter.notifyDataSetChanged(); //데이터변경시
+
+
+                }
             }
         }
 

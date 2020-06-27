@@ -26,12 +26,12 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class Money extends Fragment // Fragment 클래스를 상속받아야한다
 {
+    DbCon.Money Money;
     RecyclerView mRecyclerView = null;
-    MoneyRecyclerViewAdapter mAdapter = null;
-    public static ArrayList<MoneyDTO> mList = new ArrayList<MoneyDTO>();
     static TextView money = null;
     EditText datetv,timetv,editText = null;
     EditText editMoney = null;
@@ -46,8 +46,6 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.activity_money, container, false);
 
-        DbCon.Money Money = new DbCon.Money();
-        Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"1","0","0","0","0");//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
 
        money = view.findViewById(R.id.money);
         //editText = view.findViewById(R.id.money_input_text);
@@ -57,16 +55,24 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 
         //addbtn.setOnClickListener();
         mRecyclerView = view.findViewById(R.id.money_recyclerview);
-        mAdapter = new MoneyRecyclerViewAdapter(mList);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        //DB에서 불러올부분 밑에는 보여주기용 임시데이터
-        //mlist에 정상적으로 가져와는 졌는데 리스트를 띄울때 로딩차이때문에 못띄우는듯?
-//        mList.add(new MoneyDTO("2020-12-20","20:20", "aaaa", 1000));
 
-        mAdapter.notifyDataSetChanged(); //얘가 리사이클러뷰 아이템들 업뎃
+
+
+
+        //이거시 리스트 불러오는거시여
+        if (Money != null) {
+            Money.cancel(true);
+            Money = null;
+        }
+        Money = new DbCon.Money(Objects.requireNonNull(container).getContext(),mRecyclerView);
+        Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"1","0","0","0","0");//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
+
+
+
+
+
 
 
         setoriginmoney = view.findViewById(R.id.setoriginmoneybtn);
@@ -205,14 +211,18 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                         } else {
                             MoneyDTO moneyDTO = new MoneyDTO(showdate,showtime, where1, Integer.parseInt(price1));
                             //moneyDTO DB로 보내고
-                            mRecyclerView.setAdapter(mAdapter);
-                            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-                            //리스트에 저장
-                            mList.add(moneyDTO);
+                            //이거시 리스트 저장하는거시여
+                            if (Money != null) {
+                                Money.cancel(true);
+                                Money = null;
+                            }
+                            Money = new DbCon.Money(Objects.requireNonNull(container).getContext(),mRecyclerView);
+                            Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"2","2020/11/11","11:11",where1,price1);//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
+
+
+
                             money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - moneyDTO.money));
-
-                            mAdapter.notifyDataSetChanged(); //얘가 리사이클러뷰 아이템들 업뎃
 
                             Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
                         }

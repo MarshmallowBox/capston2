@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="64dp"
-            android:text="리뷰: 0 개"
+            android:text="리뷰: 0개"
             android:textColor="#00C0FF"
 
             android:textSize="20dp" />

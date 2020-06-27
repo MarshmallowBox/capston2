@@ -29,7 +29,6 @@ public class ReviewPopupActivity extends Activity {
     String tel;
     double latitude;
     double longitude;
-    int reviewCount;
     String mode;
     DbCon.Review review;
     RecyclerView mRecyclerView = null;
@@ -50,7 +49,6 @@ public class ReviewPopupActivity extends Activity {
         tel = intent.getExtras().getString("tel");
         latitude = intent.getExtras().getDouble("latitude");
         longitude = intent.getExtras().getDouble("longitude");
-        reviewCount = intent.getExtras().getInt("reviewCount");
         mode = intent.getExtras().getString("mode");
 
         if (mode.equals("Review_popup_open")) {
@@ -91,7 +89,7 @@ public class ReviewPopupActivity extends Activity {
                     addReviewIntent.putExtra("tel", tel);
                     addReviewIntent.putExtra("latitude", latitude);
                     addReviewIntent.putExtra("longitude", longitude);
-                    addReviewIntent.putExtra("reviewCount", 0);
+
                     startActivity(addReviewIntent);
 
                     //액티비티(팝업) 닫기
@@ -138,7 +136,7 @@ public class ReviewPopupActivity extends Activity {
                     addReviewIntent.putExtra("tel", tel);
                     addReviewIntent.putExtra("latitude", latitude);
                     addReviewIntent.putExtra("longitude", longitude);
-                    addReviewIntent.putExtra("reviewCount", 0);
+
                     startActivity(addReviewIntent);
 
                     //액티비티(팝업) 닫기
@@ -178,7 +176,7 @@ public class ReviewPopupActivity extends Activity {
                     addReviewIntent.putExtra("tel", tel);
                     addReviewIntent.putExtra("latitude", latitude);
                     addReviewIntent.putExtra("longitude", longitude);
-                    addReviewIntent.putExtra("reviewCount", 0);
+
                     startActivity(addReviewIntent);
 
                     //액티비티(팝업) 닫기

@@ -35,7 +35,7 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
             mAdapter = null;
         }
         mAdapter = new DbCon.Zzim(Objects.requireNonNull(container).getContext(),recyclerView);
-        mAdapter.execute("1","0","call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+        mAdapter.execute(String.valueOf(DbCon.Members.get(0).member_id),"0","call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
 
         return view;
     }

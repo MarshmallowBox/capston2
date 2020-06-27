@@ -350,6 +350,9 @@ public class MainActivity extends AppCompatActivity {
                             fragmentManager.beginTransaction().hide(myPlaceFrag).commit();
                         if (moneyFrag != null)
                             fragmentManager.beginTransaction().show(moneyFrag).commit();
+
+                        FragmentTransaction transaction2 =  getSupportFragmentManager().beginTransaction();
+                        transaction2.detach(moneyFrag).attach(moneyFrag).commit();
                         break;
                 }
                 return true;
@@ -520,7 +523,6 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("tel", tags.tel);
                             intent.putExtra("latitude", tags.latitude);
                             intent.putExtra("longitude", tags.longitude);
-                            intent.putExtra("reviewCount", 0);
                             startActivity(intent);
                             QRFlag=false;
                         } catch (InterruptedException e) {
@@ -663,7 +665,6 @@ public class MainActivity extends AppCompatActivity {
                                 intent.putExtra("tel", tags.tel);
                                 intent.putExtra("latitude", tags.latitude);
                                 intent.putExtra("longitude", tags.longitude);
-                                intent.putExtra("reviewCount", 0);
                                 startActivity(intent);
 
                             } catch (InterruptedException e) {

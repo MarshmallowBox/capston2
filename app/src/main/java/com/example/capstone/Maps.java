@@ -130,7 +130,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                 intent.putExtra("tel", tags.tel);
                 intent.putExtra("latitude", tags.latitude);
                 intent.putExtra("longitude", tags.longitude);
-                intent.putExtra("reviewCount", 0);
+
                 startActivity(intent);
 
                 return true;

@@ -45,7 +45,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
        holder.date.setText(reviewDTOS.get(position).date);
        holder.text.setText(reviewDTOS.get(position).text);
        holder.star.setRating((float) reviewDTOS.get(position).score);
-       if(reviewDTOS.get(position).userID!=2){
+       if(reviewDTOS.get(position).userID!=DbCon.Members.get(0).member_id){
            ((Button)holder.delete).setVisibility(View.INVISIBLE);
        }
         holder.delete.setOnClickListener(new View.OnClickListener() {

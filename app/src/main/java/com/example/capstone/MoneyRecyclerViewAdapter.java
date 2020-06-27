@@ -138,6 +138,10 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
                         });
                         final AlertDialog dialog = builder.create();
                         dialog.show();
+
+
+
+
                         break;
 
 
@@ -147,6 +151,9 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
                         notifyItemRangeChanged(getAdapterPosition(), moneyDTOS.size());
                         leftovermoney();
                         Money.changeleftmoney();
+
+
+
                         break;
                 }
                 return true;
