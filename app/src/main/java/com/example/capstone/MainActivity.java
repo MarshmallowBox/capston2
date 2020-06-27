@@ -134,6 +134,23 @@ public static boolean flag = false;
             Member.execute(strEmail,strNickname,"0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
         }
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        if(!strNickname.equals("비회원")){
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
+        }
+
+//        TextView tv_userId = (TextView) context.findViewById(R.id.user_id);
+//        tv_userId.setText(name);
+        // xml 파일에서 넣어놨던 header 선언
+        // header에 있는 리소스 가져오기
+        //로그인시 유저의 아이디값 로그인인텐트에서 받아와 이름변경
+        final TextView textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
+        final TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
+        user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
+        user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
+        textView.setText(strNickname);
+        textView1.setText(strEmail);
+        user_city.setText("지역을 선택하세요.");
 
         System.out.println(strNickname);
 
@@ -329,24 +346,7 @@ public static boolean flag = false;
         });
 
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        if(!strNickname.equals("비회원")){
-            navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
-        }
-        Log.d("qqqqqqqqqqqq", String.valueOf(navigationView.getMenu().getItem(0).getSubMenu().getItem(0).getTitle()));
 
-//        TextView tv_userId = (TextView) context.findViewById(R.id.user_id);
-//        tv_userId.setText(name);
-        // xml 파일에서 넣어놨던 header 선언
-        // header에 있는 리소스 가져오기
-        //로그인시 유저의 아이디값 로그인인텐트에서 받아와 이름변경
-        final TextView textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
-        final TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
-        user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
-        textView.setText(strNickname);
-        textView1.setText(strEmail);
-        MainActivity.user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
-        MainActivity.user_city.setText("지역을 선택하세요.");
 
 
 Thread thread = new Thread(){
@@ -357,10 +357,12 @@ Thread thread = new Thread(){
         while (!flag){
                 sleep(100);
                 Log.d("Ssibal","쓰레드");
-        }if(!strNickname.equals("비회원")){
-            Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
-            setting.putExtra("mode","new");
-            startActivity(setting);}
+        }
+        if(!strNickname.equals("비회원")&&user_city.getText().equals("지역을 선택하세요.")){
+            Intent newUser = new Intent(MainActivity.this, SettingPopupActivity.class);
+            newUser.putExtra("mode","new");
+            startActivity(newUser);
+        }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -766,7 +766,6 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("111111");
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
-                Reviews.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
                     String member_id = item.getString(TAG_MEMBER_ID);
@@ -794,10 +793,12 @@ public class DbCon extends AppCompatActivity {
                 if(Members.size()==0){
                     MainActivity.flag = true;
 
-                }else{
+                }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
+
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
                     MainActivity.user_money.setText(Members.get(0).startmoney);
+                    MainActivity.flag = true;
                 }
 
 

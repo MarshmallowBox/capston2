@@ -66,15 +66,16 @@ String mode="";
 //                        String.valueOf(citySpinner.getSelectedItem()) -> city값
                         //DB ADD
                         //MainActivity.Member
+                        if (MainActivity.Member != null) {
+                            MainActivity.Member.cancel(true);
+                            MainActivity.Member = null;
+                        }
+                        MainActivity.Member = new DbCon.Member();
+                        MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()));
                     }
                     MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
 
-                    if (MainActivity.Member != null) {
-                        MainActivity.Member.cancel(true);
-                        MainActivity.Member = null;
-                    }
-                    MainActivity.Member = new DbCon.Member();
-                    MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(MainActivity.user_city.getText()));
+
 //                Toast.makeText(SettingPopupActivity.this, String.valueOf(citySpinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
                     finish();
                 }
