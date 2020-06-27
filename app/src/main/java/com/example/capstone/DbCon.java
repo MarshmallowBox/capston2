@@ -59,6 +59,8 @@ public class DbCon extends AppCompatActivity {
 
     public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
     public static ArrayList<MemberDTO> Members = new ArrayList<>();
+    public static ArrayList<MoneyDTO> Moneys = new ArrayList<>();
+
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();
     static String mJsonString;
 
@@ -797,7 +799,7 @@ public class DbCon extends AppCompatActivity {
 
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
-                    MainActivity.user_money.setText(Members.get(0).startmoney);
+                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
                     MainActivity.flag = true;
                 }
 
@@ -874,38 +876,42 @@ public class DbCon extends AppCompatActivity {
     }
 
     public static class Money extends AsyncTask<String, Void, String> {
+
+
+        private static final String TAG_DATE = "date";
+        private static final String TAG_USE_WHERE = "useWhere";
+        private static final String TAG_USE_MONEY = "useMoney";
+
+
         String errorString = null;
 
         public static void showResult() {
             try {
-                System.out.println("리뷰리뷰리뷰");
+                System.out.println("머니머니머니");
                 JSONObject jsonObject = new JSONObject(mJsonString);
                 System.out.println("111111");
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
-                Reviews.clear();
+                com.example.capstone.Money.mList.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     System.out.println("1");
                     JSONObject item = jsonArray.getJSONObject(i);
-                    System.out.println("2");
-                    String review_id = item.getString(TAG_REVIEWID);
-                    System.out.println("3");
-                    String store_id = item.getString(TAG_STORE_ID);
                     System.out.println("4");
-                    String user_id = item.getString(TAG_ME_ID);
-                    System.out.println("5");
-                    String user_name = item.getString(TAG_USERNAME);
                     String date = item.getString(TAG_DATE);
+                    System.out.println("5");
+                    String useWhere = item.getString(TAG_USE_WHERE);
                     System.out.println("6");
-                    String score = item.getString(TAG_SCORE);
-                    System.out.println("7");
-                    String text = item.getString(TAG_REVIEWTXt);
-                    System.out.println("8");
-                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id), Integer.parseInt(store_id), Integer.parseInt(user_id), user_name, date, Double.parseDouble(score), text));
+                    String useMoney = item.getString(TAG_USE_MONEY);
+                    String[] splitText = date.split(" ");
+                    System.out.println(splitText[0]);
+                    System.out.println(splitText[1]);
+                    System.out.println(useWhere);
+                    System.out.println(useMoney);
+                    com.example.capstone.Money.mList.add(new MoneyDTO(splitText[0],splitText[1],useWhere,Integer.parseInt(useMoney)));
                     System.out.println("9");
                 }
                 System.out.println("**************");
-                System.out.println(Reviews);
+                System.out.println(com.example.capstone.Money.mList);
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
@@ -936,11 +942,16 @@ public class DbCon extends AppCompatActivity {
             String searchKeyword4 = params[3];
             String searchKeyword5 = params[4];
             String searchKeyword6 = params[5];
-
             System.out.println(searchKeyword1);
-            String serverURL = "http://rtemd.suwon.ac.kr/capstone/review.php";
+            System.out.println(searchKeyword2);
+            System.out.println(searchKeyword3);
+            System.out.println(searchKeyword4);
+            System.out.println(searchKeyword5);
+            System.out.println(searchKeyword6);
+
+            String serverURL = "http://rtemd.suwon.ac.kr/capstone/Money.php";
             System.out.println(serverURL);
-            String postParameters = "st_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&me_id=" + searchKeyword3 + "&score=" + searchKeyword4 + "&reviewTXT=" + searchKeyword5 + "&date=" + searchKeyword6; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "mem_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&date=" + searchKeyword3 + "&hour=" + searchKeyword4 + "&useWhere" + searchKeyword5 + "&useMoney=" + searchKeyword6 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -978,6 +989,128 @@ public class DbCon extends AppCompatActivity {
             }
         }
     }
+
+    public static class Qr extends AsyncTask<String, Void, String> {
+
+        ArrayList<FranchiseDTO> QrFranchise = new ArrayList<>();
+
+
+        private final String TAG_JSON = "webnautes";
+        private final String TAG_ID = "store_id";
+        private final String TAG_NAME = "name";
+        private final String TAG_ADDRESS = "address";
+        private final String TAG_CATEGORY = "category";
+        private final String TAG_TEL = "tel";
+        private final String TAG_LATITUDE = "latitude";
+        private final String TAG_LONGITUDE = "longitude";
+        String errorString = null;
+
+        public void showResult() {
+            try {
+                QrFranchise.clear();
+                System.out.println("과여어어어언?");
+                JSONObject jsonObject = new JSONObject(mJsonString);
+                JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject item = jsonArray.getJSONObject(i);
+                    String id = item.getString(TAG_ID);
+                    String name = item.getString(TAG_NAME);
+                    String address = item.getString(TAG_ADDRESS);
+                    String category = item.getString(TAG_CATEGORY);
+                    String tel = item.getString(TAG_TEL);
+                    String latitude = item.getString(TAG_LATITUDE);
+                    String longitude = item.getString(TAG_LONGITUDE);
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    QrFranchise.add(new FranchiseDTO(Integer.parseInt(id), name, address, category, tel, Double.parseDouble(latitude), Double.parseDouble(longitude)));
+                    mArrayList.add(hashMap);
+                }
+                System.out.println("**************");
+                System.out.println(QrFranchise);
+                System.out.println("**************");
+            } catch (JSONException e) {
+                Log.d(TAG, "showResult : ", e);
+            }
+//            finally {
+//                if(Members.size()==0){
+//                    MainActivity.flag = true;
+//
+//                }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
+//
+//                    MainActivity.textView.setText(Members.get(0).name);
+//                    MainActivity.textView1.setText(Members.get(0).email);
+//                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
+//                    MainActivity.flag = true;
+//                }
+//
+//
+//
+//            }
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.d(TAG, "response ----QR---- " + result);
+            if (result == null) {
+            } else {
+                mJsonString = result;
+                showResult();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String searchKeyword1 = params[0];
+
+
+            System.out.println(searchKeyword1);
+
+            String serverURL = "http://rtemd.suwon.ac.kr/capstone/Qr.php";
+            System.out.println(serverURL);
+            String postParameters = "s_id=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            System.out.println(postParameters);
+            try {
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.connect();
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(postParameters.getBytes(StandardCharsets.UTF_8));
+                outputStream.flush();
+                outputStream.close();
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d(TAG, "response code - " + responseStatusCode);
+                InputStream inputStream;
+                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                } else {
+                    inputStream = httpURLConnection.getErrorStream();
+                }
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+                bufferedReader.close();
+                return sb.toString().trim();
+            } catch (Exception e) {
+                Log.d(TAG, "InsertData: Error ", e);
+                errorString = e.toString();
+                return null;
+            }
+        }
+    }
+
 
 
 }
