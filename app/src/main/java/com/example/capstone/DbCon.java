@@ -62,7 +62,7 @@ public class DbCon extends AppCompatActivity {
     public static ArrayList<MoneyDTO> Moneys = new ArrayList<>();
 
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();
-    static String mJsonString;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -341,6 +341,7 @@ public class DbCon extends AppCompatActivity {
         Context context;
         RecyclerView recyclerView;
         String searchMode;
+        String mJsonString;
 
         Search(Activity activity, NaverMap naverMap, ArrayList<Marker> Markers, Context context, RecyclerView recyclerView) {
             this.activity = activity;
@@ -760,6 +761,8 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_CT_ID = "ct_id";
         private static final String TAG_CITY_NAME = "city_name";
         String errorString = null;
+        String mJsonString;
+        String ct_name="";
 
         public void showResult() {
             try {
@@ -768,6 +771,7 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("111111");
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
+                Members.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
                     String member_id = item.getString(TAG_MEMBER_ID);
@@ -781,7 +785,8 @@ public class DbCon extends AppCompatActivity {
                     String profileimg = item.getString(TAG_PROFILEIMG);
                     String startmoney = item.getString(TAG_STARTMONEY);
                     String ct_id = item.getString(TAG_CT_ID);
-                    MainActivity.user_city.setText(item.getString(TAG_CITY_NAME));
+                    ct_name = item.getString(TAG_CITY_NAME);
+
                     System.out.println(MainActivity.user_city);
                     Members.add(new MemberDTO(Integer.parseInt(member_id), tel, name, nickname, email, agerange, gender, birthday, profileimg, startmoney, Integer.parseInt(ct_id)));
                     System.out.println("12");
@@ -793,9 +798,16 @@ public class DbCon extends AppCompatActivity {
                 Log.d(TAG, "showResult : ", e);
             } finally {
                 if(Members.size()==0){
+                    Members.add(new MemberDTO(0, "", "비회원", "비회원", "비회원", "비회원", "비회원", "비회원", "", "0", 0));
+
+                    MainActivity.user_city.setText(ct_name);
+                    MainActivity.textView.setText(Members.get(0).name);
+                    MainActivity.textView1.setText(Members.get(0).email);
+                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
                     MainActivity.flag = true;
 
                 }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
+                    MainActivity.user_city.setText(ct_name);
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
                     MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
@@ -880,11 +892,11 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_DATE = "date";
         private static final String TAG_USE_WHERE = "useWhere";
         private static final String TAG_USE_MONEY = "useMoney";
-
+        String mJsonString;
 
         String errorString = null;
 
-        public static void showResult() {
+        public void showResult() {
             try {
                 System.out.println("머니머니머니");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -991,7 +1003,7 @@ public class DbCon extends AppCompatActivity {
 
     public static class Qr extends AsyncTask<String, Void, String> {
 
-        ArrayList<FranchiseDTO> QrFranchise = new ArrayList<>();
+        public static ArrayList<FranchiseDTO> QrFranchise = new ArrayList<>();
 
 
         private final String TAG_JSON = "webnautes";
@@ -1003,7 +1015,7 @@ public class DbCon extends AppCompatActivity {
         private final String TAG_LATITUDE = "latitude";
         private final String TAG_LONGITUDE = "longitude";
         String errorString = null;
-
+        String mJsonString;
         public void showResult() {
             try {
                 QrFranchise.clear();
@@ -1023,27 +1035,20 @@ public class DbCon extends AppCompatActivity {
                     QrFranchise.add(new FranchiseDTO(Integer.parseInt(id), name, address, category, tel, Double.parseDouble(latitude), Double.parseDouble(longitude)));
                     mArrayList.add(hashMap);
                 }
+
                 System.out.println("**************");
-                System.out.println(QrFranchise);
+                System.out.println(QrFranchise.get(0).name);
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
             }
-//            finally {
-//                if(Members.size()==0){
-//                    MainActivity.flag = true;
-//
-//                }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
-//
-//                    MainActivity.textView.setText(Members.get(0).name);
-//                    MainActivity.textView1.setText(Members.get(0).email);
-//                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
-//                    MainActivity.flag = true;
-//                }
-//
-//
-//
-//            }
+            finally {
+                if(QrFranchise.size()!=0){
+                    MainActivity.QRFlag=true;
+                }
+
+
+            }
         }
 
         @Override
@@ -1058,6 +1063,7 @@ public class DbCon extends AppCompatActivity {
             if (result == null) {
             } else {
                 mJsonString = result;
+
                 showResult();
             }
         }
@@ -1071,7 +1077,7 @@ public class DbCon extends AppCompatActivity {
 
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/Qr.php";
             System.out.println(serverURL);
-            String postParameters = "s_id=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "store_id=" + searchKeyword1; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);

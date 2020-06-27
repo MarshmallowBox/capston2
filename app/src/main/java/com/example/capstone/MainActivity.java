@@ -81,16 +81,17 @@ public class MainActivity extends AppCompatActivity {
     DbCon.Search Search;
     public static DbCon.Member Member;
     DbCon.DataAdapter dataAdapter;
-    DbCon dbCon;
+    DbCon.Qr qr;
     private SearchView searchView;
     public static DrawerLayout drawerLayout;
     public static TextView textView;
     public static TextView textView1;
     public FranchiseDTO franchiseDTO;
     private IntentIntegrator qrScan;
-
+    public static String strStartWithQRCode;
 
     public static boolean flag = false;
+    public static boolean QRFlag=false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         strGender = intent.getExtras().getString("gender");
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
         strEmail = intent.getExtras().getString("email");
-
+        strStartWithQRCode = intent.getExtras().getString("startWithQRCode");
 
 
 
@@ -236,7 +237,10 @@ public class MainActivity extends AppCompatActivity {
                         PlaceList.button_camera.performClick();
                     }
                 }
-
+                if (Maps.mLayout != null &&
+                        (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                    Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                }
             }
         });
 
@@ -352,10 +356,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
         Thread thread = new Thread(){
             @Override
             public void run() {
@@ -365,7 +365,8 @@ public class MainActivity extends AppCompatActivity {
                         sleep(100);
                         Log.d("Ssibal","쓰레드");
                     }
-                    if(!strNickname.equals("비회원")&&user_city.getText().equals("지역을 선택하세요.")){
+
+                    if(strStartWithQRCode==null&&!strNickname.equals("비회원")&&user_city.getText().equals("지역을 선택하세요.")){
                         Intent newUser = new Intent(MainActivity.this, SettingPopupActivity.class);
                         newUser.putExtra("mode","new");
                         startActivity(newUser);
@@ -480,15 +481,54 @@ public class MainActivity extends AppCompatActivity {
 
         if (MainActivity.strNickname.equals("비회원")) {
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
+            setting.putExtra("mode","notmember");
             startActivity(setting);
         }
-        String strStartWithQRCode = intent.getExtras().getString("startWithQRCode");
+
         if(strStartWithQRCode!=null){
             String[] array = strStartWithQRCode.split(",");
             if(array[0].equals("Normal")){
                 Toast.makeText(this, "Normal", Toast.LENGTH_SHORT).show();
             }
             if(array[0].equals("Create_Marker")){
+
+                if (qr != null) {
+                    qr.cancel(true);
+                    qr = null;
+                }
+                qr  = new DbCon.Qr();
+                if (qr != null) {
+
+                    qr.execute(array[1]);
+                }
+
+                Thread QRThread = new Thread(){
+                    @Override
+                    public void run() {
+                        super.run();
+                        try {
+                            while (!QRFlag){
+                                sleep(100);
+                                Log.d("Ssibal","쓰레드");
+                            }
+                            Intent intent = new Intent(MainActivity.this, InfoPopupActivity.class);
+                            FranchiseDTO tags = DbCon.Qr.QrFranchise.get(0);
+                            intent.putExtra("id", tags.id);
+                            intent.putExtra("name", tags.name);
+                            intent.putExtra("address", tags.address);
+                            intent.putExtra("category", tags.category);
+                            intent.putExtra("tel", tags.tel);
+                            intent.putExtra("latitude", tags.latitude);
+                            intent.putExtra("longitude", tags.longitude);
+                            intent.putExtra("reviewCount", 0);
+                            startActivity(intent);
+                            QRFlag=false;
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                QRThread.start();
                 Toast.makeText(this, "Create_Marker, FranchiseID="+array[1], Toast.LENGTH_SHORT).show();
             }
 
@@ -595,47 +635,43 @@ public class MainActivity extends AppCompatActivity {
                 String[] array = result.getContents().split("=");
 
                 if (array.length == 3 && array[1].equals("Create_Marker&target")) {
-
-                    franchiseDTO = new FranchiseDTO(Integer.parseInt(array[2]), "정가네곱창전골", "경기 화성시 봉담읍 와우리 63-1", "음식", "", 37.2147944576806, 126.977404856326);
-
-                    Maps.singleMarkers.setMap(null);
-                    Maps.singleMarkers = new Marker();
-                    Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
-                    Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
-                    //마커 크기지정 아마 3:4비율인듯
-//                        marker.setWidth(90);
-//                        marker.setHeight(120);
-                    Maps.singleMarkers.setCaptionText(franchiseDTO.name); //메인캡션
-                    Maps.singleMarkers.setTag(franchiseDTO);//인포뷰에 전달할 태그값
-                    Maps.singleMarkers.setSubCaptionText(franchiseDTO.category); //서브캡션
-                    Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                    Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
-                    Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
-
-                    final FranchiseDTO finalFranchiseDTO1 = franchiseDTO;
-                    Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
-                        @Override
-                        public boolean onClick(@NonNull Overlay overlay) {
-
-                            //클릭시 카메라 이동
-                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
-                            //infoWindow에 franchises값 태그로 전달
-                            Maps.infoWindow.setTag(finalFranchiseDTO1);
-                            //인포뷰 활성화
-                            Maps.infoWindow.open(Maps.singleMarkers);
-                            Maps.infoWindow.performClick();
-                            return true;
-                        }
-                    });
-
-                    Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
-                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
-                    Maps.singleMarkers.performClick();
-//하단 정보창 닫기
-                    if (Maps.mLayout != null &&
-                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    if (qr != null) {
+                        qr.cancel(true);
+                        qr = null;
                     }
+                    qr  = new DbCon.Qr();
+                    if (qr != null) {
+
+                        qr.execute(array[2]);
+                    }
+
+                    Thread thread = new Thread(){
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                while (!MainActivity.QRFlag){
+                                    sleep(100);
+                                    Log.d("Ssibal","쓰레드");
+                                }
+                                Intent intent = new Intent(MainActivity.this, InfoPopupActivity.class);
+                                FranchiseDTO tags = DbCon.Qr.QrFranchise.get(0);
+                                intent.putExtra("id", tags.id);
+                                intent.putExtra("name", tags.name);
+                                intent.putExtra("address", tags.address);
+                                intent.putExtra("category", tags.category);
+                                intent.putExtra("tel", tags.tel);
+                                intent.putExtra("latitude", tags.latitude);
+                                intent.putExtra("longitude", tags.longitude);
+                                intent.putExtra("reviewCount", 0);
+                                startActivity(intent);
+
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    thread.start();
                 }
 
                 // todo

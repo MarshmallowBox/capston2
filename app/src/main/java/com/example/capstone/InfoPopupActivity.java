@@ -67,6 +67,7 @@ public class InfoPopupActivity extends Activity {
 
         DbCon.Review Review = new DbCon.Review();
         Review.execute(String.valueOf(franchiseID),"1",String.valueOf(DbCon.Members.get(0).member_id),"1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
+//        Review.execute(String.valueOf(franchiseID),"1","0","1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
 
 
         ((TextView) findViewById(R.id.info_popup_title)).setText(name + "의 상세정보");
@@ -170,7 +171,6 @@ public class InfoPopupActivity extends Activity {
 //        });
         map = findViewById(R.id.info_popup_map);
 
-        if (MainActivity.bottomNavigationView.getSelectedItemId() != R.id.mapmode) {
             map.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -213,9 +213,7 @@ public class InfoPopupActivity extends Activity {
                     finish();
                 }
             });
-        } else {
-            map.setTextColor(Color.parseColor("#FFFFFFFF"));
-        }
+
 
 
         call = findViewById(R.id.info_popup_call);

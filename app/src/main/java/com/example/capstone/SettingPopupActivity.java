@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Objects;
@@ -54,7 +55,11 @@ String mode="";
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+        final TextView q = findViewById(R.id.info_popup_title);
+        if(mode!=null&&(mode.equals("new")||mode.equals("notmember"))) {
 
+            q.setText("초기 지역 설정");
+        }
         Button save = findViewById(R.id.setting_popup_save);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +68,8 @@ String mode="";
                     Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
                 }else{
                     if(mode!=null&&mode.equals("new")){
+
+
 //                        String.valueOf(citySpinner.getSelectedItem()) -> city값
                         //DB ADD
                         //MainActivity.Member

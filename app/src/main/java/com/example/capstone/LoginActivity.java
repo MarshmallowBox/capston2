@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public Context context;
     Button btnGetApi, btnLogout;
     String QRCodeData;
-
+DbCon.Qr qr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             if(uri != null) {
                 QRCodeData = uri.getQueryParameter("mode")+","+uri.getQueryParameter("target");
-
                 Log.d("MyTag","mode : " + QRCodeData);
             }
         }
@@ -89,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("name", "비회원");
                 intent.putExtra("email", "비로그인 사용자");
                 intent.putExtra("profile", "");
+                Log.d("nologin","mode : " + QRCodeData);
                 intent.putExtra("startWithQRCode", QRCodeData);
                 startActivity(intent);
                 Toast.makeText(context,"비로그인 사용자",Toast.LENGTH_SHORT).show();
@@ -191,6 +191,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("name", result.getNickname());
                         intent.putExtra("profile", result.getProfileImagePath());
+                        Log.d("getKakaoAccount","mode : " + QRCodeData);
                         intent.putExtra("startWithQRCode", QRCodeData);
 
                         if (result.getKakaoAccount().hasEmail() == OptionalBoolean.TRUE)
@@ -343,6 +344,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("name", response.getString("name"));
                 intent.putExtra("profile", response.getString("profile_image"));
                 intent.putExtra("email", response.getString("email"));
+                Log.d("naver","mode : " + QRCodeData);
                 intent.putExtra("startWithQRCode", QRCodeData);
                 //intent.putExtra("", response.getString("id"));
                 //intent.putExtra("", response.getString("nickname"));
