@@ -3,8 +3,10 @@ package com.example.capstone;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -45,19 +47,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     TextView tv_mail;
     public Context context;
     Button btnGetApi, btnLogout;
+    String QRCodeData;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        
-        
         //카카오
         super.onCreate(savedInstanceState);
         setContentView(R.layout.button_test);
 
 
+        Intent intent = getIntent();
+        if (Intent.ACTION_VIEW.equals(intent.getAction())) {
+            Uri uri = intent.getData();
 
+            if(uri != null) {
+                QRCodeData = uri.getQueryParameter("mode")+","+uri.getQueryParameter("target");
+
+                Log.d("MyTag","mode : " + QRCodeData);
+            }
+        }
 
 
         sessionCallback = new SessionCallback();
@@ -80,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("name", "비회원");
                 intent.putExtra("email", "비로그인 사용자");
                 intent.putExtra("profile", "");
+                intent.putExtra("startWithQRCode", QRCodeData);
                 startActivity(intent);
                 Toast.makeText(context,"비로그인 사용자",Toast.LENGTH_SHORT).show();
                 finish();
@@ -181,6 +191,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("name", result.getNickname());
                         intent.putExtra("profile", result.getProfileImagePath());
+                        intent.putExtra("startWithQRCode", QRCodeData);
 
                         if (result.getKakaoAccount().hasEmail() == OptionalBoolean.TRUE)
                             intent.putExtra("email", result.getKakaoAccount().getEmail());
@@ -332,6 +343,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 intent.putExtra("name", response.getString("name"));
                 intent.putExtra("profile", response.getString("profile_image"));
                 intent.putExtra("email", response.getString("email"));
+                intent.putExtra("startWithQRCode", QRCodeData);
                 //intent.putExtra("", response.getString("id"));
                 //intent.putExtra("", response.getString("nickname"));
                 //intent.putExtra("ageRange", response.getString("age"));

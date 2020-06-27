@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -31,7 +30,7 @@ public class InfoPopupActivity extends Activity {
     public static CheckBox star;
     Button map;
     Button call;
-    Button load;
+    Button road;
     Button review;
     Button addReview;
 
@@ -232,8 +231,8 @@ public class InfoPopupActivity extends Activity {
             }
         });
 
-        load = findViewById(R.id.info_popup_road);
-        load.setOnClickListener(new View.OnClickListener() {
+        road = findViewById(R.id.info_popup_road);
+        road.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

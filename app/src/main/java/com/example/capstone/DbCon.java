@@ -794,7 +794,6 @@ public class DbCon extends AppCompatActivity {
                     MainActivity.flag = true;
 
                 }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
-
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
                     MainActivity.user_money.setText(Members.get(0).startmoney);

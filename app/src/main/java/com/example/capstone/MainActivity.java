@@ -125,14 +125,8 @@ public static boolean flag = false;
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
         strEmail = intent.getExtras().getString("email");
 
-        if (Member != null) {
-            Member.cancel(true);
-            Member = null;
-        }
-        Member = new DbCon.Member();
-        if (Member != null) {
-            Member.execute(strEmail,strNickname,"0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
-        }
+
+
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         if(!strNickname.equals("비회원")){
@@ -144,13 +138,25 @@ public static boolean flag = false;
         // xml 파일에서 넣어놨던 header 선언
         // header에 있는 리소스 가져오기
         //로그인시 유저의 아이디값 로그인인텐트에서 받아와 이름변경
-        final TextView textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
-        final TextView textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
+       textView = navigationView.getHeaderView(0).findViewById(R.id.user_id);
+       textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
         user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
         user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
         textView.setText(strNickname);
         textView1.setText(strEmail);
         user_city.setText("지역을 선택하세요.");
+
+
+
+        if (Member != null) {
+            Member.cancel(true);
+            Member = null;
+        }
+        Member = new DbCon.Member();
+        if (Member != null) {
+            Member.execute(strEmail,strNickname,"0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+        }
+
 
         System.out.println(strNickname);
 
@@ -475,6 +481,17 @@ Thread thread = new Thread(){
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
             startActivity(setting);
         }
+        String strStartWithQRCode = intent.getExtras().getString("startWithQRCode");
+        if(strStartWithQRCode!=null){
+            String[] array = strStartWithQRCode.split(",");
+            if(array[0].equals("Normal")){
+                Toast.makeText(this, "Normal", Toast.LENGTH_SHORT).show();
+            }
+            if(array[0].equals("Create_Marker")){
+                Toast.makeText(this, "Create_Marker, FranchiseID="+array[1], Toast.LENGTH_SHORT).show();
+            }
+
+        }
 
     }
 
@@ -574,11 +591,11 @@ Thread thread = new Thread(){
             } else {
                 MainActivity.drawerLayout.closeDrawer(GravityCompat.START);
                 Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                String str = result.getContents();
-                String[] array = str.split("\n");
-                if (array.length == 8 && array[0].equals("Create_Marker")) {
+                String[] array = result.getContents().split("=");
 
-                    franchiseDTO = new FranchiseDTO(Integer.parseInt(array[1]), array[2], array[3], array[4], array[5], Double.parseDouble(array[6]), Double.parseDouble(array[7]));
+                if (array.length == 3 && array[1].equals("Create_Marker&target")) {
+
+                    franchiseDTO = new FranchiseDTO(Integer.parseInt(array[2]), "정가네곱창전골", "경기 화성시 봉담읍 와우리 63-1", "음식", "", 37.2147944576806, 126.977404856326);
 
                     Maps.singleMarkers.setMap(null);
                     Maps.singleMarkers = new Marker();
