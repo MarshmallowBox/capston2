@@ -895,6 +895,8 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_TIME = "time";
         private static final String TAG_USE_WHERE = "useWhere";
         private static final String TAG_USE_MONEY = "useMoney";
+        private static final String TAG_ID = "id";
+
         String mJsonString;
         public static ArrayList<MoneyDTO> mList = new ArrayList<>();
         String errorString = null;
@@ -920,6 +922,7 @@ public class DbCon extends AppCompatActivity {
                     System.out.println("1");
                     JSONObject item = jsonArray.getJSONObject(i);
                     System.out.println("4");
+                    String id = item.getString(TAG_ID);
                     String date = item.getString(TAG_DATE);
                     String time = item.getString(TAG_TIME);
                     System.out.println("5");
@@ -928,7 +931,7 @@ public class DbCon extends AppCompatActivity {
                     String useMoney = item.getString(TAG_USE_MONEY);
                     System.out.println(useWhere);
                     System.out.println(useMoney);
-                    mList.add(new MoneyDTO(date,time,useWhere,Integer.parseInt(useMoney)));
+                    mList.add(new MoneyDTO(id,date,time,useWhere,Integer.parseInt(useMoney)));
                     System.out.println("9");
                 }
                 System.out.println("**************");
@@ -984,7 +987,7 @@ public class DbCon extends AppCompatActivity {
 
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/Money.php";
             System.out.println(serverURL);
-            String postParameters = "mem_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&date=" + searchKeyword3 + "&hour=" + searchKeyword4 + "&useWhere" + searchKeyword5 + "&useMoney=" + searchKeyword6 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "mem_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&date=" + searchKeyword3 + "&time=" + searchKeyword4 + "&useWhere=" + searchKeyword5 + "&useMoney=" + searchKeyword6 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);

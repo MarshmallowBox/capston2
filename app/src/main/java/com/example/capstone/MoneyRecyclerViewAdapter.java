@@ -34,7 +34,7 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
         moneyDTOS =reviews;
     }
     TextView datetv, hourtv;
-    String showdate, showtime;
+    String showdate, showtime, showid;
     static int leftovermoney;
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView date, text, money, hour;
@@ -79,6 +79,7 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
                         final TextInputEditText priceid = view.findViewById(R.id.pricepopuptext);
                         final TextInputEditText dateid = view.findViewById(R.id.datepopuptext);
                         final TextInputEditText timeid = view.findViewById(R.id.timepopuptext);
+
                         datetv = view.findViewById(R.id.datepopuptext);
                         hourtv = view.findViewById(R.id.timepopuptext);
                         // 6. 해당 줄에 입력되어 있던 데이터를 불러와서 다이얼로그에 보여줍니다.
@@ -95,6 +96,7 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
                         //실제 데이터에 들어가는 값
                         showdate = (moneyDTOS.get(getAdapterPosition()).getDate());
                         showtime = (moneyDTOS.get(getAdapterPosition()).getHour());
+                        showid = (moneyDTOS.get(getAdapterPosition()).getId());
 
                         //시간, 날짜 선택
                         month_btn = view.findViewById(R.id.monthbtn);
@@ -124,7 +126,11 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
                                 int strprice = Integer.parseInt(priceid.getText().toString());
                                 String strdate = dateid.getText().toString();
                                 String strhour = timeid.getText().toString();
-                                MoneyDTO dict = new MoneyDTO(showdate, showtime, strusing, strprice );
+                                DbCon.Money Money = new DbCon.Money();
+                                Money.execute(showid,"3",showdate,showtime,strusing,priceid.getText().toString());
+
+
+                                MoneyDTO dict = new MoneyDTO(showid,showdate, showtime, strusing, strprice );
 
 
                                 // 8. ListArray에 있는 데이터를 변경하고
@@ -146,6 +152,9 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
 
 
                     case 1002:
+                        showid = (moneyDTOS.get(getAdapterPosition()).getId());
+                        DbCon.Money DeleteMoney = new DbCon.Money();
+                        DeleteMoney.execute(showid,"4",showdate,showtime,"strusing","priceid.getText().toString()");
                         moneyDTOS.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         notifyItemRangeChanged(getAdapterPosition(), moneyDTOS.size());
