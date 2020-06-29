@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -42,25 +41,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
-import com.naver.maps.map.util.MarkerIcons;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.CameraAnimation;
-import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
-import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.Objects;
@@ -73,25 +54,25 @@ public class MainActivity extends AppCompatActivity {
     public static RadioGroup radioGroup;
     public static Fragment mapsFrag;
     public static BottomNavigationView bottomNavigationView;
-    public static int originmoney=0;  //여기에 초기 가지고있는 돈 넣어놓으면 됨
+    public static int originmoney = 0;  //여기에 초기 가지고있는 돈 넣어놓으면 됨
+    public static DbCon.Member Member;
+    public static DrawerLayout drawerLayout;
+    public static TextView textView;
+    public static String user_id;
+    public static TextView textView1;
+    public static String strStartWithQRCode;
+    public static boolean flag = false;
+    public static boolean QRFlag = false;
     public FragmentManager fragmentManager;
+    public FranchiseDTO franchiseDTO;
     Fragment placeListFrag;
     Fragment myPlaceFrag;
     Fragment moneyFrag;
     DbCon.Search Search;
-    public static DbCon.Member Member;
     DbCon.DataAdapter dataAdapter;
     DbCon.Qr qr;
     private SearchView searchView;
-    public static DrawerLayout drawerLayout;
-    public static TextView textView;
-    public static TextView textView1;
-    public FranchiseDTO franchiseDTO;
     private IntentIntegrator qrScan;
-    public static String strStartWithQRCode;
-
-    public static boolean flag = false;
-    public static boolean QRFlag=false;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -128,10 +109,8 @@ public class MainActivity extends AppCompatActivity {
         strStartWithQRCode = intent.getExtras().getString("startWithQRCode");
 
 
-
-
         NavigationView navigationView = findViewById(R.id.nav_view);
-        if(!strNickname.equals("비회원")){
+        if (!strNickname.equals("비회원")) {
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
         }
 
@@ -149,14 +128,13 @@ public class MainActivity extends AppCompatActivity {
         user_city.setText("지역을 선택하세요.");
 
 
-
         if (Member != null) {
             Member.cancel(true);
             Member = null;
         }
         Member = new DbCon.Member();
         if (Member != null) {
-            Member.execute(strEmail,strNickname,"0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+            Member.execute(strEmail, strNickname, "0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
         }
 
 
@@ -228,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
                     dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
                     Log.i("DataAdapter", "현위치");
                     if (dataAdapter != null) {
-                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
+                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude), String.valueOf(MainActivity.user_city.getText()));
                     }
                 } else {
                     if (PlaceList.isCheckedButtonNear) {
@@ -331,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
                         if (moneyFrag != null)
                             fragmentManager.beginTransaction().hide(moneyFrag).commit();
 
-                        FragmentTransaction transaction =  getSupportFragmentManager().beginTransaction();
+                        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                         transaction.detach(myPlaceFrag).attach(myPlaceFrag).commit();
                         break;
                     case R.id.edit:
@@ -351,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
                         if (moneyFrag != null)
                             fragmentManager.beginTransaction().show(moneyFrag).commit();
 
-                        FragmentTransaction transaction2 =  getSupportFragmentManager().beginTransaction();
+                        FragmentTransaction transaction2 = getSupportFragmentManager().beginTransaction();
                         transaction2.detach(moneyFrag).attach(moneyFrag).commit();
                         break;
                 }
@@ -359,19 +337,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Thread thread = new Thread(){
+        Thread thread = new Thread() {
             @Override
             public void run() {
                 super.run();
                 try {
-                    while (!flag){
+                    while (!flag) {
                         sleep(100);
-                        Log.d("Ssibal","쓰레드");
+                        Log.d("Ssibal", "쓰레드");
                     }
 
-                    if(strStartWithQRCode==null&&!strNickname.equals("비회원")&&user_city.getText().equals("지역을 선택하세요.")){
+                    if (strStartWithQRCode == null && !strNickname.equals("비회원") && user_city.getText().equals("지역을 선택하세요.")) {
                         Intent newUser = new Intent(MainActivity.this, SettingPopupActivity.class);
-                        newUser.putExtra("mode","new");
+                        newUser.putExtra("mode", "new");
                         startActivity(newUser);
                     }
                 } catch (InterruptedException e) {
@@ -397,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
 //                        dialog.show();  // 로그인팝업
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(),"로그인 클릭",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "로그인 클릭", Toast.LENGTH_SHORT).show();
                         finish();
 
                         break;
@@ -484,35 +462,35 @@ public class MainActivity extends AppCompatActivity {
 
         if (MainActivity.strNickname.equals("비회원")) {
             Intent setting = new Intent(MainActivity.this, SettingPopupActivity.class);
-            setting.putExtra("mode","notmember");
+            setting.putExtra("mode", "notmember");
             startActivity(setting);
         }
 
-        if(strStartWithQRCode!=null){
+        if (strStartWithQRCode != null) {
             String[] array = strStartWithQRCode.split(",");
-            if(array[0].equals("Normal")){
+            if (array[0].equals("Normal")) {
                 Toast.makeText(this, "Normal", Toast.LENGTH_SHORT).show();
             }
-            if(array[0].equals("Create_Marker")){
+            if (array[0].equals("Create_Marker")) {
 
                 if (qr != null) {
                     qr.cancel(true);
                     qr = null;
                 }
-                qr  = new DbCon.Qr();
+                qr = new DbCon.Qr();
                 if (qr != null) {
 
                     qr.execute(array[1]);
                 }
 
-                Thread QRThread = new Thread(){
+                Thread QRThread = new Thread() {
                     @Override
                     public void run() {
                         super.run();
                         try {
-                            while (!QRFlag){
+                            while (!QRFlag) {
                                 sleep(100);
-                                Log.d("Ssibal","쓰레드");
+                                Log.d("Ssibal", "쓰레드");
                             }
                             Intent intent = new Intent(MainActivity.this, InfoPopupActivity.class);
                             FranchiseDTO tags = DbCon.Qr.QrFranchise.get(0);
@@ -524,14 +502,14 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("latitude", tags.latitude);
                             intent.putExtra("longitude", tags.longitude);
                             startActivity(intent);
-                            QRFlag=false;
+                            QRFlag = false;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                 };
                 QRThread.start();
-                Toast.makeText(this, "Create_Marker, FranchiseID="+array[1], Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Create_Marker, FranchiseID=" + array[1], Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -577,7 +555,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s, "1",String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "1", String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
                 searchView.clearFocus();
                 return true;
@@ -595,7 +573,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
-                    Search.execute(s, "2",String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
+                    Search.execute(s, "2", String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
 
                 return false;
@@ -624,6 +602,7 @@ public class MainActivity extends AppCompatActivity {
         });
         return true;
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -641,20 +620,20 @@ public class MainActivity extends AppCompatActivity {
                         qr.cancel(true);
                         qr = null;
                     }
-                    qr  = new DbCon.Qr();
+                    qr = new DbCon.Qr();
                     if (qr != null) {
 
                         qr.execute(array[2]);
                     }
 
-                    Thread thread = new Thread(){
+                    Thread thread = new Thread() {
                         @Override
                         public void run() {
                             super.run();
                             try {
-                                while (!MainActivity.QRFlag){
+                                while (!MainActivity.QRFlag) {
                                     sleep(100);
-                                    Log.d("Ssibal","쓰레드");
+                                    Log.d("Ssibal", "쓰레드");
                                 }
                                 Intent intent = new Intent(MainActivity.this, InfoPopupActivity.class);
                                 FranchiseDTO tags = DbCon.Qr.QrFranchise.get(0);

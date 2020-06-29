@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -30,6 +31,7 @@ import java.util.Objects;
 
 public class Money extends Fragment // Fragment 클래스를 상속받아야한다
 {
+    Intent Intent;
     DbCon.Money Money;
     RecyclerView mRecyclerView = null;
     static TextView money = null;
@@ -100,7 +102,13 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 alert2.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+
+
                         MainActivity.originmoney=Integer.parseInt(String.valueOf(TvOriginmoney.getText()));
+                        DbCon.Money Money = new DbCon.Money();
+                        Money.execute(MainActivity.strEmail,"5",String.valueOf(MainActivity.originmoney),showtime,"strusing","priceid.getText().toString()");
+
                         MoneyRecyclerViewAdapter.leftovermoney();
                         changeleftmoney();
                     }
@@ -236,7 +244,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
         return view;
     }
 
-    //날짜선택란
+    //날짜선택란!
     private DatePickerDialog.OnDateSetListener listener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
