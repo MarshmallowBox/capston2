@@ -2,6 +2,7 @@ package com.example.capstone;
 
 public class MoneyDTO {
 
+    public String id;
     public String date;
     public String hour;
     public String text;
@@ -9,7 +10,8 @@ public class MoneyDTO {
 
 
 
-    public MoneyDTO(String date,String hour, String text, int money) {
+    public MoneyDTO(String id, String date,String hour, String text, int money) {
+        this.id=id;
         this.date=date;
         this.hour=hour;
         this.text=text;
@@ -30,6 +32,8 @@ public class MoneyDTO {
         return money;
     }
 
+    public String getId() { return id;}
+
     public void setHour(String hour) {
         this.hour = hour;
     }
@@ -45,4 +49,11 @@ public class MoneyDTO {
     public void setMoney(int money) {
         this.money = money;
     }
+
+    public void setMoney(String id) {
+        this.id = id;
+    }
+
+
+
 }

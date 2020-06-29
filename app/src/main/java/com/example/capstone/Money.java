@@ -37,7 +37,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     EditText editMoney = null;
     Button setoriginmoney, month_day,time_day;
     ImageButton addbtn;
-    String showdate, showtime;
+    String showdate, showtime, showid;
 
 
 
@@ -209,7 +209,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                         if ( where1.isEmpty() == true || price1.isEmpty() == true || date1.isEmpty() == true || time1.isEmpty() == true ) {  //한칸이라도 비어있다면
                             Toast.makeText(getContext(), "전체 칸을 다 입력해주세요!", Toast.LENGTH_SHORT).show();
                         } else {
-                            MoneyDTO moneyDTO = new MoneyDTO(showdate,showtime, where1, Integer.parseInt(price1));
+                            MoneyDTO moneyDTO = new MoneyDTO("0",showdate,showtime, where1, Integer.parseInt(price1));
                             //moneyDTO DB로 보내고
 
                             //이거시 리스트 저장하는거시여
@@ -218,7 +218,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                                 Money = null;
                             }
                             Money = new DbCon.Money(Objects.requireNonNull(container).getContext(),mRecyclerView);
-                            Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"2","2020/11/11","11:11",where1,price1);//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
+                            Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"2",showdate,showtime,where1,price1);//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
 
 
 
