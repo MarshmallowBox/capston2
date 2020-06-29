@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Member = new DbCon.Member();
         if (Member != null) {
-            Member.execute(strEmail, strNickname, "0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+            Member.execute(strEmail, strNickname, "0","1");// 이미 저장된놈 불러온다 시까지 저장되있음 보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
         }
 
 
@@ -533,7 +533,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     Member = new DbCon.Member();
                     if (Member != null) {
-                        Member.execute(strEmail, strNickname, "0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+                        Member.execute(strEmail, strNickname, "0","1");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+                        System.out.println("기분나빠잉");
                     }
 
                 }

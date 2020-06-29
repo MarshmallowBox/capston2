@@ -46,7 +46,7 @@ public class DbCon extends AppCompatActivity {
     private static final String TAG_S_ID = "s_id";
     private static final String TAG_ME_ID ="me_id";
     private static final String TAG_USERNAME ="me_id";
-    private static final String TAG_SCORE ="me_id";
+    private static final String TAG_SCORE ="score";//여기가 me_id로 되어있었다리 ㄷㄷ
     private static final String TAG_REVIEWID ="review_id";
     private static final String TAG_NAME = "name";
     private static final String TAG_ADDRESS ="address";
@@ -843,14 +843,16 @@ public class DbCon extends AppCompatActivity {
             String searchKeyword1 = params[0];
             String searchKeyword2 = params[1];
             String searchKeyword3 = params[2];
+            String searchKeyword4 = params[3];
 
 
             System.out.println(searchKeyword1);
             System.out.println(searchKeyword2);
             System.out.println(searchKeyword3);
+            System.out.println(searchKeyword4);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/member.php";
             System.out.println(serverURL);
-            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2 + "&city_name=" + searchKeyword3; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2 + "&city_name=" + searchKeyword3  + "&function=" + searchKeyword4; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);

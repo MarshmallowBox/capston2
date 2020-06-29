@@ -45,8 +45,10 @@ String mode="";
         for(int i=0;i<city.length;i++){
             if(String.valueOf(MainActivity.user_city.getText()).equals(city[i])){
                 citySpinner.setSelection(i);
+
             }
         }
+        System.out.println("!!!!!!"+MainActivity.user_city.getText()+"!!!!!!");
         citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -80,8 +82,18 @@ String mode="";
                             MainActivity.Member = null;
                         }
                         MainActivity.Member = new DbCon.Member();
-                        MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()));
-
+                        MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()),"1");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
+System.out.println("어쩌라구");
+                        MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
+                        MainActivity.textView.setText(MainActivity.strNickname);
+                        MainActivity.textView1.setText(MainActivity.strEmail);
+                        MainActivity.drawerLayout.refreshDrawableState();
+                    }
+                    else
+                    {
+                        MainActivity.Member = new DbCon.Member();
+                        MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()),"2");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
+                        System.out.println("어쩌라공");
                         MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
                         MainActivity.textView.setText(MainActivity.strNickname);
                         MainActivity.textView1.setText(MainActivity.strEmail);
