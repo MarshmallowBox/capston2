@@ -64,7 +64,7 @@ public class LoginInfo extends AppCompatActivity {
         btnNext.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {//다음 버튼을 누르면
-                Toast.makeText(getApplicationContext(), "정상적으로 메인문으로 갑니다~", Toast.LENGTH_SHORT).show();
+
 
 //                UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {//로그아웃실행
 //                    @Override
@@ -96,7 +96,7 @@ public class LoginInfo extends AppCompatActivity {
         btnLogout.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {//로그아웃 버튼 클릭하면
-                Toast.makeText(getApplicationContext(), "정상적으로 로그아웃되었습니다.", Toast.LENGTH_SHORT).show();
+
 
                 UserManagement.getInstance().requestLogout(new LogoutResponseCallback() {//로그아웃실행
                     @Override

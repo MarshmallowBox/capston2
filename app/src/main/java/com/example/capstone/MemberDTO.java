@@ -1,8 +1,6 @@
 package com.example.capstone;
 
 
-
-
 public class MemberDTO {
 
     public int member_id;

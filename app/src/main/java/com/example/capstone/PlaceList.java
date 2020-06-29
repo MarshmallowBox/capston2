@@ -50,7 +50,7 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
                     dataAdapter = null;
                 }
                 dataAdapter = new DbCon.DataAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
-                dataAdapter.execute(String.valueOf(Maps.beforeLocation.getLatitude()), String.valueOf(Maps.beforeLocation.getLongitude()),String.valueOf(MainActivity.user_city.getText()));
+                dataAdapter.execute(String.valueOf(Maps.beforeLocation.getLatitude()), String.valueOf(Maps.beforeLocation.getLongitude()), String.valueOf(MainActivity.user_city.getText()));
 
 
             }
@@ -68,7 +68,7 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
                     dataAdapter = null;
                 }
                 dataAdapter = new DbCon.DataAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
-                dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
+                dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude), String.valueOf(MainActivity.user_city.getText()));
 
 
             }

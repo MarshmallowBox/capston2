@@ -19,8 +19,6 @@ import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
-import java.util.Objects;
-
 import static com.example.capstone.MainActivity.mapsFrag;
 
 
@@ -83,6 +81,11 @@ String mode="";
                         }
                         MainActivity.Member = new DbCon.Member();
                         MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()));
+
+                        MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
+                        MainActivity.textView.setText(MainActivity.strNickname);
+                        MainActivity.textView1.setText(MainActivity.strEmail);
+                        MainActivity.drawerLayout.refreshDrawableState();
                     }
                     MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
 
@@ -137,7 +140,7 @@ String mode="";
 //            Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(SettingPopupActivity.this);
             builder.setTitle("알림");
-            builder.setMessage("변경한 지역을 저장하지 않고 닫겠습니까?");
+            builder.setMessage("지역을 선택하지 않고 닫겠습니까?");
             builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
@@ -152,7 +155,7 @@ String mode="";
         } else if (!(String.valueOf(citySpinner.getSelectedItem()).equals(String.valueOf(MainActivity.user_city.getText())))) {
             AlertDialog.Builder builder = new AlertDialog.Builder(SettingPopupActivity.this);
             builder.setTitle("알림");
-            builder.setMessage("변경한 지역을 저장하지 않고 닫겠습니까?");
+            builder.setMessage("변경한 지역을 선택하지 않고 닫겠습니까?");
             builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     finish();

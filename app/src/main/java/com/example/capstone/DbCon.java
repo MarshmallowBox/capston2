@@ -764,7 +764,7 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_CITY_NAME = "city_name";
         String errorString = null;
         String mJsonString;
-        String ct_name="";
+        String ct_name="지역을 선택하세요.";
 
         public void showResult() {
             try {
@@ -805,7 +805,7 @@ public class DbCon extends AppCompatActivity {
                     MainActivity.user_city.setText(ct_name);
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
-                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
+                    MainActivity.user_money.setText(Members.get(0).startmoney);
                     MainActivity.flag = true;
 
                 }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
@@ -813,6 +813,7 @@ public class DbCon extends AppCompatActivity {
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
                     MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
+                    MainActivity.drawerLayout.refreshDrawableState();
                     MainActivity.flag = true;
                 }
 
@@ -948,6 +949,7 @@ public class DbCon extends AppCompatActivity {
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
                     mAdapter.notifyDataSetChanged(); //데이터변경시
+MoneyRecyclerViewAdapter.leftovermoney();
 
 
                 }

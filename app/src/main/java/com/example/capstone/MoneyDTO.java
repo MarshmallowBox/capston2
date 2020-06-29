@@ -9,41 +9,40 @@ public class MoneyDTO {
     public int money;
 
 
-
-    public MoneyDTO(String id, String date,String hour, String text, int money) {
-        this.id=id;
-        this.date=date;
-        this.hour=hour;
-        this.text=text;
-        this.money=money;
+    public MoneyDTO(String id, String date, String hour, String text, int money) {
+        this.id = id;
+        this.date = date;
+        this.hour = hour;
+        this.text = text;
+        this.money = money;
     }
 
     public String getHour() {
         return hour;
     }
 
-    public String getDate() {
-        return date;
-    }
-
-    public String getText() { return text; }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public String getId() { return id;}
-
     public void setHour(String hour) {
         this.hour = hour;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     public void setDate(String date) {
         this.date = date;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public void setText(String text) {
         this.text = text;
+    }
+
+    public int getMoney() {
+        return money;
     }
 
     public void setMoney(int money) {
@@ -54,6 +53,9 @@ public class MoneyDTO {
         this.id = id;
     }
 
+    public String getId() {
+        return id;
+    }
 
 
 }

@@ -84,7 +84,7 @@ public class InfoPopupActivity extends Activity {
         }
         Zzim = new DbCon.Zzim();
         if (Zzim != null) {
-            Toast.makeText(this, ""+DbCon.Members.get(0).member_id, Toast.LENGTH_SHORT).show();
+
             Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
         }
         System.out.println("%$%$");
@@ -114,7 +114,7 @@ public class InfoPopupActivity extends Activity {
 
                 if(star.isChecked()){
                     System.out.println("체크되었음");
-                    Toast.makeText(InfoPopupActivity.this, ""+DbCon.Members.get(0).member_id, Toast.LENGTH_SHORT).show();
+
                     if (Zzim != null) {
                         Zzim.cancel(true);
                         Zzim = null;
@@ -126,7 +126,7 @@ public class InfoPopupActivity extends Activity {
                     System.out.println("찜목록추가됨");
                 }else{
                     System.out.println("체크안되었음");
-                    Toast.makeText(InfoPopupActivity.this, ""+DbCon.Members.get(0).member_id, Toast.LENGTH_SHORT).show();
+
                     if (Zzim != null) {
                         Zzim.cancel(true);
                         Zzim = null;

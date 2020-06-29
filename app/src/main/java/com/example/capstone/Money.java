@@ -3,6 +3,7 @@ package com.example.capstone;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,17 +16,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -81,7 +79,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
         setoriginmoney.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "클릭", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "클릭", Toast.LENGTH_SHORT).show();
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater2 = getActivity().getLayoutInflater();
                 View alertLayout2 = inflater2.inflate(R.layout.originmoney_popup, null);
@@ -96,7 +94,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 alert2.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
                 alert2.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -204,7 +202,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getContext(), "Cancel clicked", Toast.LENGTH_SHORT).show();
                     }
                 });
                 alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
@@ -233,13 +231,19 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                             money.setText(String.valueOf(Integer.parseInt(String.valueOf(money.getText())) - moneyDTO.money));
 
                             Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
+                            if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.edit){
+                                Toast.makeText(getContext(), "aaa", Toast.LENGTH_SHORT).show();
+                                MainActivity.bottomNavigationView.setSelectedItemId(R.id.edit);
+                            }
                         }
                     }
                 });
                 AlertDialog dialog = alert.create();
 
                 dialog.show();
+
             }
+
         });
         return view;
     }

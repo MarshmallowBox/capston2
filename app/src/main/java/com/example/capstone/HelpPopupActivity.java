@@ -2,27 +2,11 @@ package com.example.capstone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.core.view.GravityCompat;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import com.naver.maps.geometry.LatLng;
-import com.naver.maps.map.CameraAnimation;
-import com.naver.maps.map.CameraUpdate;
-import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.Overlay;
-import com.naver.maps.map.util.MarkerIcons;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class HelpPopupActivity extends Activity {
 
@@ -45,37 +29,10 @@ public class HelpPopupActivity extends Activity {
         });
 
 
-
-
-    }
-
-
-
-    /*//확인 버튼 클릭
-    public void mOnClose(View v) {
-        //데이터 전달하기
-        Intent intent = new Intent();
-        intent.putExtra("result", "Close Popup");
-        setResult(RESULT_OK, intent);
-
-        //액티비티(팝업) 닫기
-        finish();
-    }*/
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        // 바깥레이어 클릭시
-        /*if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-            finish();
-            return true;
-        }*/
-//        finish();
-        return true;
     }
 
     @Override
     public void onBackPressed() {
-        //안드로이드 백버튼
         finish();
     }
 }

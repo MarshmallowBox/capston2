@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -116,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
         }
 
-        if(strNickname.equals("비회원")){
+        if (strNickname.equals("비회원")) {
             navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);
         }
 
@@ -244,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 //비회원 관리
+
                 if (MainActivity.strNickname.equals("비회원")) {
                     if (item.getItemId() == R.id.myplaces || item.getItemId() == R.id.edit) {
                         Toast.makeText(MainActivity.this, "로그인후 이용가능한 기능입니다.", Toast.LENGTH_SHORT).show();
@@ -351,11 +351,12 @@ public class MainActivity extends AppCompatActivity {
                     while (!flag) {
                         sleep(100);
                     }
-
                     if (strStartWithQRCode == null && !strNickname.equals("비회원") && user_city.getText().equals("지역을 선택하세요.")) {
                         Intent newUser = new Intent(MainActivity.this, SettingPopupActivity.class);
                         newUser.putExtra("mode", "new");
                         startActivity(newUser);
+                    }else{
+                        System.out.println("카카오");
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -380,7 +381,6 @@ public class MainActivity extends AppCompatActivity {
 //                        dialog.show();  // 로그인팝업
                         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                         startActivity(intent);
-                        Toast.makeText(getApplicationContext(), "로그인 클릭", Toast.LENGTH_SHORT).show();
                         finish();
 
                         break;
@@ -461,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
             if (!TextUtils.isEmpty(temp)) { // 권한 요청
                 ActivityCompat.requestPermissions(this, temp.trim().split(" "), 1);
             } else { // 모두 허용 상태
-                Toast.makeText(this, "권한을 모두 허용", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "권한 모두 허용됨", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -470,11 +470,10 @@ public class MainActivity extends AppCompatActivity {
             setting.putExtra("mode", "notmember");
             startActivity(setting);
         }
-        Toast.makeText(this, ""+strStartWithQRCode, Toast.LENGTH_SHORT).show();
+
         if (strStartWithQRCode != null) {
             String[] array = strStartWithQRCode.split(",");
             if (array[0].equals("Normal")) {
-                Toast.makeText(this, "Normal", Toast.LENGTH_SHORT).show();
             }
             if (array[0].equals("Create_Marker")) {
 
@@ -513,9 +512,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 };
                 QRThread.start();
-                Toast.makeText(this, "Create_Marker, FranchiseID=" + array[1], Toast.LENGTH_SHORT).show();
             }
-            strStartWithQRCode=null;
         }
 
     }
@@ -524,10 +521,23 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:// 왼쪽 상단 버튼 눌렀을 때
+                if (!strNickname.equals("비회원")) {
+                    int temp = MainActivity.bottomNavigationView.getSelectedItemId();
+                    MainActivity.bottomNavigationView.setSelectedItemId(R.id.edit);
+                    MainActivity.bottomNavigationView.setSelectedItemId(temp);
 //                Toast.makeText(MainActivity.this, "햄버거", Toast.LENGTH_SHORT).show();
-                user_money.setText(String.valueOf(MoneyRecyclerViewAdapter.leftovermoney));
-                drawerLayout.openDrawer(GravityCompat.START);
+                    user_money.setText(String.valueOf(MoneyRecyclerViewAdapter.leftovermoney));
+                    if (Member != null) {
+                        Member.cancel(true);
+                        Member = null;
+                    }
+                    Member = new DbCon.Member();
+                    if (Member != null) {
+                        Member.execute(strEmail, strNickname, "0");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+                    }
 
+                }
+                drawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.search_button:
 //                Toast.makeText(MainActivity.this, item.getItemId() + ": search_button", Toast.LENGTH_SHORT).show();
@@ -663,22 +673,23 @@ public class MainActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
     @Override
     public void onBackPressed() {
         //안드로이드 백버튼
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setTitle("종료");
-            builder.setMessage("종료하시겠습니까?");
-            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                }
-            });
-            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                }
-            });
-            builder.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("종료");
+        builder.setMessage("종료하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
     }
 
 }
