@@ -17,7 +17,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
 import java.util.Objects;
+
+import static com.example.capstone.MainActivity.mapsFrag;
 
 
 public class SettingPopupActivity extends Activity {
@@ -83,6 +87,30 @@ String mode="";
                     MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
 
 
+                    DbCon.DataAdapter dataAdapter = null;
+                    if (MainActivity.bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
+                        if (dataAdapter != null) {
+                            dataAdapter.cancel(true);
+                            dataAdapter = null;
+                        }
+                        dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
+                        Log.i("DataAdapter", "현위치");
+                        if (dataAdapter != null) {
+                            dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
+                        }
+                    } else {
+                        if (PlaceList.isCheckedButtonNear) {
+                            PlaceList.button_near.performClick();
+                        } else {
+                            PlaceList.button_camera.performClick();
+                        }
+                    }
+                    if (Maps.mLayout != null &&
+                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    }
+
+
 //                Toast.makeText(SettingPopupActivity.this, String.valueOf(citySpinner.getSelectedItem()), Toast.LENGTH_SHORT).show();
                     finish();
                 }
@@ -106,7 +134,21 @@ String mode="";
         //안드로이드 백버튼
 
         if (citySpinner.getSelectedItemId() == 0) {
-            Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(SettingPopupActivity.this);
+            builder.setTitle("알림");
+            builder.setMessage("변경한 지역을 저장하지 않고 닫겠습니까?");
+            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
         } else if (!(String.valueOf(citySpinner.getSelectedItem()).equals(String.valueOf(MainActivity.user_city.getText())))) {
             AlertDialog.Builder builder = new AlertDialog.Builder(SettingPopupActivity.this);
             builder.setTitle("알림");

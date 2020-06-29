@@ -2,6 +2,7 @@ package com.example.capstone;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -133,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         if(!strNickname.equals("비회원")){
             navigationView.getMenu().getItem(0).getSubMenu().getItem(0).setVisible(false);
+        }
+
+        if(strNickname.equals("비회원")){
+            navigationView.getMenu().getItem(0).getSubMenu().getItem(1).setVisible(false);
         }
 
 //        TextView tv_userId = (TextView) context.findViewById(R.id.user_id);
@@ -366,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     while (!flag){
                         sleep(100);
-                        Log.d("Ssibal","쓰레드");
                     }
 
                     if(strStartWithQRCode==null&&!strNickname.equals("비회원")&&user_city.getText().equals("지역을 선택하세요.")){
@@ -487,7 +491,7 @@ public class MainActivity extends AppCompatActivity {
             setting.putExtra("mode","notmember");
             startActivity(setting);
         }
-
+        Toast.makeText(this, ""+strStartWithQRCode, Toast.LENGTH_SHORT).show();
         if(strStartWithQRCode!=null){
             String[] array = strStartWithQRCode.split(",");
             if(array[0].equals("Normal")){
@@ -533,7 +537,7 @@ public class MainActivity extends AppCompatActivity {
                 QRThread.start();
                 Toast.makeText(this, "Create_Marker, FranchiseID="+array[1], Toast.LENGTH_SHORT).show();
             }
-
+            strStartWithQRCode=null;
         }
 
     }
@@ -680,6 +684,23 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+    @Override
+    public void onBackPressed() {
+        //안드로이드 백버튼
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+            builder.setTitle("종료");
+            builder.setMessage("종료하시겠습니까?");
+            builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            });
+            builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                }
+            });
+            builder.show();
     }
 
 }

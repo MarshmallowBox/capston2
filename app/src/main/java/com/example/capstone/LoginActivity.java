@@ -2,6 +2,7 @@ package com.example.capstone;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.kakao.auth.ISessionCallback;
@@ -43,12 +45,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static OAuthLoginButton naverLogInButton;
     public static OAuthLogin naverLoginInstance;
 
-    public static String plz;
-    TextView tv_mail;
     public Context context;
     Button btnGetApi, btnLogout;
     String QRCodeData;
-DbCon.Qr qr;
+
+    @Override
+    public void onBackPressed() {
+        //안드로이드 백버튼
+        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        builder.setTitle("종료");
+        builder.setMessage("종료하시겠습니까?");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        builder.show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
