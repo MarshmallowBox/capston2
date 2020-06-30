@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 
 public class ReceiveSms extends BroadcastReceiver {
@@ -50,6 +53,7 @@ public class ReceiveSms extends BroadcastReceiver {
                             }
                         }
                         if (!(cardindex == -1 || usemoneyindex == -1 || remainmoneyindex == -1)) {
+
                             System.out.println("년 : " + (date.getYear() + 1900));//date의 연도을 가져옴
                             System.out.println("월 : " + (date.getMonth() + 1));//date의 월을 가져온다
                             System.out.println("일 : " + date.getDate());    //date의 일을 가져온다.
@@ -61,6 +65,12 @@ public class ReceiveSms extends BroadcastReceiver {
                             System.out.println("이용카드 : " + data[cardindex]);
                             System.out.println("이용액 : " + data[usemoneyindex]);
                             System.out.println("남은금액 : " + data[remainmoneyindex]);
+                            String showdate = (date.getYear() + 1900+"-"+(date.getMonth() + 1)+"-"+date.getDate());
+                            String showtime = (date.getHours()+":"+date.getMinutes());
+                            String where1 = data[cardindex];
+                            String price1 = data[usemoneyindex];
+                            DbCon.Money Money2 = new DbCon.Money(Objects.requireNonNull(Money.container2).getContext(),Money.mRecyclerView);
+                            Money2.execute(String.valueOf(DbCon.Members.get(0).member_id),"2",showdate,showtime,where1,price1);//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
                         }
                         //Toast.makeText(context, "From : " + msg_from + ", Body : " + MsgBody, Toast.LENGTH_SHORT).show();
 

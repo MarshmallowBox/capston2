@@ -31,13 +31,14 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 {
     Intent Intent;
     DbCon.Money Money;
-    RecyclerView mRecyclerView = null;
+    static RecyclerView mRecyclerView = null;
     static TextView money = null;
     EditText datetv,timetv,editText = null;
     EditText editMoney = null;
     Button setoriginmoney, month_day,time_day;
     ImageButton addbtn;
     String showdate, showtime, showid;
+    static ViewGroup container2;
 
 
 
@@ -46,7 +47,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.activity_money, container, false);
 
-
+        container2 = container;
        money = view.findViewById(R.id.money);
         //editText = view.findViewById(R.id.money_input_text);
         //editMoney = view.findViewById(R.id.money_input_money);
@@ -100,7 +101,6 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                 alert2.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
 
 
                         MainActivity.originmoney=Integer.parseInt(String.valueOf(TvOriginmoney.getText()));
@@ -281,5 +281,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     };
     public static void changeleftmoney(){
         money.setText(String.valueOf(MoneyRecyclerViewAdapter.leftovermoney));
+
     }
+
 }
