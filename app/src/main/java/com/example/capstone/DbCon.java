@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -133,6 +135,7 @@ public class DbCon extends AppCompatActivity {
                         final Marker marker = new Marker();
                         marker.setPosition(new LatLng(franchise.latitude, franchise.longitude));//위경도
                         marker.setIcon(MarkerIcons.BLUE);//기본제공 마커
+
                         marker.setWidth(90);
                         marker.setHeight(120);
                         marker.setCaptionText(franchise.name); //메인캡션
@@ -141,7 +144,7 @@ public class DbCon extends AppCompatActivity {
                         marker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
                         marker.setSubCaptionTextSize(10); //서브캡션 크기
                         marker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
-
+                        marker.setCaptionRequestedWidth(200);
                         marker.setOnClickListener(new Overlay.OnClickListener() {
                             @Override
                             public boolean onClick(@NonNull Overlay overlay) {
@@ -171,14 +174,12 @@ public class DbCon extends AppCompatActivity {
 //                            clustmarker.setPosition(new LatLng(clusterData[i].get(0).getPosition().latitude, clusterData[i].get(0).getPosition().longitude));//위경도
                         clusterMarker.setPosition(new LatLng(lat / size, log / size));//위경도
                         clusterMarker.setIcon(MarkerIcons.LIGHTBLUE);//기본제공 마커
-                        clusterMarker.setCaptionOffset(-10);
                         //마커 크기지정 아마 3:4비율인듯
-                        clusterMarker.setCaptionText((i + 1) + "번 cluster Maker"); //메인캡션
-                        clusterMarker.setSubCaptionText(String.valueOf(size)); //서브캡션
-                        clusterMarker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                        clusterMarker.setSubCaptionTextSize(10); //서브캡션 크기
+                        clusterMarker.setCaptionText(String.valueOf(size)); //메인캡션
+                        clusterMarker.setCaptionTextSize(20); //캡션 크기
                         clusterMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
                         clusterMarker.setWidth(90 + (Math.min(size * 3, 150)));
+                        clusterMarker.setAnchor((new PointF(-1, -1)));
                         clusterMarker.setHeight(120 + (Math.min(size * 4, 200)));
                         final int finalI = i;
                         clusterMarker.setOnClickListener(new Overlay.OnClickListener() {

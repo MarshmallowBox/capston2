@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI
-        String[] categoryTitle = {"전체", "음식", "카페", "유통", "의료", "유흥", "헬스", "미용", "학원", "의류", "기타"};
+        String[] categoryTitle = {"전체", "음식", "카페", "판매", "유흥", "의료",  "운동", "미용", "학원", "기타"};
 
         radioGroup = findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);

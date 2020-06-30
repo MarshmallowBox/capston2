@@ -232,7 +232,6 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
 
                             Toast.makeText(getContext(), "저장되었습니다.", Toast.LENGTH_SHORT).show();
                             if(MainActivity.bottomNavigationView.getSelectedItemId() == R.id.edit){
-                                Toast.makeText(getContext(), "aaa", Toast.LENGTH_SHORT).show();
                                 MainActivity.bottomNavigationView.setSelectedItemId(R.id.edit);
                             }
                         }
