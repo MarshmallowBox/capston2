@@ -42,7 +42,7 @@ public class InfoPopupActivity extends Activity {
     String tel;
     double latitude;
     double longitude;
-    DbCon.Zzim Zzim;
+    DbCon.MyPlaceAdapter MyPlaceAdapter;
     public static TextView reviewCounter;
     @SuppressLint("SetTextI18n")
     @Override
@@ -63,7 +63,7 @@ public class InfoPopupActivity extends Activity {
         latitude = intent.getExtras().getDouble("latitude");
         longitude = intent.getExtras().getDouble("longitude");
 
-        DbCon.Review Review = new DbCon.Review();
+        DbCon.ReviewAdapter Review = new DbCon.ReviewAdapter();
         Review.execute(String.valueOf(franchiseID),"1",String.valueOf(DbCon.Members.get(0).member_id),"1","1","1");//excute해서 dbcon에있는 rowcount ( 기본값은 0) 이놈을 리뷰개수만큼 rowcount++해서 리뷰개수 가져오려고함
 
 
@@ -78,19 +78,19 @@ public class InfoPopupActivity extends Activity {
 
         star = findViewById(R.id.info_popup_star);
         //만약 해당가게id와 유저id가 이미 likes table에 들어가있다면 true 없다면 false
-        if (Zzim != null) {
-            Zzim.cancel(true);
-            Zzim = null;
+        if (MyPlaceAdapter != null) {
+            MyPlaceAdapter.cancel(true);
+            MyPlaceAdapter = null;
         }
-        Zzim = new DbCon.Zzim();
-        if (Zzim != null) {
+        MyPlaceAdapter = new DbCon.MyPlaceAdapter();
+        if (MyPlaceAdapter != null) {
 
-            Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+            MyPlaceAdapter.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"call");//MyPlaceAdapter.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
         }
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
-//        System.out.println(DbCon.Zzim.ZzimFranchise);
+//        System.out.println(DbCon.MyPlaceAdapter.MyPlaceAdapterFranchise);
         System.out.println("%$%$");
         System.out.println("%$%$");
         System.out.println("%$%$");
@@ -115,25 +115,25 @@ public class InfoPopupActivity extends Activity {
                 if(star.isChecked()){
                     System.out.println("체크되었음");
 
-                    if (Zzim != null) {
-                        Zzim.cancel(true);
-                        Zzim = null;
+                    if (MyPlaceAdapter != null) {
+                        MyPlaceAdapter.cancel(true);
+                        MyPlaceAdapter = null;
                     }
-                    Zzim = new DbCon.Zzim();
-                    if (Zzim != null) {
-                        Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                    MyPlaceAdapter = new DbCon.MyPlaceAdapter();
+                    if (MyPlaceAdapter != null) {
+                        MyPlaceAdapter.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"add");//MyPlaceAdapter.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     }
                     System.out.println("찜목록추가됨");
                 }else{
                     System.out.println("체크안되었음");
 
-                    if (Zzim != null) {
-                        Zzim.cancel(true);
-                        Zzim = null;
+                    if (MyPlaceAdapter != null) {
+                        MyPlaceAdapter.cancel(true);
+                        MyPlaceAdapter = null;
                     }
-                    Zzim = new DbCon.Zzim();
-                    if (Zzim != null) {
-                        Zzim.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+                    MyPlaceAdapter = new DbCon.MyPlaceAdapter();
+                    if (MyPlaceAdapter != null) {
+                        MyPlaceAdapter.execute(String.valueOf(DbCon.Members.get(0).member_id),String.valueOf(franchiseID),"del");//MyPlaceAdapter.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
                     }
                     System.out.println("찜목록삭제됨");
                 }
@@ -154,14 +154,14 @@ public class InfoPopupActivity extends Activity {
 //            public void onClick(View view) {
 //                if (star.isChecked()) {
 //                    star.setButtonDrawable(R.drawable.baseline_star_black_36dp);
-//                    DbCon.Zzim Zzim = new DbCon.Zzim();
-//                    Zzim.execute("1",String.valueOf(franchiseID),"add");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+//                    DbCon.MyPlaceAdapter MyPlaceAdapter = new DbCon.MyPlaceAdapter();
+//                    MyPlaceAdapter.execute("1",String.valueOf(franchiseID),"add");//MyPlaceAdapter.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
 //                    System.out.println("찜목록추가됨");
 //
 //                } else {
 //                    star.setButtonDrawable(R.drawable.baseline_star_border_black_36dp);
-//                    DbCon.Zzim Zzim = new DbCon.Zzim();
-//                    Zzim.execute("1",String.valueOf(franchiseID),"del");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+//                    DbCon.MyPlaceAdapter MyPlaceAdapter = new DbCon.MyPlaceAdapter();
+//                    MyPlaceAdapter.execute("1",String.valueOf(franchiseID),"del");//MyPlaceAdapter.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
 //                    System.out.println("찜목록삭제됨");
 //                }
 //
@@ -173,40 +173,40 @@ public class InfoPopupActivity extends Activity {
                 @Override
                 public void onClick(View view) {
                     MainActivity.bottomNavigationView.setSelectedItemId(R.id.mapmode);
-                    Maps.singleMarkers.setMap(null);
-                    Maps.singleMarkers = new Marker();
-                    Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
-                    Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
+                    Maps.singleMarker.setMap(null);
+                    Maps.singleMarker = new Marker();
+                    Maps.singleMarker.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
+                    Maps.singleMarker.setIcon(MarkerIcons.RED);//기본제공 마커
                     //마커 크기지정 아마 3:4비율인듯
 //                        marker.setWidth(90);
 //                        marker.setHeight(120);
-                    Maps.singleMarkers.setCaptionText(franchiseDTO.name); //메인캡션
-                    Maps.singleMarkers.setTag(franchiseDTO);//인포뷰에 전달할 태그값
-                    Maps.singleMarkers.setSubCaptionText(franchiseDTO.category); //서브캡션
-                    Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                    Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
-                    Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+                    Maps.singleMarker.setCaptionText(franchiseDTO.name); //메인캡션
+                    Maps.singleMarker.setTag(franchiseDTO);//인포뷰에 전달할 태그값
+                    Maps.singleMarker.setSubCaptionText(franchiseDTO.category); //서브캡션
+                    Maps.singleMarker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                    Maps.singleMarker.setSubCaptionTextSize(10); //서브캡션 크기
+                    Maps.singleMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
 
-                    Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
+                    Maps.singleMarker.setOnClickListener(new Overlay.OnClickListener() {
                         @Override
                         public boolean onClick(@NonNull Overlay overlay) {
                             //클릭시 카메라 이동
-                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
+                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()).animate(CameraAnimation.Easing));
                             //infoWindow에 franchises값 태그로 전달
                             Maps.infoWindow.setTag(franchiseDTO);
                             //인포뷰 활성화
-                            Maps.infoWindow.open(Maps.singleMarkers);
+                            Maps.infoWindow.open(Maps.singleMarker);
                             return true;
                         }
                     });
 
-                    Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
-                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
-                    Maps.singleMarkers.performClick();
+                    Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
+                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
+                    Maps.singleMarker.performClick();
 //하단 정보창 닫기
-                    if (Maps.mLayout != null &&
-                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    if (Maps.slidingUpPanel != null &&
+                            (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     }
                     finish();
                 }
@@ -233,7 +233,7 @@ public class InfoPopupActivity extends Activity {
             public void onClick(View view) {
 
                 String[] kakaomapParameters = new String[]{"CAR", "PUBLICTRANSIT", "FOOT", "BICYCLE"};
-                String url = "kakaomap://route?sp=" + Maps.beforeLocation.getLatitude() + "," + Maps.beforeLocation.getLongitude() + "&ep=" + franchiseDTO.latitude + "," + franchiseDTO.longitude + "&by=" + kakaomapParameters[0];
+                String url = "kakaomap://route?sp=" + Maps.beforeLocationPoint.getLatitude() + "," + Maps.beforeLocationPoint.getLongitude() + "&ep=" + franchiseDTO.latitude + "," + franchiseDTO.longitude + "&by=" + kakaomapParameters[0];
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     startActivity(intent);

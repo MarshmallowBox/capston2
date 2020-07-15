@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public static Fragment mapsFrag;
     public static BottomNavigationView bottomNavigationView;
     public static int originmoney = 0;  //여기에 초기 가지고있는 돈 넣어놓으면 됨
-    public static DbCon.Member Member;
+    public static DbCon.MemberAdapter Member;
     public static DrawerLayout drawerLayout;
     public static TextView textView;
     public static String user_id;
@@ -69,9 +69,9 @@ public class MainActivity extends AppCompatActivity {
     Fragment placeListFrag;
     Fragment myPlaceFrag;
     Fragment moneyFrag;
-    DbCon.Search Search;
-    DbCon.DataAdapter dataAdapter;
-    DbCon.Qr qr;
+    DbCon.SearchAdapter Search;
+    DbCon.MarkerAdapter dataAdapter;
+    DbCon.QrCodeAdapter qr;
     private SearchView searchView;
     private IntentIntegrator qrScan;
 
@@ -137,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
             Member.cancel(true);
             Member = null;
         }
-        Member = new DbCon.Member();
+        Member = new DbCon.MemberAdapter();
         if (Member != null) {
-            Member.execute(strEmail, strNickname, "0","1");// 이미 저장된놈 불러온다 시까지 저장되있음 보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+            Member.execute(strEmail, strNickname, "0", "1");// 이미 저장된놈 불러온다 시까지 저장되있음 보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
         }
 
 
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //UI
-        String[] categoryTitle = {"전체", "음식", "카페", "판매", "유흥", "의료",  "운동", "미용", "학원", "기타"};
+        String[] categoryTitle = {"전체", "음식", "카페", "판매", "유흥", "의료", "운동", "미용", "학원", "기타"};
 
         radioGroup = findViewById(R.id.radiogroup);
         radioGroup.setPadding(12, 12, 12, 12);
@@ -208,10 +208,10 @@ public class MainActivity extends AppCompatActivity {
                         dataAdapter.cancel(true);
                         dataAdapter = null;
                     }
-                    dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
+                    dataAdapter = new DbCon.MarkerAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
                     Log.i("DataAdapter", "현위치");
                     if (dataAdapter != null) {
-                        dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude), String.valueOf(MainActivity.user_city.getText()));
+                        dataAdapter.execute(String.valueOf(Maps.beforeCameraPoint.latitude), String.valueOf(Maps.beforeCameraPoint.longitude), String.valueOf(MainActivity.user_city.getText()));
                     }
                 } else {
                     if (PlaceList.isCheckedButtonNear) {
@@ -220,9 +220,9 @@ public class MainActivity extends AppCompatActivity {
                         PlaceList.button_camera.performClick();
                     }
                 }
-                if (Maps.mLayout != null &&
-                        (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                    Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                if (Maps.slidingUpPanel != null &&
+                        (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                    Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                 }
             }
         });
@@ -257,9 +257,9 @@ public class MainActivity extends AppCompatActivity {
                         horizontalScrollView.setVisibility(View.VISIBLE);
                         searchView.setIconified(true);
                         searchView.clearFocus();
-                        if (Maps.mLayout != null &&
-                                (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                            Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                        if (Maps.slidingUpPanel != null &&
+                                (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                            Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                         }
                         Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.naverMap.getCameraPosition().target));
                         if (mapsFrag == null) {
@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent newUser = new Intent(MainActivity.this, SettingPopupActivity.class);
                         newUser.putExtra("mode", "new");
                         startActivity(newUser);
-                    }else{
+                    } else {
                         System.out.println("카카오");
                     }
                 } catch (InterruptedException e) {
@@ -481,7 +481,7 @@ public class MainActivity extends AppCompatActivity {
                     qr.cancel(true);
                     qr = null;
                 }
-                qr = new DbCon.Qr();
+                qr = new DbCon.QrCodeAdapter();
                 if (qr != null) {
 
                     qr.execute(array[1]);
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
                                 sleep(100);
                             }
                             Intent intent = new Intent(MainActivity.this, InfoPopupActivity.class);
-                            FranchiseDTO tags = DbCon.Qr.QrFranchise.get(0);
+                            FranchiseDTO tags = DbCon.QrCodeAdapter.QrFranchise.get(0);
                             intent.putExtra("id", tags.id);
                             intent.putExtra("name", tags.name);
                             intent.putExtra("address", tags.address);
@@ -531,9 +531,9 @@ public class MainActivity extends AppCompatActivity {
                         Member.cancel(true);
                         Member = null;
                     }
-                    Member = new DbCon.Member();
+                    Member = new DbCon.MemberAdapter();
                     if (Member != null) {
-                        Member.execute(strEmail, strNickname, "0","1");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
+                        Member.execute(strEmail, strNickname, "0", "1");//보니까 member 테이블에 등록 된후에도 로그인시에 도시 입력하라고 뜨는데 member에 없을떄랑 다르게 밑에있는 뒤로가기버튼이 먹힘
                         System.out.println("기분나빠잉");
                     }
 
@@ -568,7 +568,7 @@ public class MainActivity extends AppCompatActivity {
                     Search.cancel(true);
                     Search = null;
                 }
-                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
+                Search = new DbCon.SearchAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
                     Search.execute(s, "1", String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
@@ -586,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
                     Search.cancel(true);
                     Search = null;
                 }
-                Search = new DbCon.Search(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
+                Search = new DbCon.SearchAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers, PlaceList.container.getContext(), PlaceList.recyclerView);
                 if (Search != null) {
                     Search.execute(s, "2", String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
@@ -635,7 +635,7 @@ public class MainActivity extends AppCompatActivity {
                         qr.cancel(true);
                         qr = null;
                     }
-                    qr = new DbCon.Qr();
+                    qr = new DbCon.QrCodeAdapter();
                     if (qr != null) {
 
                         qr.execute(array[2]);
@@ -650,7 +650,7 @@ public class MainActivity extends AppCompatActivity {
                                     sleep(100);
                                 }
                                 Intent intent = new Intent(MainActivity.this, InfoPopupActivity.class);
-                                FranchiseDTO tags = DbCon.Qr.QrFranchise.get(0);
+                                FranchiseDTO tags = DbCon.QrCodeAdapter.QrFranchise.get(0);
                                 intent.putExtra("id", tags.id);
                                 intent.putExtra("name", tags.name);
                                 intent.putExtra("address", tags.address);

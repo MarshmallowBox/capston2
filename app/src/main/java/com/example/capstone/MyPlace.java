@@ -17,7 +17,7 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
 {
     public static RecyclerView recyclerView;
     @SuppressLint("StaticFieldLeak")
-    public static DbCon.Zzim mAdapter;
+    public static DbCon.MyPlaceAdapter mAdapter;
 
     @Nullable
     @Override
@@ -33,7 +33,7 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
             mAdapter.cancel(true);
             mAdapter = null;
         }
-        mAdapter = new DbCon.Zzim(Objects.requireNonNull(container).getContext(), recyclerView);
+        mAdapter = new DbCon.MyPlaceAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
         mAdapter.execute(String.valueOf(DbCon.Members.get(0).member_id), "0", "call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
 
         return view;

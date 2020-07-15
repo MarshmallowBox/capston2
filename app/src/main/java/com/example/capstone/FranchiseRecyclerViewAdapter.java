@@ -55,43 +55,43 @@ public class FranchiseRecyclerViewAdapter extends RecyclerView.Adapter<Franchise
                 }
 
                 if (franchiseDTO != null) {
-                    Maps.singleMarkers.setMap(null);
-                    Maps.singleMarkers = new Marker();
-                    Maps.singleMarkers.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
-                    Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
+                    Maps.singleMarker.setMap(null);
+                    Maps.singleMarker = new Marker();
+                    Maps.singleMarker.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
+                    Maps.singleMarker.setIcon(MarkerIcons.RED);//기본제공 마커
                     //마커 크기지정 아마 3:4비율인듯
 //                        marker.setWidth(90);
 //                        marker.setHeight(120);
-                    Maps.singleMarkers.setCaptionText(franchiseDTO.name); //메인캡션
-                    Maps.singleMarkers.setTag(franchiseDTO);//인포뷰에 전달할 태그값
-                    Maps.singleMarkers.setSubCaptionText(franchiseDTO.category); //서브캡션
-                    Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                    Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
-                    Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+                    Maps.singleMarker.setCaptionText(franchiseDTO.name); //메인캡션
+                    Maps.singleMarker.setTag(franchiseDTO);//인포뷰에 전달할 태그값
+                    Maps.singleMarker.setSubCaptionText(franchiseDTO.category); //서브캡션
+                    Maps.singleMarker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                    Maps.singleMarker.setSubCaptionTextSize(10); //서브캡션 크기
+                    Maps.singleMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
 
                     final FranchiseDTO finalFranchiseDTO1 = franchiseDTO;
-                    Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
+                    Maps.singleMarker.setOnClickListener(new Overlay.OnClickListener() {
                         @Override
                         public boolean onClick(@NonNull Overlay overlay) {
 
                             //클릭시 카메라 이동
-                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
+                            Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()).animate(CameraAnimation.Easing));
                             //infoWindow에 franchises값 태그로 전달
                             Maps.infoWindow.setTag(finalFranchiseDTO1);
                             //인포뷰 활성화
-                            Maps.infoWindow.open(Maps.singleMarkers);
+                            Maps.infoWindow.open(Maps.singleMarker);
                             Maps.infoWindow.performClick();
                             return true;
                         }
                     });
 
-                    Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
-                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
-                    Maps.singleMarkers.performClick();
+                    Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
+                    Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
+                    Maps.singleMarker.performClick();
 //하단 정보창 닫기
-                    if (Maps.mLayout != null &&
-                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    if (Maps.slidingUpPanel != null &&
+                            (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     }
                 }
             }

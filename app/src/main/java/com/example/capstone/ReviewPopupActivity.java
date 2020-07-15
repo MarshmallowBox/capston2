@@ -30,7 +30,7 @@ public class ReviewPopupActivity extends Activity {
     double latitude;
     double longitude;
     String mode;
-    DbCon.Review review;
+    DbCon.ReviewAdapter review;
     RecyclerView mRecyclerView = null;
 
 
@@ -65,7 +65,7 @@ public class ReviewPopupActivity extends Activity {
                 review.cancel(true);
                 review = null;
             }
-            review = new DbCon.Review(this, mRecyclerView);
+            review = new DbCon.ReviewAdapter(this, mRecyclerView);
             if (review != null) {
                 review.execute(String.valueOf(id), "1", String.valueOf(DbCon.Members.get(0).member_id), "1", "1", "1");
             }
@@ -117,7 +117,7 @@ public class ReviewPopupActivity extends Activity {
                         review.cancel(true);
                         review = null;
                     }
-                    review = new DbCon.Review();
+                    review = new DbCon.ReviewAdapter();
                     if (review != null) {
                         //store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
                         review.execute(String.valueOf(id), "2", String.valueOf(DbCon.Members.get(0).member_id), String.valueOf(star.getRating()), String.valueOf(text.getText()), formatDate);

@@ -236,7 +236,7 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
                                 int strprice = Integer.parseInt(priceid.getText().toString());
                                 String strdate = dateid.getText().toString();
                                 String strhour = timeid.getText().toString();
-                                DbCon.Money Money = new DbCon.Money();
+                                DbCon.GMoneyAmountAdapter Money = new DbCon.GMoneyAmountAdapter();
                                 Money.execute(showid, "3", showdate, showtime, strusing, priceid.getText().toString());
 
 
@@ -261,7 +261,7 @@ public class MoneyRecyclerViewAdapter extends RecyclerView.Adapter<MoneyRecycler
 
                     case 1002:
                         showid = (moneyDTOS.get(getAdapterPosition()).getId());
-                        DbCon.Money DeleteMoney = new DbCon.Money();
+                        DbCon.GMoneyAmountAdapter DeleteMoney = new DbCon.GMoneyAmountAdapter();
                         DeleteMoney.execute(showid, "4", showdate, showtime, "strusing", "priceid.getText().toString()");
                         moneyDTOS.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());

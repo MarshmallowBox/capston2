@@ -1,17 +1,14 @@
 package com.example.capstone;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.PointF;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -104,7 +101,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
     public void onMapReady(@NonNull final NaverMap naverMap) {
         Maps.naverMap = naverMap;
 
-        //이전위치값들 초기화
+        //beforer 값들 초기화
         beforeCameraPoint = naverMap.getCameraPosition().target;
         beforeLocationPoint = new Location(NETWORK_PROVIDER);
         beforeLocationPoint.setLatitude(0);
@@ -193,50 +190,36 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
         });
 
         //카메라위치 변화감지
-        //특정 거리 이동시마다 beforeCamera초기화시켜주고 그값과 현제 카메라값 비교해서 마커 최신화
         naverMap.addOnCameraChangeListener(new NaverMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(int reason, boolean animated) {
-                //드래그 -1 f, 마커클릭 0 t, 현위치버튼 -3 tf,
+                // 현위치버튼 -3, +/-버튼 -2, 드래그 -1, 마커클릭 0,
                 //System.out.println("reasonreason:"+reason);
-                if (beforeCameraPoint != null) {
-                    if ((reason == -3) && (Distance.getDistance(beforeLocationPoint, naverMap.getCameraPosition().target) == 0)
-                            && (Distance.getDistance(beforeCameraPoint, naverMap.getCameraPosition().target) > 5)
-                            && (LocationTrackingMode.Follow == naverMap.getLocationTrackingMode())) {
-                        beforeCameraPoint = naverMap.getCameraPosition().target;
-//                        singleMarkers.setMap(null);
+                if (beforeCameraPoint != null && beforeLocationPoint != null) {
 
+                    if ((reason == -3) //현위치 버튼 클릭시
+                            //이전 카메라 위치가 5m 이상 변경되었을때
+                            && (Distance.getDistance(beforeCameraPoint, naverMap.getCameraPosition().target) >= 5)
+                            //현위치와 카메라위치가 같아졌을때
+                            && (Distance.getDistance(beforeLocationPoint, naverMap.getCameraPosition().target) == 0)) {
+                        callMarkerAdapter();
 
-                        if (markerAdapter != null) {
-                            markerAdapter.cancel(true);
-                            markerAdapter = null;
-                        }
-                        markerAdapter = new DbCon.MarkerAdapter(getActivity(), naverMap, Markers);
-                        Log.i("DataAdapter", "현위치");
-                        if (markerAdapter != null) {
-                            markerAdapter.execute(String.valueOf(beforeCameraPoint.latitude), String.valueOf(beforeCameraPoint.longitude),String.valueOf(MainActivity.user_city.getText()));
-                        }
+                    } else if (((reason == -2) || (reason == -1)) //줌레벨 1이상 변경시
+                            && Math.abs(beforeZoomLevel - naverMap.getCameraPosition().zoom) >= 1) {
+                        callMarkerAdapter();
+
+                    } else if ((reason == -1) //드래그했을때
+                            //카메라위치값이 줌레벨에따른 값이상 변경되었을때
+                            && (Distance.getDistance(beforeCameraPoint, naverMap.getCameraPosition().target)
+                            >= Distance.getClusterDist(naverMap.getCameraPosition().zoom - 1))) {
+                        callMarkerAdapter();
                     }
-
-                    if (((reason == -1) && (Distance.getDistance(beforeCameraPoint, naverMap.getCameraPosition().target) > Distance.getClusterDist(naverMap.getCameraPosition().zoom - 1)))//드래그
-                            || ((reason == -2) && Math.abs(beforeZoomLevel - naverMap.getCameraPosition().zoom) >= 1))
-                        /*|| (reason == 0))*/ { //마커클릭
-                        beforeCameraPoint = naverMap.getCameraPosition().target;
-                        beforeZoomLevel = naverMap.getCameraPosition().zoom;
+                    //단일마커 사라질때 기준 정하기
+                    if (false) {
                         singleMarker.setMap(null);
-
-                        if (markerAdapter != null) {
-                            markerAdapter.cancel(true);
-                            markerAdapter = null;
-                        }
-                        markerAdapter = new DbCon.MarkerAdapter(getActivity(), naverMap, Markers);
-                        Log.i("DataAdapter", naverMap.getCameraPosition().zoom + "드래그" + Distance.getClusterDist(naverMap.getCameraPosition().zoom - 1));
-                        if (markerAdapter != null) {
-                            markerAdapter.execute(String.valueOf(beforeCameraPoint.latitude), String.valueOf(beforeCameraPoint.longitude),String.valueOf(MainActivity.user_city.getText()));
-                        }
                     }
+
                 }
-//                System.out.println(reason+"::"+naverMap.getCameraPosition().zoom);
             }
         });
 
@@ -260,6 +243,17 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
 
         //Follow모드로 셋팅해야 시작시 현위치로 카메라이동
         naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
+    }
+
+    public void callMarkerAdapter() {
+        beforeZoomLevel = naverMap.getCameraPosition().zoom;
+        beforeCameraPoint = naverMap.getCameraPosition().target;
+        if (markerAdapter != null) {
+            markerAdapter.cancel(true);
+            markerAdapter = null;
+        }
+        markerAdapter = new DbCon.MarkerAdapter(getActivity(), naverMap, Markers);
+        markerAdapter.execute(String.valueOf(beforeCameraPoint.latitude), String.valueOf(beforeCameraPoint.longitude), String.valueOf(MainActivity.user_city.getText()));
     }
 
     @Override
@@ -324,7 +318,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
 
 
 }

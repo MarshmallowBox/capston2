@@ -81,7 +81,7 @@ String mode="";
                             MainActivity.Member.cancel(true);
                             MainActivity.Member = null;
                         }
-                        MainActivity.Member = new DbCon.Member();
+                        MainActivity.Member = new DbCon.MemberAdapter();
                         MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()),"1");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
 System.out.println("어쩌라구");
                         MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
@@ -91,7 +91,7 @@ System.out.println("어쩌라구");
                     }
                     else
                     {
-                        MainActivity.Member = new DbCon.Member();
+                        MainActivity.Member = new DbCon.MemberAdapter();
                         MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()),"2");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
                         System.out.println("어쩌라공");
                         MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
@@ -102,16 +102,16 @@ System.out.println("어쩌라구");
                     MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
 
 
-                    DbCon.DataAdapter dataAdapter = null;
+                    DbCon.MarkerAdapter MarkerAdapter = null;
                     if (MainActivity.bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
-                        if (dataAdapter != null) {
-                            dataAdapter.cancel(true);
-                            dataAdapter = null;
+                        if (MarkerAdapter != null) {
+                            MarkerAdapter.cancel(true);
+                            MarkerAdapter = null;
                         }
-                        dataAdapter = new DbCon.DataAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
-                        Log.i("DataAdapter", "현위치");
-                        if (dataAdapter != null) {
-                            dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude),String.valueOf(MainActivity.user_city.getText()));
+                        MarkerAdapter = new DbCon.MarkerAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
+                        Log.i("MarkerAdapter", "현위치");
+                        if (MarkerAdapter != null) {
+                            MarkerAdapter.execute(String.valueOf(Maps.beforeCameraPoint.latitude), String.valueOf(Maps.beforeCameraPoint.longitude),String.valueOf(MainActivity.user_city.getText()));
                         }
                     } else {
                         if (PlaceList.isCheckedButtonNear) {
@@ -120,9 +120,9 @@ System.out.println("어쩌라구");
                             PlaceList.button_camera.performClick();
                         }
                     }
-                    if (Maps.mLayout != null &&
-                            (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                        Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                    if (Maps.slidingUpPanel != null &&
+                            (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                        Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                     }
 
 

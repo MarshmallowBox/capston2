@@ -27,7 +27,7 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
     //이거 버튼에서 라디오버튼같은 선택지버튼으로 변경해서 없애버리기기
     public static boolean isCheckedButtonNear = true;
     @SuppressLint("StaticFieldLeak")
-    public static DbCon.DataAdapter dataAdapter;
+    public static DbCon.MarkerAdapter MarkerAdapter;
 
     @Nullable
     @Override
@@ -45,12 +45,12 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
                 button_camera.setBackgroundColor(Color.parseColor("#4000C0FF"));
 
 
-                if (dataAdapter != null) {
-                    dataAdapter.cancel(true);
-                    dataAdapter = null;
+                if (MarkerAdapter != null) {
+                    MarkerAdapter.cancel(true);
+                    MarkerAdapter = null;
                 }
-                dataAdapter = new DbCon.DataAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
-                dataAdapter.execute(String.valueOf(Maps.beforeLocation.getLatitude()), String.valueOf(Maps.beforeLocation.getLongitude()), String.valueOf(MainActivity.user_city.getText()));
+                MarkerAdapter = new DbCon.MarkerAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
+                MarkerAdapter.execute(String.valueOf(Maps.beforeLocationPoint.getLatitude()), String.valueOf(Maps.beforeLocationPoint.getLongitude()), String.valueOf(MainActivity.user_city.getText()));
 
 
             }
@@ -63,12 +63,12 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
                 button_near.setBackgroundColor(Color.parseColor("#4000C0FF"));
                 button_camera.setBackgroundColor(Color.parseColor("#00C0FF"));
 
-                if (dataAdapter != null) {
-                    dataAdapter.cancel(true);
-                    dataAdapter = null;
+                if (MarkerAdapter != null) {
+                    MarkerAdapter.cancel(true);
+                    MarkerAdapter = null;
                 }
-                dataAdapter = new DbCon.DataAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
-                dataAdapter.execute(String.valueOf(Maps.beforeCamera.latitude), String.valueOf(Maps.beforeCamera.longitude), String.valueOf(MainActivity.user_city.getText()));
+                MarkerAdapter = new DbCon.MarkerAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
+                MarkerAdapter.execute(String.valueOf(Maps.beforeCameraPoint.latitude), String.valueOf(Maps.beforeCameraPoint.longitude), String.valueOf(MainActivity.user_city.getText()));
 
 
             }

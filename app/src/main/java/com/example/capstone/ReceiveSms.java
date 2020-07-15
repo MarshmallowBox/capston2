@@ -69,7 +69,7 @@ public class ReceiveSms extends BroadcastReceiver {
                             String showtime = (date.getHours()+":"+date.getMinutes());
                             String where1 = data[cardindex];
                             String price1 = data[usemoneyindex];
-                            DbCon.Money Money2 = new DbCon.Money(Objects.requireNonNull(Money.container2).getContext(),Money.mRecyclerView);
+                            DbCon.GMoneyAmountAdapter Money2 = new DbCon.GMoneyAmountAdapter(Objects.requireNonNull(Money.container2).getContext(),Money.mRecyclerView);
                             Money2.execute(String.valueOf(DbCon.Members.get(0).member_id),"2",showdate,showtime,where1,price1);//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
                         }
                         //Toast.makeText(context, "From : " + msg_from + ", Body : " + MsgBody, Toast.LENGTH_SHORT).show();

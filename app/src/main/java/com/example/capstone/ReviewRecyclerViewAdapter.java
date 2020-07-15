@@ -53,7 +53,7 @@ public class ReviewRecyclerViewAdapter extends RecyclerView.Adapter<ReviewRecycl
             public void onClick(View view) {
 
                 System.out.println(reviewDTOS.get(position).ID);
-                DbCon.Review review = new DbCon.Review();
+                DbCon.ReviewAdapter review = new DbCon.ReviewAdapter();
                 review.execute(String.valueOf(reviewDTOS.get(position).ID), "3", String.valueOf(DbCon.Members.get(0).member_id), "1", "1", "1");//회사랑분식으로 고정해놨음 일단 store_id,function,member_id,score,reviewTXT,date 순으로 보내는거임 임의로
                 reviewDTOS.remove(position);
                 notifyItemRemoved(position);
