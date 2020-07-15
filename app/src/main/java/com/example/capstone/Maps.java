@@ -104,35 +104,6 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
     public void onMapReady(@NonNull final NaverMap naverMap) {
         Maps.naverMap = naverMap;
 
-        //실내지도
-        naverMap.setIndoorEnabled(true);
-
-        //컨텐츠 패딩
-        naverMap.setContentPadding(0, 35 * 3, 0, 20 * 3);
-
-        //UI관련 설정을 담당하는 클래스
-        UiSettings uiSettings = naverMap.getUiSettings();
-        //틸트 비활성화(지도를 위아래로 기울이는 기능)
-        uiSettings.setTiltGesturesEnabled(false);
-        //기존의 현재위치버튼 비활성화
-        uiSettings.setLocationButtonEnabled(false);
-        //기존의 줌버튼 비활성화
-        uiSettings.setZoomControlEnabled(false);
-
-        //커스텀 현재위치버튼 활성화
-        LocationButtonView locationButtonView = getActivity().findViewById(R.id.map_location);
-        locationButtonView.setMap(naverMap);
-        //커스텀 줌버튼 활성화
-        ZoomControlView zoomControlView = getActivity().findViewById(R.id.map_zoom);
-        zoomControlView.setMap(naverMap);
-
-        //줌레벨 설정
-        naverMap.setCameraPosition(new CameraPosition(naverMap.getCameraPosition().target, 15));
-        naverMap.setMinZoom(11);
-
-        //위치받아오는소스 활성화
-        naverMap.setLocationSource(locationSource);
-
         //이전위치값들 초기화
         beforeCameraPoint = naverMap.getCameraPosition().target;
         beforeLocationPoint = new Location(NETWORK_PROVIDER);
@@ -166,6 +137,36 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
                 return true;
             }
         });
+
+        //실내지도
+        naverMap.setIndoorEnabled(true);
+
+        //컨텐츠 패딩
+        naverMap.setContentPadding(0, 35 * 3, 0, 20 * 3);
+
+        //UI관련 설정을 담당하는 클래스
+        UiSettings uiSettings = naverMap.getUiSettings();
+        //틸트 비활성화(지도를 위아래로 기울이는 기능)
+        uiSettings.setTiltGesturesEnabled(false);
+        //기존의 현재위치버튼 비활성화
+        uiSettings.setLocationButtonEnabled(false);
+        //기존의 줌버튼 비활성화
+        uiSettings.setZoomControlEnabled(false);
+
+        //커스텀 현재위치버튼 활성화
+        LocationButtonView locationButtonView = getActivity().findViewById(R.id.map_location);
+        locationButtonView.setMap(naverMap);
+        //커스텀 줌버튼 활성화
+        ZoomControlView zoomControlView = getActivity().findViewById(R.id.map_zoom);
+        zoomControlView.setMap(naverMap);
+
+        //줌레벨 설정
+        naverMap.setCameraPosition(new CameraPosition(naverMap.getCameraPosition().target, 15));
+        naverMap.setMinZoom(11);
+
+        //위치받아오는소스 활성화
+        naverMap.setLocationSource(locationSource);
+
 
         //지도클릭시 인포뷰 닫기
         naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
