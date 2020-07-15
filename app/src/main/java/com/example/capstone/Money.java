@@ -30,7 +30,7 @@ import java.util.Objects;
 public class Money extends Fragment // Fragment 클래스를 상속받아야한다
 {
     Intent Intent;
-    DbCon.Money Money;
+    DbCon.GMoneyAmountAdapter Money;
     static RecyclerView mRecyclerView = null;
     static TextView money = null;
     EditText datetv,timetv,editText = null;
@@ -67,7 +67,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
             Money.cancel(true);
             Money = null;
         }
-        Money = new DbCon.Money(Objects.requireNonNull(container).getContext(),mRecyclerView);
+        Money = new DbCon.GMoneyAmountAdapter(Objects.requireNonNull(container).getContext(),mRecyclerView);
         Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"1","0","0","0","0");//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
 
 
@@ -103,8 +103,9 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                     public void onClick(DialogInterface dialog, int which) {
 
 
+
                         MainActivity.originmoney=Integer.parseInt(String.valueOf(TvOriginmoney.getText()));
-                        DbCon.Money Money = new DbCon.Money();
+                        DbCon.GMoneyAmountAdapter Money = new DbCon.GMoneyAmountAdapter();
                         Money.execute(MainActivity.strEmail,"5",String.valueOf(MainActivity.originmoney),showtime,"strusing","priceid.getText().toString()");
 
                         MoneyRecyclerViewAdapter.leftovermoney();
@@ -223,7 +224,7 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
                                 Money.cancel(true);
                                 Money = null;
                             }
-                            Money = new DbCon.Money(Objects.requireNonNull(container).getContext(),mRecyclerView);
+                            Money = new DbCon.GMoneyAmountAdapter(Objects.requireNonNull(container).getContext(),mRecyclerView);
                             Money.execute(String.valueOf(DbCon.Members.get(0).member_id),"2",showdate,showtime,where1,price1);//2번째 인자가 1이면 리스트 가져오기, 2이면 집어넣기기
 
 
@@ -281,7 +282,5 @@ public class Money extends Fragment // Fragment 클래스를 상속받아야한�
     };
     public static void changeleftmoney(){
         money.setText(String.valueOf(MoneyRecyclerViewAdapter.leftovermoney));
-
     }
-
 }

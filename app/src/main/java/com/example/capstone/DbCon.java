@@ -3,7 +3,6 @@ package com.example.capstone;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.AsyncTask;
@@ -22,7 +21,6 @@ import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
-import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -72,7 +70,7 @@ public class DbCon extends AppCompatActivity {
     }
 
 
-    static class DataAdapter extends AsyncTask<String, Void, String> {
+    static class MarkerAdapter extends AsyncTask<String, Void, String> {
         final Activity activity;
         final NaverMap naverMap;
         private final String TAG_JSON = "webnautes";
@@ -90,7 +88,7 @@ public class DbCon extends AppCompatActivity {
         RecyclerView recyclerView;
         String mJsonString = null;
 
-        DataAdapter(Activity activity, NaverMap naverMap, ArrayList<Marker> Markers) {
+        MarkerAdapter(Activity activity, NaverMap naverMap, ArrayList<Marker> Markers) {
             this.activity = activity;
             this.naverMap = naverMap;
             this.Markers = Markers;
@@ -98,7 +96,7 @@ public class DbCon extends AppCompatActivity {
             this.recyclerView = null;
         }
 
-        DataAdapter(Context context, RecyclerView recyclerView) {
+        MarkerAdapter(Context context, RecyclerView recyclerView) {
             this.activity = null;
             this.naverMap = null;
             this.Markers = null;
@@ -194,9 +192,9 @@ public class DbCon extends AppCompatActivity {
 
                                 mAdapter.notifyDataSetChanged();//데이터변경시
 
-                                if (Maps.mLayout != null &&
-                                        (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
-                                    Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                                if (Maps.slidingUpPanel != null &&
+                                        (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+                                    Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                                 }
 
                                 return true;
@@ -332,7 +330,7 @@ public class DbCon extends AppCompatActivity {
 
     }
 
-    public static class Search extends AsyncTask<String, Void, String> {
+    public static class SearchAdapter extends AsyncTask<String, Void, String> {
 
         public static ArrayList<FranchiseDTO> Franchises = new ArrayList<>();
         String errorString = null;
@@ -344,7 +342,7 @@ public class DbCon extends AppCompatActivity {
         String searchMode;
         String mJsonString;
 
-        Search(Activity activity, NaverMap naverMap, ArrayList<Marker> Markers, Context context, RecyclerView recyclerView) {
+        SearchAdapter(Activity activity, NaverMap naverMap, ArrayList<Marker> Markers, Context context, RecyclerView recyclerView) {
             this.activity = activity;
             this.naverMap = naverMap;
             this.Markers = Markers;
@@ -400,40 +398,40 @@ public class DbCon extends AppCompatActivity {
                         mAdapter.notifyDataSetChanged();
                     }
                     if (MainActivity.bottomNavigationView.getSelectedItemId() == R.id.mapmode && searchMode.equals("1")) {
-                        Maps.singleMarkers.setMap(null);
-                        Maps.singleMarkers = new Marker();
-                        Maps.singleMarkers.setPosition(new LatLng(Franchises.get(0).latitude, Franchises.get(0).longitude));//위경도
-                        Maps.singleMarkers.setIcon(MarkerIcons.RED);//기본제공 마커
+                        Maps.singleMarker.setMap(null);
+                        Maps.singleMarker = new Marker();
+                        Maps.singleMarker.setPosition(new LatLng(Franchises.get(0).latitude, Franchises.get(0).longitude));//위경도
+                        Maps.singleMarker.setIcon(MarkerIcons.RED);//기본제공 마커
                         //마커 크기지정 아마 3:4비율인듯
 //                        marker.setWidth(90);
 //                        marker.setHeight(120);
-                        Maps.singleMarkers.setCaptionText(Franchises.get(0).name); //메인캡션
-                        Maps.singleMarkers.setTag(Franchises.get(0));//인포뷰에 전달할 태그값
-                        Maps.singleMarkers.setSubCaptionText(Franchises.get(0).category); //서브캡션
-                        Maps.singleMarkers.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                        Maps.singleMarkers.setSubCaptionTextSize(10); //서브캡션 크기
-                        Maps.singleMarkers.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+                        Maps.singleMarker.setCaptionText(Franchises.get(0).name); //메인캡션
+                        Maps.singleMarker.setTag(Franchises.get(0));//인포뷰에 전달할 태그값
+                        Maps.singleMarker.setSubCaptionText(Franchises.get(0).category); //서브캡션
+                        Maps.singleMarker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                        Maps.singleMarker.setSubCaptionTextSize(10); //서브캡션 크기
+                        Maps.singleMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
 
-                        Maps.singleMarkers.setOnClickListener(new Overlay.OnClickListener() {
+                        Maps.singleMarker.setOnClickListener(new Overlay.OnClickListener() {
                             @Override
                             public boolean onClick(@NonNull Overlay overlay) {
                                 //클릭시 카메라 이동
-                                Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()).animate(CameraAnimation.Easing));
+                                Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()).animate(CameraAnimation.Easing));
                                 //infoWindow에 franchises값 태그로 전달
                                 Maps.infoWindow.setTag(Franchises.get(0));
                                 //인포뷰 활성화
-                                Maps.infoWindow.open(Maps.singleMarkers);
+                                Maps.infoWindow.open(Maps.singleMarker);
                                 return true;
                             }
                         });
 
-                        Maps.singleMarkers.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
-                        Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarkers.getPosition()));
-                        Maps.singleMarkers.performClick();
+                        Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
+                        Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
+                        Maps.singleMarker.performClick();
 //하단 정보창 닫기
-                        if (Maps.mLayout != null &&
-                                (Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.mLayout.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                            Maps.mLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+                        if (Maps.slidingUpPanel != null &&
+                                (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+                            Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                         }
                     }
 
@@ -491,7 +489,7 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    static class Zzim extends AsyncTask<String, Void, String> {
+    static class MyPlaceAdapter extends AsyncTask<String, Void, String> {
         ArrayList<FranchiseDTO> ZzimFranchise = new ArrayList<>();
         String mode = null;
         String errorString = null;
@@ -499,10 +497,10 @@ public class DbCon extends AppCompatActivity {
         Context context= null;
         RecyclerView recyclerView= null;
         FranchiseRecyclerViewAdapter mAdapter= null;
-        Zzim(){
+        MyPlaceAdapter(){
 
         }
-        Zzim(Context context, RecyclerView recyclerView) {
+        MyPlaceAdapter(Context context, RecyclerView recyclerView) {
 
             this.context = context;
             this.recyclerView = recyclerView;
@@ -623,7 +621,7 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    public static class Review extends AsyncTask<String, Void, String> {
+    public static class ReviewAdapter extends AsyncTask<String, Void, String> {
         String errorString = null;
         static String mJsonString = null;
         static Activity activity=null;
@@ -631,10 +629,10 @@ public class DbCon extends AppCompatActivity {
         static int rowCount=0;
 
         public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
-        Review(){
+        ReviewAdapter(){
 
         }
-        Review(ReviewPopupActivity activity, RecyclerView mRecyclerView){
+        ReviewAdapter(ReviewPopupActivity activity, RecyclerView mRecyclerView){
             this.activity=activity;
             this.mRecyclerView=mRecyclerView;
         }
@@ -750,7 +748,7 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    public static class Member extends AsyncTask<String, Void, String> {
+    public static class MemberAdapter extends AsyncTask<String, Void, String> {
         private static final String TAG_MEMBER_ID = "member_id";
         private static final String TAG_TEL = "tel";
         private static final String TAG_NAME = "name";
@@ -892,7 +890,7 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    public static class Money extends AsyncTask<String, Void, String> {
+    public static class GMoneyAmountAdapter extends AsyncTask<String, Void, String> {
 
 
         private static final String TAG_DATE = "date";
@@ -907,9 +905,9 @@ public class DbCon extends AppCompatActivity {
         static Context context=null;
         static RecyclerView recyclerView = null;
         MoneyRecyclerViewAdapter mAdapter;
-        public Money() {
+        public GMoneyAmountAdapter() {
         }
-        Money(Context context, RecyclerView recyclerView) {
+        GMoneyAmountAdapter(Context context, RecyclerView recyclerView) {
 
             this.context = context;
             this.recyclerView = recyclerView;
@@ -1031,7 +1029,7 @@ MoneyRecyclerViewAdapter.leftovermoney();
         }
     }
 
-    public static class Qr extends AsyncTask<String, Void, String> {
+    public static class QrCodeAdapter extends AsyncTask<String, Void, String> {
 
         public static ArrayList<FranchiseDTO> QrFranchise = new ArrayList<>();
 
