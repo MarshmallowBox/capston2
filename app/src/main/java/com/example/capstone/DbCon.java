@@ -21,6 +21,7 @@ import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -171,14 +172,20 @@ public class DbCon extends AppCompatActivity {
                         int size = clusterFranchises[i].size();
 //                            clustmarker.setPosition(new LatLng(clusterData[i].get(0).getPosition().latitude, clusterData[i].get(0).getPosition().longitude));//위경도
                         clusterMarker.setPosition(new LatLng(lat / size, log / size));//위경도
-                        clusterMarker.setIcon(MarkerIcons.LIGHTBLUE);//기본제공 마커
+//                        clusterMarker.setIcon(MarkerIcons.LIGHTBLUE);//기본제공 마커
+                        clusterMarker.setIcon(OverlayImage.fromResource(R.drawable.marker));
                         //마커 크기지정 아마 3:4비율인듯
+                        clusterMarker.setCaptionOffset(-100);
                         clusterMarker.setCaptionText(String.valueOf(size)); //메인캡션
                         clusterMarker.setCaptionTextSize(20); //캡션 크기
-                        clusterMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
-                        clusterMarker.setWidth(90 + (Math.min(size * 3, 150)));
-                        clusterMarker.setAnchor((new PointF(-1, -1)));
-                        clusterMarker.setHeight(120 + (Math.min(size * 4, 200)));
+//                        clusterMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+//
+//                        clusterMarker.setWidth(90 + (Math.min(size * 3, 150)));
+//                        clusterMarker.setAnchor((new PointF(-1, -1)));
+//                        clusterMarker.setHeight(120 + (Math.min(size * 4, 200)));
+                        clusterMarker.setWidth(150);
+                        clusterMarker.setHeight(150);
+
                         final int finalI = i;
                         clusterMarker.setOnClickListener(new Overlay.OnClickListener() {
                             @Override
@@ -489,7 +496,7 @@ public class DbCon extends AppCompatActivity {
         }
     }
 
-    static class MyPlaceAdapter extends AsyncTask<String, Void, String> {
+    public static class MyPlaceAdapter extends AsyncTask<String, Void, String> {
         ArrayList<FranchiseDTO> ZzimFranchise = new ArrayList<>();
         String mode = null;
         String errorString = null;

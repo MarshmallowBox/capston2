@@ -17,7 +17,7 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
 {
     public static RecyclerView recyclerView;
     @SuppressLint("StaticFieldLeak")
-    public static DbCon.MyPlaceAdapter mAdapter;
+    public static DbCon.MyPlaceAdapter myPlaceAdapter;
 
     @Nullable
     @Override
@@ -29,12 +29,12 @@ public class MyPlace extends Fragment // Fragment 클래스를 상속받아야�
         recyclerView = view.findViewById(R.id.myplace_recyclerview);
         System.out.println("찜목록보여주기");
 
-        if (mAdapter != null) {
-            mAdapter.cancel(true);
-            mAdapter = null;
+        if (myPlaceAdapter != null) {
+            myPlaceAdapter.cancel(true);
+            myPlaceAdapter = null;
         }
-        mAdapter = new DbCon.MyPlaceAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
-        mAdapter.execute(String.valueOf(DbCon.Members.get(0).member_id), "0", "call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
+        myPlaceAdapter = new DbCon.MyPlaceAdapter(Objects.requireNonNull(container).getContext(), recyclerView);
+        myPlaceAdapter.execute(String.valueOf(DbCon.Members.get(0).member_id), "0", "call");//Zzim.execute("멤버ID","스토어ID","기능(추가:1,삭제:2)");
 
         return view;
     }

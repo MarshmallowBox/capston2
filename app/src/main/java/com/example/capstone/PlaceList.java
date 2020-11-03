@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Objects;
 
-public class PlaceList extends Fragment // Fragment 클래스를 상속받아야한다
+public class PlaceList extends Fragment
 {
     public static RecyclerView recyclerView;
     @SuppressLint("StaticFieldLeak")
@@ -35,7 +35,7 @@ public class PlaceList extends Fragment // Fragment 클래스를 상속받아야
         PlaceList.container = container;
         View view = inflater.inflate(R.layout.activity_placelist, container, false);
         recyclerView = view.findViewById(R.id.placelist_recyclerview);
-        //이것도 하단바마냥 수정하기
+
         button_near = view.findViewById(R.id.button_near);
         button_near.setOnClickListener(new View.OnClickListener() {
             @Override
