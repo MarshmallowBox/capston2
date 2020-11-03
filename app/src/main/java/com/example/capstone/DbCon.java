@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -133,16 +134,25 @@ public class DbCon extends AppCompatActivity {
                         final FranchiseDTO franchise = clusterFranchises[i].get(0);
                         final Marker marker = new Marker();
                         marker.setPosition(new LatLng(franchise.latitude, franchise.longitude));//위경도
-                        marker.setIcon(MarkerIcons.BLUE);//기본제공 마커
+                        marker.setIcon(OverlayImage.fromResource(R.drawable.single_marker));//기본제공 마커
 
-                        marker.setWidth(90);
-                        marker.setHeight(120);
+                        marker.setWidth(100);
+                        marker.setHeight(125);
+                        marker.setCaptionOffset(0); //캡션 위치
+
+                        marker.setAnchor((new PointF(0.5f, 1)));
+                        marker.setCaptionTextSize(10);
+
+
                         marker.setCaptionText(franchise.name); //메인캡션
                         marker.setTag(franchise);//인포뷰에 전달할 태그값
                         marker.setSubCaptionText(franchise.category); //서브캡션
                         marker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
                         marker.setSubCaptionTextSize(10); //서브캡션 크기
-                        marker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+
+
+
+//                        marker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
                         marker.setCaptionRequestedWidth(200);
                         marker.setOnClickListener(new Overlay.OnClickListener() {
                             @Override
@@ -152,7 +162,7 @@ public class DbCon extends AppCompatActivity {
                                 //infoWindow에 franchises값 태그로 전달
                                 Maps.infoWindow.setTag(franchise);
                                 //인포뷰 활성화
-                                Maps.infoWindow.open(marker);
+//                                Maps.infoWindow.open(marker);
 
                                 Maps.infoWindow.performClick();
                                 return true;
@@ -172,17 +182,17 @@ public class DbCon extends AppCompatActivity {
                         int size = clusterFranchises[i].size();
 //                            clustmarker.setPosition(new LatLng(clusterData[i].get(0).getPosition().latitude, clusterData[i].get(0).getPosition().longitude));//위경도
                         clusterMarker.setPosition(new LatLng(lat / size, log / size));//위경도
-//                        clusterMarker.setIcon(MarkerIcons.LIGHTBLUE);//기본제공 마커
-                        clusterMarker.setIcon(OverlayImage.fromResource(R.drawable.marker));
+
+                        clusterMarker.setIcon(OverlayImage.fromResource(R.drawable.cluster_marker));
                         //마커 크기지정 아마 3:4비율인듯
-                        clusterMarker.setCaptionOffset(-100);
+                        clusterMarker.setCaptionOffset(-105); //캡션 위치
                         clusterMarker.setCaptionText(String.valueOf(size)); //메인캡션
                         clusterMarker.setCaptionTextSize(20); //캡션 크기
 //                        clusterMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
 //
-//                        clusterMarker.setWidth(90 + (Math.min(size * 3, 150)));
+
 //                        clusterMarker.setAnchor((new PointF(-1, -1)));
-//                        clusterMarker.setHeight(120 + (Math.min(size * 4, 200)));
+
                         clusterMarker.setWidth(150);
                         clusterMarker.setHeight(150);
 
@@ -365,6 +375,7 @@ public class DbCon extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+
             Log.d(TAG, "response ------ " + result);
             if (result != null) {
                 mJsonString = result;
@@ -408,10 +419,14 @@ public class DbCon extends AppCompatActivity {
                         Maps.singleMarker.setMap(null);
                         Maps.singleMarker = new Marker();
                         Maps.singleMarker.setPosition(new LatLng(Franchises.get(0).latitude, Franchises.get(0).longitude));//위경도
-                        Maps.singleMarker.setIcon(MarkerIcons.RED);//기본제공 마커
-                        //마커 크기지정 아마 3:4비율인듯
-//                        marker.setWidth(90);
-//                        marker.setHeight(120);
+
+                        Maps.singleMarker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
+                        Maps.singleMarker.setWidth(100);
+                        Maps.singleMarker.setHeight(125);
+                        Maps.singleMarker.setCaptionOffset(0); //캡션 위치
+                        Maps.singleMarker.setAnchor((new PointF(0.5f, 1)));
+                        Maps.singleMarker.setCaptionTextSize(10);
+
                         Maps.singleMarker.setCaptionText(Franchises.get(0).name); //메인캡션
                         Maps.singleMarker.setTag(Franchises.get(0));//인포뷰에 전달할 태그값
                         Maps.singleMarker.setSubCaptionText(Franchises.get(0).category); //서브캡션
@@ -422,27 +437,33 @@ public class DbCon extends AppCompatActivity {
                         Maps.singleMarker.setOnClickListener(new Overlay.OnClickListener() {
                             @Override
                             public boolean onClick(@NonNull Overlay overlay) {
+
                                 //클릭시 카메라 이동
                                 Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()).animate(CameraAnimation.Easing));
                                 //infoWindow에 franchises값 태그로 전달
                                 Maps.infoWindow.setTag(Franchises.get(0));
                                 //인포뷰 활성화
-                                Maps.infoWindow.open(Maps.singleMarker);
+//                                Maps.infoWindow.open(Maps.singleMarker);
+                                Maps.infoWindow.performClick();
                                 return true;
                             }
                         });
 
                         Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
                         Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
-                        Maps.singleMarker.performClick();
+//                        Maps.singleMarker.performClick();
 //하단 정보창 닫기
                         if (Maps.slidingUpPanel != null &&
                                 (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
                             Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
                         }
+//                        MainActivity.pd.dismiss();
                     }
 
+                } else{
+                    Toast.makeText(activity, "검색 결과 없음", Toast.LENGTH_SHORT).show();
                 }
+                MainActivity.pd.dismiss();
             }
         }
 

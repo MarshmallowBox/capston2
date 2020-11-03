@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -22,6 +23,7 @@ import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -176,10 +178,14 @@ public class InfoPopupActivity extends Activity {
                     Maps.singleMarker.setMap(null);
                     Maps.singleMarker = new Marker();
                     Maps.singleMarker.setPosition(new LatLng(franchiseDTO.latitude, franchiseDTO.longitude));//위경도
-                    Maps.singleMarker.setIcon(MarkerIcons.RED);//기본제공 마커
-                    //마커 크기지정 아마 3:4비율인듯
-//                        marker.setWidth(90);
-//                        marker.setHeight(120);
+
+                    Maps.singleMarker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
+                    Maps.singleMarker.setWidth(100);
+                    Maps.singleMarker.setHeight(125);
+                    Maps.singleMarker.setCaptionOffset(0); //캡션 위치
+                    Maps.singleMarker.setAnchor((new PointF(0.5f, 1)));
+                    Maps.singleMarker.setCaptionTextSize(10);
+
                     Maps.singleMarker.setCaptionText(franchiseDTO.name); //메인캡션
                     Maps.singleMarker.setTag(franchiseDTO);//인포뷰에 전달할 태그값
                     Maps.singleMarker.setSubCaptionText(franchiseDTO.category); //서브캡션
@@ -195,14 +201,15 @@ public class InfoPopupActivity extends Activity {
                             //infoWindow에 franchises값 태그로 전달
                             Maps.infoWindow.setTag(franchiseDTO);
                             //인포뷰 활성화
-                            Maps.infoWindow.open(Maps.singleMarker);
+//                            Maps.infoWindow.open(Maps.singleMarker);
+                            Maps.infoWindow.performClick();
                             return true;
                         }
                     });
 
                     Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
                     Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
-                    Maps.singleMarker.performClick();
+//                    Maps.singleMarker.performClick();
 //하단 정보창 닫기
                     if (Maps.slidingUpPanel != null &&
                             (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {

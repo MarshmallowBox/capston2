@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.PointF;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.location.LocationListener;
 import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraAnimation;
 import com.naver.maps.map.CameraPosition;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
@@ -170,6 +173,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             @Override
             public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
                 infoWindow.close();
+                singleMarker.setMap(null);
             }
         });
 

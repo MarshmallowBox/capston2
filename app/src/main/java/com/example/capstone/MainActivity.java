@@ -2,6 +2,7 @@ package com.example.capstone;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean QRFlag = false;
     public FragmentManager fragmentManager;
     public FranchiseDTO franchiseDTO;
+    public static ProgressDialog pd;
     Fragment placeListFrag;
     Fragment myPlaceFrag;
     Fragment moneyFrag;
@@ -563,7 +565,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 System.out.println(s);
-
+                pd = ProgressDialog.show(MainActivity.this, "", "검색 중입니다...");
                 if (Search != null) {
                     Search.cancel(true);
                     Search = null;
