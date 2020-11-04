@@ -2,6 +2,7 @@ package com.example.capstone;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -9,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraAnimation;
+import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.overlay.Marker;
@@ -179,7 +182,7 @@ public class DbCon extends AppCompatActivity {
                             log += franchise.longitude;
                         }
                         final Marker clusterMarker = new Marker();
-                        int size = clusterFranchises[i].size();
+                        final int size = clusterFranchises[i].size();
 //                            clustmarker.setPosition(new LatLng(clusterData[i].get(0).getPosition().latitude, clusterData[i].get(0).getPosition().longitude));//위경도
                         clusterMarker.setPosition(new LatLng(lat / size, log / size));//위경도
 
@@ -211,6 +214,8 @@ public class DbCon extends AppCompatActivity {
 
                                 if (Maps.slidingUpPanel != null &&
                                         (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
+                                    TextView title = activity.findViewById(R.id.sliding_layout_title);
+                                    title.setText(String.valueOf(size)+"개의 가맹점 정보");
                                     Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                                 }
 
@@ -367,6 +372,79 @@ public class DbCon extends AppCompatActivity {
             this.recyclerView = recyclerView;
         }
 
+        ////////
+        public ArrayList<FranchiseDTO> getFilteredData() {
+            ArrayList<FranchiseDTO> categoryFilteredFranchises = new ArrayList<>();
+            RadioButton checkedRadioButton = (RadioButton) MainActivity.radioGroup.getChildAt(MainActivity.radioGroup.getCheckedRadioButtonId());
+            for (FranchiseDTO franchiseDTO : Franchises) {
+                if (checkedRadioButton.getText().equals(franchiseDTO.category) || checkedRadioButton.getText().equals("전체")) {
+                    categoryFilteredFranchises.add(franchiseDTO);
+                }
+            }
+            return categoryFilteredFranchises;
+        }
+        public void setSearchMarkersOnMap() {
+            ArrayList<FranchiseDTO> beforeClusterData = getFilteredData();
+
+            Clustering cluster = new Clustering(naverMap, beforeClusterData);
+            final ArrayList<FranchiseDTO>[] clusterFranchises = cluster.getClusterData();
+            for (Marker marker : Markers) {
+                marker.setMap(null);
+            }
+            Markers.clear();
+            for (int i = 0; i < clusterFranchises.length; i++) {
+
+
+                if (clusterFranchises[i] != null) {
+
+                        final FranchiseDTO franchise = clusterFranchises[i].get(0);
+                        final Marker marker = new Marker();
+                        marker.setPosition(new LatLng(franchise.latitude, franchise.longitude));//위경도
+                        marker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
+
+                        marker.setWidth(100);
+                        marker.setHeight(125);
+                        marker.setCaptionOffset(0); //캡션 위치
+
+                        marker.setAnchor((new PointF(0.5f, 1)));
+                        marker.setCaptionTextSize(10);
+
+
+                        marker.setCaptionText(franchise.name); //메인캡션
+                        marker.setTag(franchise);//인포뷰에 전달할 태그값
+                        marker.setSubCaptionText(franchise.category); //서브캡션
+                        marker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                        marker.setSubCaptionTextSize(10); //서브캡션 크기
+
+
+
+//                        marker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+                        marker.setCaptionRequestedWidth(200);
+                        marker.setOnClickListener(new Overlay.OnClickListener() {
+                            @Override
+                            public boolean onClick(@NonNull Overlay overlay) {
+                                //클릭시 카메라 이동
+                                naverMap.moveCamera(CameraUpdate.scrollTo(marker.getPosition()).animate(CameraAnimation.Easing));
+                                //infoWindow에 franchises값 태그로 전달
+                                Maps.infoWindow.setTag(franchise);
+                                //인포뷰 활성화
+//                                Maps.infoWindow.open(marker);
+
+                                Maps.infoWindow.performClick();
+                                return true;
+                            }
+                        });
+                        marker.setMap(naverMap); //지도에 추가, null이면 안보임
+                        Markers.add(marker);
+                        naverMap.setCameraPosition(new CameraPosition(naverMap.getCameraPosition().target, 12));
+//                        naverMap.moveCamera(CameraUpdate.scrollTo(marker.getPosition()).animate(CameraAnimation.Easing));
+
+
+
+                }
+            }
+        }
+        //////
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -416,51 +494,53 @@ public class DbCon extends AppCompatActivity {
                         mAdapter.notifyDataSetChanged();
                     }
                     if (MainActivity.bottomNavigationView.getSelectedItemId() == R.id.mapmode && searchMode.equals("1")) {
-                        Maps.singleMarker.setMap(null);
-                        Maps.singleMarker = new Marker();
-                        Maps.singleMarker.setPosition(new LatLng(Franchises.get(0).latitude, Franchises.get(0).longitude));//위경도
+                        setSearchMarkersOnMap();
 
-                        Maps.singleMarker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
-                        Maps.singleMarker.setWidth(100);
-                        Maps.singleMarker.setHeight(125);
-                        Maps.singleMarker.setCaptionOffset(0); //캡션 위치
-                        Maps.singleMarker.setAnchor((new PointF(0.5f, 1)));
-                        Maps.singleMarker.setCaptionTextSize(10);
-
-                        Maps.singleMarker.setCaptionText(Franchises.get(0).name); //메인캡션
-                        Maps.singleMarker.setTag(Franchises.get(0));//인포뷰에 전달할 태그값
-                        Maps.singleMarker.setSubCaptionText(Franchises.get(0).category); //서브캡션
-                        Maps.singleMarker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                        Maps.singleMarker.setSubCaptionTextSize(10); //서브캡션 크기
-                        Maps.singleMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
-
-                        Maps.singleMarker.setOnClickListener(new Overlay.OnClickListener() {
-                            @Override
-                            public boolean onClick(@NonNull Overlay overlay) {
-
-                                //클릭시 카메라 이동
-                                Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()).animate(CameraAnimation.Easing));
-                                //infoWindow에 franchises값 태그로 전달
-                                Maps.infoWindow.setTag(Franchises.get(0));
-                                //인포뷰 활성화
-//                                Maps.infoWindow.open(Maps.singleMarker);
-                                Maps.infoWindow.performClick();
-                                return true;
-                            }
-                        });
-
-                        Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
-                        Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
-//                        Maps.singleMarker.performClick();
-//하단 정보창 닫기
-                        if (Maps.slidingUpPanel != null &&
-                                (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-                            Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-                        }
-//                        MainActivity.pd.dismiss();
+//                        Maps.singleMarker.setMap(null);
+//                        Maps.singleMarker = new Marker();
+//                        Maps.singleMarker.setPosition(new LatLng(Franchises.get(0).latitude, Franchises.get(0).longitude));//위경도
+//
+//                        Maps.singleMarker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
+//                        Maps.singleMarker.setWidth(100);
+//                        Maps.singleMarker.setHeight(125);
+//                        Maps.singleMarker.setCaptionOffset(0); //캡션 위치
+//                        Maps.singleMarker.setAnchor((new PointF(0.5f, 1)));
+//                        Maps.singleMarker.setCaptionTextSize(10);
+//
+//                        Maps.singleMarker.setCaptionText(Franchises.get(0).name); //메인캡션
+//                        Maps.singleMarker.setTag(Franchises.get(0));//인포뷰에 전달할 태그값
+//                        Maps.singleMarker.setSubCaptionText(Franchises.get(0).category); //서브캡션
+//                        Maps.singleMarker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+//                        Maps.singleMarker.setSubCaptionTextSize(10); //서브캡션 크기
+//                        Maps.singleMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
+//
+//                        Maps.singleMarker.setOnClickListener(new Overlay.OnClickListener() {
+//                            @Override
+//                            public boolean onClick(@NonNull Overlay overlay) {
+//
+//                                //클릭시 카메라 이동
+//                                Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()).animate(CameraAnimation.Easing));
+//                                //infoWindow에 franchises값 태그로 전달
+//                                Maps.infoWindow.setTag(Franchises.get(0));
+//                                //인포뷰 활성화
+////                                Maps.infoWindow.open(Maps.singleMarker);
+//                                Maps.infoWindow.performClick();
+//                                return true;
+//                            }
+//                        });
+//
+//                        Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
+//                        Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
+////                        Maps.singleMarker.performClick();
+////하단 정보창 닫기
+//                        if (Maps.slidingUpPanel != null &&
+//                                (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
+//                            Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+//                        }
                     }
 
                 } else{
+                    MainActivity.pd = ProgressDialog.show(activity, "", "검색 중입니다...");
                     Toast.makeText(activity, "검색 결과 없음", Toast.LENGTH_SHORT).show();
                 }
                 MainActivity.pd.dismiss();

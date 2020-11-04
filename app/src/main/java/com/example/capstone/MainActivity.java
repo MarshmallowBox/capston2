@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean QRFlag = false;
     public FragmentManager fragmentManager;
     public FranchiseDTO franchiseDTO;
-    public static ProgressDialog pd;
+    public static ProgressDialog pd =null;
     Fragment placeListFrag;
     Fragment myPlaceFrag;
     Fragment moneyFrag;
@@ -566,6 +566,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String s) {
                 System.out.println(s);
                 pd = ProgressDialog.show(MainActivity.this, "", "검색 중입니다...");
+                //검색버튼 누르는순간 로딩다이얼로그 표시, 다이얼로그 종료는 DbCon의 SearchAdapter클래스의 MainActivity.pd.dismiss();
                 if (Search != null) {
                     Search.cancel(true);
                     Search = null;
