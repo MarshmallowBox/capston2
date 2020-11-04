@@ -48,7 +48,7 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
     public static SlidingUpPanelLayout slidingUpPanel;
     public static Marker singleMarker;
     static ArrayList<Marker> Markers;
-    public DbCon.MarkerAdapter markerAdapter;
+    public static DbCon.MarkerAdapter markerAdapter;
     private MapView mapView;
     private FusedLocationSource locationSource;
 
@@ -199,7 +199,10 @@ public class Maps extends Fragment implements OnMapReadyCallback, LocationListen
             public void onCameraChange(int reason, boolean animated) {
                 // 현위치버튼 -3, +/-버튼 -2, 드래그 -1, 마커클릭 0,
                 //System.out.println("reasonreason:"+reason);
-                if (beforeCameraPoint != null && beforeLocationPoint != null) {
+
+
+                if (beforeCameraPoint != null && beforeLocationPoint != null
+                && MainActivity.searchView.isIconified()) {
 
                     if ((reason == -3) //현위치 버튼 클릭시
                             //이전 카메라 위치가 5m 이상 변경되었을때

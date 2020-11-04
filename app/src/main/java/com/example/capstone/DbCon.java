@@ -463,6 +463,7 @@ public class DbCon extends AppCompatActivity {
 
         public void showResult() {
             try {
+
                 Franchises.clear();
                 System.out.println("과여어어어언?");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -540,8 +541,8 @@ public class DbCon extends AppCompatActivity {
                     }
 
                 } else{
-                    MainActivity.pd = ProgressDialog.show(activity, "", "검색 중입니다...");
                     Toast.makeText(activity, "검색 결과 없음", Toast.LENGTH_SHORT).show();
+                    MainActivity.pd.dismiss();
                 }
                 MainActivity.pd.dismiss();
             }

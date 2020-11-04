@@ -74,8 +74,9 @@ public class MainActivity extends AppCompatActivity {
     DbCon.SearchAdapter Search;
     DbCon.MarkerAdapter dataAdapter;
     DbCon.QrCodeAdapter qr;
-    private SearchView searchView;
+    public static SearchView searchView;
     private IntentIntegrator qrScan;
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -558,6 +559,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.action_bar_item, menu);
+
         final MenuItem mSearch = menu.findItem(R.id.search_button);
         searchView = (SearchView) mSearch.getActionView();
 
@@ -576,6 +578,7 @@ public class MainActivity extends AppCompatActivity {
                     Search.execute(s, "1", String.valueOf(MainActivity.user_city.getText()));//인자로 city 스트링 보내면 해당 도시만 출력가능
                 }
                 searchView.clearFocus();
+                searchView.isIconified();
                 return true;
             }
 
@@ -598,6 +601,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mSearch.setChecked(true);
+
 //메뉴 아이콘 클릭했을 시 확장, 취소했을 시 축소
         mSearch.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
@@ -614,6 +618,17 @@ public class MainActivity extends AppCompatActivity {
 
                 searchView.setIconified(true);
                 searchView.clearFocus();
+
+                Maps.beforeZoomLevel = Maps.naverMap.getCameraPosition().zoom;
+                Maps.beforeCameraPoint = Maps.naverMap.getCameraPosition().target;
+                if (Maps.markerAdapter != null) {
+                    Maps.markerAdapter.cancel(true);
+                    Maps.markerAdapter = null;
+                }
+                Maps.markerAdapter = new DbCon.MarkerAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
+                Maps.markerAdapter.execute(String.valueOf(Maps.beforeCameraPoint.latitude), String.valueOf(Maps.beforeCameraPoint.longitude), String.valueOf(MainActivity.user_city.getText()));
+
+
 
                 return true;
             }
