@@ -41,8 +41,9 @@ public class PlaceList extends Fragment
             @Override
             public void onClick(View v) {
                 isCheckedButtonNear = true;
-                button_near.setBackgroundColor(Color.parseColor("#00C0FF"));
-                button_camera.setBackgroundColor(Color.parseColor("#4000C0FF"));
+                button_near.setBackgroundResource(R.drawable.selected_button);
+//                button_camera.setBackgroundColor(Color.parseColor("#4000C0FF"));
+                button_camera.setBackgroundResource(R.drawable.border);
 
 
                 if (MarkerAdapter != null) {
@@ -60,8 +61,8 @@ public class PlaceList extends Fragment
             @Override
             public void onClick(View v) {
                 isCheckedButtonNear = false;
-                button_near.setBackgroundColor(Color.parseColor("#4000C0FF"));
-                button_camera.setBackgroundColor(Color.parseColor("#00C0FF"));
+                button_near.setBackgroundResource(R.drawable.border);
+                button_camera.setBackgroundResource(R.drawable.selected_button);
 
                 if (MarkerAdapter != null) {
                     MarkerAdapter.cancel(true);

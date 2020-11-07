@@ -17,13 +17,14 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="4dp"
-        android:background="#4000C0FF"
+        android:background="@drawable/border"
         android:text="내 주변 찾기"
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/placelist_recyclerview"
         app:layout_constraintEnd_toStartOf="@+id/button_camera"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
         android:id="@+id/button_camera"
@@ -33,7 +34,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="4dp"
-        android:background="#4000C0FF"
+        android:background="@drawable/border"
         android:text="화면에서찾기"
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/placelist_recyclerview"

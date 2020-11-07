@@ -215,7 +215,7 @@ public class DbCon extends AppCompatActivity {
                                 if (Maps.slidingUpPanel != null &&
                                         (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
                                     TextView title = activity.findViewById(R.id.sliding_layout_title);
-                                    title.setText(String.valueOf(size)+"개의 가맹점 정보");
+                                    title.setText(String.valueOf(size)+title.getText());
                                     Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                                 }
 
@@ -673,7 +673,9 @@ public class DbCon extends AppCompatActivity {
 
                         InfoPopupActivity.star.invalidate();
                     }
+
                 }
+
             }
         }
 
