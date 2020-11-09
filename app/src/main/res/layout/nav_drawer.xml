@@ -71,7 +71,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:paddingLeft="8dp"
-        android:text="지역"
+        android:text="지역을 선택하세요."
         android:textColor="@android:color/black"
         android:textSize="20dp" />
 

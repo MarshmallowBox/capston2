@@ -131,9 +131,11 @@ public class MainActivity extends AppCompatActivity {
         textView1 = navigationView.getHeaderView(0).findViewById(R.id.user_info);
         user_money = navigationView.getHeaderView(0).findViewById(R.id.user_money);
         user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);
+        Log.e("133 fucking city","user_city = navigationView.getHeaderView(0).findViewById(R.id.user_city);\n"+user_city.getText());
         textView.setText(strNickname);
         textView1.setText(strEmail);
         user_city.setText("지역을 선택하세요.");
+        Log.e("137 fucking city","user_city.setText(\"지역을 선택하세요.\");\n"+user_city.getText());
 
 
         if (Member != null) {

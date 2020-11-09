@@ -24,7 +24,8 @@ import static com.example.capstone.MainActivity.mapsFrag;
 
 public class SettingPopupActivity extends Activity {
     Spinner citySpinner = null;
-String mode="";
+    String mode = "";
+
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ String mode="";
         setContentView(R.layout.activity_setting_popup);
         Intent intent = getIntent();
         mode = intent.getStringExtra("mode");
-        Log.d("modemodemode","mode: "+mode);
+        Log.d("modemodemode", "mode: " + mode);
 
 
         final String[] city = getResources().getStringArray(R.array.cityArray);
@@ -42,13 +43,13 @@ String mode="";
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, city);
         adapter.setDropDownViewResource(R.layout.spinner_item);
         citySpinner.setAdapter(adapter);
-        for(int i=0;i<city.length;i++){
-            if(String.valueOf(MainActivity.user_city.getText()).equals(city[i])){
+        for (int i = 0; i < city.length; i++) {
+            if (String.valueOf(MainActivity.user_city.getText()).equals(city[i])) {
                 citySpinner.setSelection(i);
 
             }
         }
-        System.out.println("!!!!!!"+MainActivity.user_city.getText()+"!!!!!!");
+        System.out.println("!!!!!!" + MainActivity.user_city.getText() + "!!!!!!");
         citySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -60,7 +61,7 @@ String mode="";
             }
         });
         final TextView q = findViewById(R.id.info_popup_title);
-        if(mode!=null&&(mode.equals("new")||mode.equals("notmember"))) {
+        if (mode != null && (mode.equals("new") || mode.equals("notmember"))) {
 
             q.setText("초기 지역 설정");
         }
@@ -70,8 +71,8 @@ String mode="";
             public void onClick(View v) {
                 if (citySpinner.getSelectedItemId() == 0) {
                     Toast.makeText(SettingPopupActivity.this, "지역을 선택하지 않았습니다.\n지역을 선택해주세요.", Toast.LENGTH_SHORT).show();
-                }else{
-                    if(mode!=null&&mode.equals("new")){
+                } else {
+                    if (mode != null && mode.equals("new")) {
 
 
 //                        String.valueOf(citySpinner.getSelectedItem()) -> city값
@@ -82,25 +83,32 @@ String mode="";
                             MainActivity.Member = null;
                         }
                         MainActivity.Member = new DbCon.MemberAdapter();
-                        MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()),"1");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
-System.out.println("어쩌라구");
+                        MainActivity.Member.execute(MainActivity.strEmail, MainActivity.strNickname, String.valueOf(citySpinner.getSelectedItem()), "1");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
+                        System.out.println("어쩌라구");
                         MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
+                        Log.e("88 fucking city",citySpinner.getSelectedItem()+"\nMainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));\n"+MainActivity.user_city.getText());
                         MainActivity.textView.setText(MainActivity.strNickname);
                         MainActivity.textView1.setText(MainActivity.strEmail);
                         MainActivity.drawerLayout.refreshDrawableState();
-                    }
-                    else
-                    {
+                    } else {
                         MainActivity.Member = new DbCon.MemberAdapter();
-                        MainActivity.Member.execute(MainActivity.strEmail,MainActivity.strNickname,String.valueOf(citySpinner.getSelectedItem()),"2");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
+                        MainActivity.Member.execute(MainActivity.strEmail, MainActivity.strNickname, String.valueOf(citySpinner.getSelectedItem()), "2");//로그인은 했는데 처음이라 시가 저장 안되어있을경우 function이 1이다
                         System.out.println("어쩌라공");
                         MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
+                        Log.e("97 fucking city",citySpinner.getSelectedItem()+"\nMainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));\n"+MainActivity.user_city.getText());
                         MainActivity.textView.setText(MainActivity.strNickname);
                         MainActivity.textView1.setText(MainActivity.strEmail);
                         MainActivity.drawerLayout.refreshDrawableState();
+                        Log.e("야발","1"+String.valueOf(citySpinner.getSelectedItem()));
+                        Log.e("야발","2"+MainActivity.user_city.getText());
+
+
                     }
                     MainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));
+                    Log.e("107 fucking city",citySpinner.getSelectedItem()+"\nMainActivity.user_city.setText(String.valueOf(citySpinner.getSelectedItem()));\n"+MainActivity.user_city.getText());
 
+                    Log.e("야발","3"+String.valueOf(citySpinner.getSelectedItem()));
+                    Log.e("야발","4"+MainActivity.user_city.getText());
 
                     DbCon.MarkerAdapter MarkerAdapter = null;
                     if (MainActivity.bottomNavigationView.getSelectedItemId() == R.id.mapmode) {
@@ -109,9 +117,9 @@ System.out.println("어쩌라구");
                             MarkerAdapter = null;
                         }
                         MarkerAdapter = new DbCon.MarkerAdapter(mapsFrag.getActivity(), Maps.naverMap, Maps.Markers);
-                        Log.i("MarkerAdapter", "현위치");
+                        Log.i("MarkerAdapter", "야발 현위치");
                         if (MarkerAdapter != null) {
-                            MarkerAdapter.execute(String.valueOf(Maps.beforeCameraPoint.latitude), String.valueOf(Maps.beforeCameraPoint.longitude),String.valueOf(MainActivity.user_city.getText()));
+                            MarkerAdapter.execute(String.valueOf(Maps.beforeCameraPoint.latitude), String.valueOf(Maps.beforeCameraPoint.longitude), String.valueOf(MainActivity.user_city.getText()));
                         }
                     } else {
                         if (PlaceList.isCheckedButtonNear) {
