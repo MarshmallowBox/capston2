@@ -2,12 +2,14 @@ package com.example.capstone;
 
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.overlay.Marker;
 import com.naver.maps.map.overlay.Overlay;
 import com.naver.maps.map.overlay.OverlayImage;
+import com.naver.maps.map.util.MarkerIcons;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONArray;
@@ -42,27 +45,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DbCon extends AppCompatActivity {
-    private static final String TAG_JSON = "webnautes";
+    private static String TAG = "phpquerytest";
+    private static final String TAG_JSON="webnautes";
     private static final String TAG_ID = "store_id";
     private static final String TAG_STORE_ID = "st_id";
     private static final String TAG_S_ID = "s_id";
-    private static final String TAG_ME_ID = "me_id";
-    private static final String TAG_USERNAME = "me_id";
-    private static final String TAG_SCORE = "score";//여기가 me_id로 되어있었다리 ㄷㄷ
-    private static final String TAG_REVIEWID = "review_id";
+    private static final String TAG_ME_ID ="me_id";
+    private static final String TAG_USERNAME ="me_id";
+    private static final String TAG_SCORE ="score";//여기가 me_id로 되어있었다리 ㄷㄷ
+    private static final String TAG_REVIEWID ="review_id";
     private static final String TAG_NAME = "name";
-    private static final String TAG_ADDRESS = "address";
-    private static final String TAG_CATEGORY = "category";
-    private static final String TAG_TEL = "tel";
-    private static final String TAG_LATITUDE = "latitude";
-    private static final String TAG_LONGITUDE = "longitude";
-    private static final String TAG_DATE = "date";
-    private static final String TAG_REVIEWTXt = "reviewTXT";
+    private static final String TAG_ADDRESS ="address";
+    private static final String TAG_CATEGORY ="category";
+    private static final String TAG_TEL ="tel";
+    private static final String TAG_LATITUDE ="latitude";
+    private static final String TAG_LONGITUDE ="longitude";
+    private static final String TAG_DATE ="date";
+    private static final String TAG_REVIEWTXt ="reviewTXT";
+
     public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
     public static ArrayList<MemberDTO> Members = new ArrayList<>();
     public static ArrayList<MoneyDTO> Moneys = new ArrayList<>();
+
     static ArrayList<HashMap<String, String>> mArrayList = new ArrayList<>();
-    private static String TAG = "phpquerytest";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +155,7 @@ public class DbCon extends AppCompatActivity {
                         marker.setSubCaptionTextSize(10); //서브캡션 크기
 
 
+
 //                        marker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
                         marker.setCaptionRequestedWidth(200);
                         marker.setOnClickListener(new Overlay.OnClickListener() {
@@ -209,7 +216,7 @@ public class DbCon extends AppCompatActivity {
                                 if (Maps.slidingUpPanel != null &&
                                         (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED)) {
                                     TextView title = activity.findViewById(R.id.sliding_layout_title);
-                                    title.setText(String.valueOf(size) + title.getText());
+                                    title.setText(String.valueOf(size)+title.getText());
                                     Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                                 }
 
@@ -269,6 +276,8 @@ public class DbCon extends AppCompatActivity {
                     setMarkersOnMap();
 
                 }
+                MainActivity.loadingImage.setVisibility(View.INVISIBLE);
+                Log.e("sksksksksk","done");
             }
         }
 
@@ -377,7 +386,6 @@ public class DbCon extends AppCompatActivity {
             }
             return categoryFilteredFranchises;
         }
-
         public void setSearchMarkersOnMap() {
             ArrayList<FranchiseDTO> beforeClusterData = getFilteredData();
 
@@ -392,52 +400,53 @@ public class DbCon extends AppCompatActivity {
 
                 if (clusterFranchises[i] != null) {
 
-                    final FranchiseDTO franchise = clusterFranchises[i].get(0);
-                    final Marker marker = new Marker();
-                    marker.setPosition(new LatLng(franchise.latitude, franchise.longitude));//위경도
-                    marker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
+                        final FranchiseDTO franchise = clusterFranchises[i].get(0);
+                        final Marker marker = new Marker();
+                        marker.setPosition(new LatLng(franchise.latitude, franchise.longitude));//위경도
+                        marker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
 
-                    marker.setWidth(100);
-                    marker.setHeight(125);
-                    marker.setCaptionOffset(0); //캡션 위치
+                        marker.setWidth(100);
+                        marker.setHeight(125);
+                        marker.setCaptionOffset(0); //캡션 위치
 
-                    marker.setAnchor((new PointF(0.5f, 1)));
-                    marker.setCaptionTextSize(10);
+                        marker.setAnchor((new PointF(0.5f, 1)));
+                        marker.setCaptionTextSize(10);
 
 
-                    marker.setCaptionText(franchise.name); //메인캡션
-                    marker.setTag(franchise);//인포뷰에 전달할 태그값
-                    marker.setSubCaptionText(franchise.category); //서브캡션
-                    marker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-                    marker.setSubCaptionTextSize(10); //서브캡션 크기
+                        marker.setCaptionText(franchise.name); //메인캡션
+                        marker.setTag(franchise);//인포뷰에 전달할 태그값
+                        marker.setSubCaptionText(franchise.category); //서브캡션
+                        marker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
+                        marker.setSubCaptionTextSize(10); //서브캡션 크기
+
 
 
 //                        marker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
-                    marker.setCaptionRequestedWidth(200);
-                    marker.setOnClickListener(new Overlay.OnClickListener() {
-                        @Override
-                        public boolean onClick(@NonNull Overlay overlay) {
-                            //클릭시 카메라 이동
-                            naverMap.moveCamera(CameraUpdate.scrollTo(marker.getPosition()).animate(CameraAnimation.Easing));
-                            //infoWindow에 franchises값 태그로 전달
-                            Maps.infoWindow.setTag(franchise);
-                            //인포뷰 활성화
+                        marker.setCaptionRequestedWidth(200);
+                        marker.setOnClickListener(new Overlay.OnClickListener() {
+                            @Override
+                            public boolean onClick(@NonNull Overlay overlay) {
+                                //클릭시 카메라 이동
+                                naverMap.moveCamera(CameraUpdate.scrollTo(marker.getPosition()).animate(CameraAnimation.Easing));
+                                //infoWindow에 franchises값 태그로 전달
+                                Maps.infoWindow.setTag(franchise);
+                                //인포뷰 활성화
 //                                Maps.infoWindow.open(marker);
 
-                            Maps.infoWindow.performClick();
-                            return true;
-                        }
-                    });
-                    marker.setMap(naverMap); //지도에 추가, null이면 안보임
-                    Markers.add(marker);
-                    naverMap.setCameraPosition(new CameraPosition(naverMap.getCameraPosition().target, 12));
+                                Maps.infoWindow.performClick();
+                                return true;
+                            }
+                        });
+                        marker.setMap(naverMap); //지도에 추가, null이면 안보임
+                        Markers.add(marker);
+                        naverMap.setCameraPosition(new CameraPosition(naverMap.getCameraPosition().target, 12));
 //                        naverMap.moveCamera(CameraUpdate.scrollTo(marker.getPosition()).animate(CameraAnimation.Easing));
+
 
 
                 }
             }
         }
-
         //////
         @Override
         protected void onPreExecute() {
@@ -491,50 +500,8 @@ public class DbCon extends AppCompatActivity {
                     if (MainActivity.bottomNavigationView.getSelectedItemId() == R.id.mapmode && searchMode.equals("1")) {
                         setSearchMarkersOnMap();
 
-//                        Maps.singleMarker.setMap(null);
-//                        Maps.singleMarker = new Marker();
-//                        Maps.singleMarker.setPosition(new LatLng(Franchises.get(0).latitude, Franchises.get(0).longitude));//위경도
-//
-//                        Maps.singleMarker.setIcon(OverlayImage.fromResource(R.drawable.search_marker));//기본제공 마커
-//                        Maps.singleMarker.setWidth(100);
-//                        Maps.singleMarker.setHeight(125);
-//                        Maps.singleMarker.setCaptionOffset(0); //캡션 위치
-//                        Maps.singleMarker.setAnchor((new PointF(0.5f, 1)));
-//                        Maps.singleMarker.setCaptionTextSize(10);
-//
-//                        Maps.singleMarker.setCaptionText(Franchises.get(0).name); //메인캡션
-//                        Maps.singleMarker.setTag(Franchises.get(0));//인포뷰에 전달할 태그값
-//                        Maps.singleMarker.setSubCaptionText(Franchises.get(0).category); //서브캡션
-//                        Maps.singleMarker.setSubCaptionColor(Color.BLUE); //서브캡션 색상
-//                        Maps.singleMarker.setSubCaptionTextSize(10); //서브캡션 크기
-//                        Maps.singleMarker.setHideCollidedCaptions(true);//마커곂칠때 캡션숨기기
-//
-//                        Maps.singleMarker.setOnClickListener(new Overlay.OnClickListener() {
-//                            @Override
-//                            public boolean onClick(@NonNull Overlay overlay) {
-//
-//                                //클릭시 카메라 이동
-//                                Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()).animate(CameraAnimation.Easing));
-//                                //infoWindow에 franchises값 태그로 전달
-//                                Maps.infoWindow.setTag(Franchises.get(0));
-//                                //인포뷰 활성화
-////                                Maps.infoWindow.open(Maps.singleMarker);
-//                                Maps.infoWindow.performClick();
-//                                return true;
-//                            }
-//                        });
-//
-//                        Maps.singleMarker.setMap(Maps.naverMap); //지도에 추가, null이면 안보임
-//                        Maps.naverMap.moveCamera(CameraUpdate.scrollTo(Maps.singleMarker.getPosition()));
-////                        Maps.singleMarker.performClick();
-////하단 정보창 닫기
-//                        if (Maps.slidingUpPanel != null &&
-//                                (Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED || Maps.slidingUpPanel.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED)) {
-//                            Maps.slidingUpPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
-//                        }
                     }
-
-                } else {
+                } else{
                     Toast.makeText(activity, "검색 결과 없음", Toast.LENGTH_SHORT).show();
                     MainActivity.pd.dismiss();
                 }
@@ -597,20 +564,17 @@ public class DbCon extends AppCompatActivity {
         String mode = null;
         String errorString = null;
         String mJsonString = null;
-        Context context = null;
-        RecyclerView recyclerView = null;
-        FranchiseRecyclerViewAdapter mAdapter = null;
-
-        MyPlaceAdapter() {
+        Context context= null;
+        RecyclerView recyclerView= null;
+        FranchiseRecyclerViewAdapter mAdapter= null;
+        MyPlaceAdapter(){
 
         }
-
         MyPlaceAdapter(Context context, RecyclerView recyclerView) {
 
             this.context = context;
             this.recyclerView = recyclerView;
         }
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -625,7 +589,6 @@ public class DbCon extends AppCompatActivity {
                 showResult();
             }
         }
-
         public void showResult() {
             if (mode.equals("call")) {
                 try {
@@ -647,8 +610,8 @@ public class DbCon extends AppCompatActivity {
                         String tel = item.getString(TAG_TEL);
                         String latitude = item.getString(TAG_LATITUDE);
                         String longitude = item.getString(TAG_LONGITUDE);
-                        ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id), name, address, category, tel, Double.parseDouble(latitude), Double.parseDouble(longitude)));
-                        if (InfoPopupActivity.franchiseID != 0) {
+                        ZzimFranchise.add(new FranchiseDTO(Integer.parseInt(id),name,address,category,tel,Double.parseDouble(latitude),Double.parseDouble(longitude)));
+                        if(InfoPopupActivity.franchiseID!=0){
                             if (String.valueOf(InfoPopupActivity.franchiseID).equals(id)) {
                                 InfoPopupActivity.star.setChecked(true);
                             } else {
@@ -660,14 +623,14 @@ public class DbCon extends AppCompatActivity {
                 } catch (JSONException e) {
                     Log.d(TAG, "showResult : ", e);
                 } finally {
-                    if (context != null && recyclerView != null) {
+                    if(context!=null && recyclerView !=null){
                         mAdapter = new FranchiseRecyclerViewAdapter(ZzimFranchise);
                         recyclerView.setAdapter(mAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
                         mAdapter.notifyDataSetChanged();//데이터변경시
                     }
-                    if (InfoPopupActivity.star != null) {
+                    if(InfoPopupActivity.star!=null){
 
                         InfoPopupActivity.star.invalidate();
                     }
@@ -676,6 +639,7 @@ public class DbCon extends AppCompatActivity {
 
             }
         }
+
 
 
         @Override
@@ -730,25 +694,24 @@ public class DbCon extends AppCompatActivity {
     }
 
     public static class ReviewAdapter extends AsyncTask<String, Void, String> {
-        public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
-        static String mJsonString = null;
-        static Activity activity = null;
-        static RecyclerView mRecyclerView = null;
-        static int rowCount = 0;
         String errorString = null;
+        static String mJsonString = null;
+        static Activity activity=null;
+        static RecyclerView mRecyclerView = null;
+        static int rowCount=0;
 
-        ReviewAdapter() {
+        public static ArrayList<ReviewDTO> Reviews = new ArrayList<>();
+        ReviewAdapter(){
 
         }
-
-        ReviewAdapter(ReviewPopupActivity activity, RecyclerView mRecyclerView) {
-            ReviewAdapter.activity = activity;
-            ReviewAdapter.mRecyclerView = mRecyclerView;
+        ReviewAdapter(ReviewPopupActivity activity, RecyclerView mRecyclerView){
+            this.activity=activity;
+            this.mRecyclerView=mRecyclerView;
         }
 
         public static void showResult() {
             try {
-                rowCount = 0;
+                rowCount=0;
                 System.out.println("리뷰리뷰리뷰");
                 JSONObject jsonObject = new JSONObject(mJsonString);
                 System.out.println("111111");
@@ -757,7 +720,7 @@ public class DbCon extends AppCompatActivity {
 
                 Reviews.clear();
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    Log.d("rowCount", "" + rowCount);
+                    Log.d("rowCount", ""+rowCount);
                     JSONObject item = jsonArray.getJSONObject(i);
                     String review_id = item.getString(TAG_REVIEWID);
                     String store_id = item.getString(TAG_STORE_ID);
@@ -766,20 +729,20 @@ public class DbCon extends AppCompatActivity {
                     String date = item.getString(TAG_DATE);
                     String score = item.getString(TAG_SCORE);
                     String text = item.getString(TAG_REVIEWTXt);
-                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id), Integer.parseInt(store_id), Integer.parseInt(user_id), user_name, date, Double.parseDouble(score), text));
-                    Log.d("rowCount", "" + rowCount);
-                    rowCount += 1;
+                    Reviews.add(new ReviewDTO(Integer.parseInt(review_id),Integer.parseInt(store_id),Integer.parseInt(user_id),user_name,date,Double.parseDouble(score),text));
+                    Log.d("rowCount", ""+rowCount);
+                    rowCount+=1;
                 }
                 System.out.println("**************");
                 System.out.println(Reviews);
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
-            } finally {
-                if (InfoPopupActivity.reviewCounter != null) {
+            }finally {
+                if(InfoPopupActivity.reviewCounter!=null){
                     InfoPopupActivity.reviewCounter.setText("리뷰: " + rowCount + "개");
                 }
-                if (activity != null && mRecyclerView != null) {
+                if(activity!=null && mRecyclerView!=null){
                     // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
                     ReviewRecyclerViewAdapter mAdapter = new ReviewRecyclerViewAdapter(Reviews);
                     mRecyclerView.setAdapter(mAdapter);
@@ -876,7 +839,7 @@ public class DbCon extends AppCompatActivity {
 
 
         public void showResult() {
-            String ct_name = String.valueOf(MainActivity.user_city.getText());
+            String ct_name=String.valueOf(MainActivity.user_city.getText());
             try {
                 System.out.println("멤버멤버멤버");
                 JSONObject jsonObject = new JSONObject(mJsonString);
@@ -884,7 +847,7 @@ public class DbCon extends AppCompatActivity {
                 JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
                 System.out.println("222222");
                 Members.clear();
-                Log.e("882 fucking city", ct_name + "\nString ct_name=String.valueOf(MainActivity.user_city.getText());\n" + MainActivity.user_city.getText());
+
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject item = jsonArray.getJSONObject(i);
                     String member_id = item.getString(TAG_MEMBER_ID);
@@ -898,7 +861,7 @@ public class DbCon extends AppCompatActivity {
                     String profileimg = item.getString(TAG_PROFILEIMG);
                     String startmoney = item.getString(TAG_STARTMONEY);
                     String ct_id = item.getString(TAG_CT_ID);
-                    ct_name = item.getString(TAG_CITY_NAME); //여기가 의심된다!!
+                    ct_name = item.getString(TAG_CITY_NAME);
 
                     System.out.println(MainActivity.user_city);
                     Members.add(new MemberDTO(Integer.parseInt(member_id), tel, name, nickname, email, agerange, gender, birthday, profileimg, startmoney, Integer.parseInt(ct_id)));
@@ -910,31 +873,24 @@ public class DbCon extends AppCompatActivity {
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
             } finally {
-
-
-                if (Members.size() == 0) {
-
-
+                if(Members.size()==0){
                     Members.add(new MemberDTO(0, "", "비회원", "비회원", "비회원", "비회원", "비회원", "비회원", "", "0", 0));
 
                     MainActivity.user_city.setText(ct_name);
-                    Log.e("922 fucking city", ct_name + "\nMainActivity.user_city.setText(ct_name);\n" + MainActivity.user_city.getText());
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
                     MainActivity.user_money.setText(Members.get(0).startmoney);
                     MainActivity.flag = true;
 
-                } else if (MainActivity.textView != null && MainActivity.textView1 != null && MainActivity.user_money != null) {
-
-
+                }else if(MainActivity.textView!=null && MainActivity.textView1!=null && MainActivity.user_money!=null){
                     MainActivity.user_city.setText(ct_name);
-                    Log.e("932 fucking city", ct_name + "\nMainActivity.user_city.setText(ct_name);\n" + MainActivity.user_city.getText());
                     MainActivity.textView.setText(Members.get(0).name);
                     MainActivity.textView1.setText(Members.get(0).email);
-                    MainActivity.originmoney = Integer.parseInt(Members.get(0).startmoney);
+                    MainActivity.originmoney =Integer.parseInt(Members.get(0).startmoney);
                     MainActivity.drawerLayout.refreshDrawableState();
                     MainActivity.flag = true;
                 }
+
 
 
             }
@@ -970,7 +926,7 @@ public class DbCon extends AppCompatActivity {
             System.out.println(searchKeyword4);
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/member.php";
             System.out.println(serverURL);
-            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2 + "&city_name=" + searchKeyword3 + "&function=" + searchKeyword4; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "email=" + searchKeyword1 + "&name=" + searchKeyword2 + "&city_name=" + searchKeyword3  + "&function=" + searchKeyword4; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -1017,22 +973,20 @@ public class DbCon extends AppCompatActivity {
         private static final String TAG_USE_WHERE = "useWhere";
         private static final String TAG_USE_MONEY = "useMoney";
         private static final String TAG_ID = "id";
-        public static ArrayList<MoneyDTO> mList = new ArrayList<>();
-        static Context context = null;
-        static RecyclerView recyclerView = null;
-        String mJsonString;
-        String errorString = null;
-        MoneyRecyclerViewAdapter mAdapter;
 
+        String mJsonString;
+        public static ArrayList<MoneyDTO> mList = new ArrayList<>();
+        String errorString = null;
+        static Context context=null;
+        static RecyclerView recyclerView = null;
+        MoneyRecyclerViewAdapter mAdapter;
         public GMoneyAmountAdapter() {
         }
-
         GMoneyAmountAdapter(Context context, RecyclerView recyclerView) {
 
-            GMoneyAmountAdapter.context = context;
-            GMoneyAmountAdapter.recyclerView = recyclerView;
+            this.context = context;
+            this.recyclerView = recyclerView;
         }
-
         public void showResult() {
             try {
                 System.out.println("머니머니머니");
@@ -1054,7 +1008,7 @@ public class DbCon extends AppCompatActivity {
                     String useMoney = item.getString(TAG_USE_MONEY);
                     System.out.println(useWhere);
                     System.out.println(useMoney);
-                    mList.add(new MoneyDTO(id, date, time, useWhere, Integer.parseInt(useMoney)));
+                    mList.add(new MoneyDTO(id,date,time,useWhere,Integer.parseInt(useMoney)));
                     System.out.println("9");
                 }
                 System.out.println("**************");
@@ -1062,15 +1016,16 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
-            } finally {
+            }
+            finally {
 
-                if (context != null && recyclerView != null) {
+                if(context!=null && recyclerView !=null){
                     MoneyRecyclerViewAdapter mAdapter = new MoneyRecyclerViewAdapter(mList);
                     recyclerView.setAdapter(mAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
                     mAdapter.notifyDataSetChanged(); //데이터변경시
-                    MoneyRecyclerViewAdapter.leftovermoney();
+MoneyRecyclerViewAdapter.leftovermoney();
 
 
                 }
@@ -1110,7 +1065,7 @@ public class DbCon extends AppCompatActivity {
 
             String serverURL = "http://rtemd.suwon.ac.kr/capstone/Money.php";
             System.out.println(serverURL);
-            String postParameters = "mem_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&date=" + searchKeyword3 + "&time=" + searchKeyword4 + "&useWhere=" + searchKeyword5 + "&useMoney=" + searchKeyword6; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
+            String postParameters = "mem_id=" + searchKeyword1 + "&function=" + searchKeyword2 + "&date=" + searchKeyword3 + "&time=" + searchKeyword4 + "&useWhere=" + searchKeyword5 + "&useMoney=" + searchKeyword6 ; // tel 쓰면 안되면 변수 새로만들어서 가능, city명 일치한거 하려면 인자 하나더받기
             System.out.println(postParameters);
             try {
                 URL url = new URL(serverURL);
@@ -1164,7 +1119,6 @@ public class DbCon extends AppCompatActivity {
         private final String TAG_LONGITUDE = "longitude";
         String errorString = null;
         String mJsonString;
-
         public void showResult() {
             try {
                 QrFranchise.clear();
@@ -1190,9 +1144,10 @@ public class DbCon extends AppCompatActivity {
                 System.out.println("**************");
             } catch (JSONException e) {
                 Log.d(TAG, "showResult : ", e);
-            } finally {
-                if (QrFranchise.size() != 0) {
-                    MainActivity.QRFlag = true;
+            }
+            finally {
+                if(QrFranchise.size()!=0){
+                    MainActivity.QRFlag=true;
                 }
 
 
@@ -1263,6 +1218,7 @@ public class DbCon extends AppCompatActivity {
             }
         }
     }
+
 
 
 }

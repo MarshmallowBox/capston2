@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
     DbCon.QrCodeAdapter qr;
     public static SearchView searchView;
     private IntentIntegrator qrScan;
+    public static ImageView loadingImage;
 
 
     @SuppressLint("SetTextI18n")
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        loadingImage = findViewById(R.id.loading_image);
 
         //앱바(툴바) 생성부분인데 밑에 이벤트와같이 UI클래스에 같이 합칠수있는지 시도해보기
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -111,7 +112,8 @@ public class MainActivity extends AppCompatActivity {
         strBirthday = intent.getStringExtra("birthday");    //같은 함수인가봐
         strEmail = intent.getExtras().getString("email");
         strStartWithQRCode = intent.getExtras().getString("startWithQRCode");
-
+        pd = ProgressDialog.show(MainActivity.this, "", "검색 중입니다...");
+        pd.dismiss();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         if (!strNickname.equals("비회원")) {
